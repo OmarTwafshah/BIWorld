@@ -19,6 +19,7 @@ public class Company {
     @Column(name = "cityId")
     private Set<City> city ;
 
+
     @Column(name = "companyDescription")
     private String companyDescription ;
 
