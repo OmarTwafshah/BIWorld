@@ -38,6 +38,9 @@ public class Company {
     @Column(name = "address")
     private String address ;
 
+    @OneToMany
+    private Set<Jobs> jobs ;
+
     public Company() {
 
     }

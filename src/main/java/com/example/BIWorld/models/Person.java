@@ -49,7 +49,7 @@ public class Person {
     private String picPath ;
 
     @Column(name = "haveCV")
-    private boolean haveCV ;
+    private Boolean haveCV ;
 
     public Person(){}
 
