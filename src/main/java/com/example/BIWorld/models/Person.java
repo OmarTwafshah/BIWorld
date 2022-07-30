@@ -4,56 +4,64 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Entity
-@Table(name = "person")
+@Entity(name = "persons")
+@Table(name = "persons")
 public class Person {
     @Id
     @GeneratedValue
-    private long personID;
+    private Integer person_id;
 
-    @Column(name = "FullName")
+    @Column(name = "full_name")
     private String FullName ;
 
-    @Column(name = "UserName")
+    @Column(name = "user_name")
     private String UserName ;
 
-    @ManyToOne
-    @JoinColumn(name="cityId")
-    private City city ;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="city_id")
+    private City cities ;
 
-    @Column(name = "personEmail")
+    @Column(name = "person_email")
     private String PersonEmail ;
 
     @Column(name = "password")
     private String password ;
 
-    @Column(name = "personPhone")
+    @Column(name = "person_phone")
     private Double personPhone ;
 
-    @Column(name = "personField")
+    @Column(name = "person_field")
     private String personField ;
 
-    @Column(name = "dateOfBirth")
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth ;
 
     @Column(name = "gender")
     private String gender ;
 
-    @Column(name = "studyDegree")
+    @Column(name = "study_degree")
     private String studyDegree ;
 
     @Column(name = "description")
     private String description ;
 
-    @Column(name = "picPath")
+    @Column(name = "pic_path")
     private String picPath ;
 
-    @Column(name = "haveCV")
+    @Column(name = "have_cv")
     private Boolean haveCV ;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "applyToJob_Person",
+            joinColumns = { @JoinColumn(name = "person_id") },
+            inverseJoinColumns = { @JoinColumn(name = "application_id") }
+    )
+    private Set<ApplyToJob> applyToJobs ;
 
     public Person(){}
 
-    public Person(long personID,
+    public Person(Integer personID,
                   String fullName,
                   String userName,
                   City city,
@@ -67,10 +75,10 @@ public class Person {
                   String description,
                   String picPath,
                   boolean haveCV) {
-        this.personID = personID;
+        this.person_id = personID;
         FullName = fullName;
         UserName = userName;
-        this.city = city;
+//        this.city = city;
         PersonEmail = personEmail;
         this.password = password;
         this.personPhone = personPhone;
@@ -83,12 +91,12 @@ public class Person {
         this.haveCV = haveCV;
     }
 
-    public long getPersonID() {
-        return personID;
+    public Integer getPersonID() {
+        return person_id;
     }
 
-    public void setPersonID(long personID) {
-        this.personID = personID;
+    public void setPersonID(Integer personID) {
+        this.person_id = personID;
     }
 
     public String getFullName() {
@@ -107,13 +115,13 @@ public class Person {
         UserName = userName;
     }
 
-    public City getCity() {
-        return city;
-    }
+//    public City getCity() {
+//        return city;
+//    }
 
-    public void setCity(City city) {
-        this.city = city;
-    }
+//    public void setCity(City city) {
+//        this.city = city;
+//    }
 
     public String getPersonEmail() {
         return PersonEmail;
@@ -198,10 +206,10 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "personID=" + personID +
+                "personID=" + person_id +
                 ", FullName='" + FullName + '\'' +
                 ", UserName='" + UserName + '\'' +
-                ", city=" + city +
+//                ", city=" + city +
                 ", PersonEmail='" + PersonEmail + '\'' +
                 ", password='" + password + '\'' +
                 ", personPhone=" + personPhone +

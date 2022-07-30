@@ -1,38 +1,44 @@
 package com.example.BIWorld.models;
 
+import jdk.jfr.Relational;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
-@Table(name = "city")
+@Entity(name = "cities")
+@Table(name = "cities")
 public class City {
     @Id
     @GeneratedValue
-    private Integer cityId;
-    @Column(name = "cityName")
+    private Integer city_id;
+    @Column(name = "city_name")
     private String cityName;
 
-    @ManyToMany
-    private Set<Company> company ;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "city_company",
+            joinColumns = { @JoinColumn(name = "city_id") },
+            inverseJoinColumns = { @JoinColumn(name = "company_id") }
+    )
+    private Set<Company> companies ;
 
-    @OneToMany
-    private Set<Person> person ;
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "cities")
+    private Set<Person> persons ;
 
     public City(){}
 
     public City(Integer cityId, String cityName) {
-        this.cityId = cityId;
+        this.city_id = cityId;
         this.cityName = cityName;
     }
 
     public Integer getCityId() {
-        return cityId;
+        return city_id;
     }
 
     public void setCityId(Integer cityId) {
-        this.cityId = cityId;
+        this.city_id = cityId;
     }
 
     public String getCityName() {
@@ -47,7 +53,7 @@ public class City {
     @Override
     public String toString() {
         return "City{" +
-                "cityId=" + cityId +
+                "cityId=" + city_id +
                 ", cityName='" + cityName + '\'' +
                 '}';
     }

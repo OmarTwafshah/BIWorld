@@ -5,41 +5,44 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "company")
+@Table(name = "companies")
 public class Company {
 
     @Id
     @GeneratedValue
-    private Integer companyID ;
+    private Integer company_id ;
 
-    @Column(name = "CompanyName")
+    @Column(name = "company_name")
     private String CompanyName ;
 
-    @ManyToMany
-    @Column(name = "cityId")
-    private Set<City> city ;
+    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "companies")
+    private Set<City> cities ;
 
-
-    @Column(name = "companyDescription")
+    @Column(name = "company_description")
     private String companyDescription ;
 
-    @Column(name = "CompanyPhone")
+    @Column(name = "company_phone")
     private Double CompanyPhone ;
 
-    @Column(name = "CompanyFax")
+    @Column(name = "company_fax")
     private Long CompanyFax ;
 
-    @Column(name = "CompanyEmail")
+    @Column(name = "company_email")
     private String CompanyEmail ;
 
-    @Column(name = "CompanyTax")
+    @Column(name = "company_tax")
     private Integer CompanyTax ;
 
     @Column(name = "address")
     private String address ;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "companies")
     private Set<Jobs> jobs ;
+
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "company")
+    private Set<ApplyToJob> applyToJobs ;
+
+
 
     public Company() {
 
@@ -54,9 +57,9 @@ public class Company {
                    String companyEmail,
                    Integer companyTax,
                    String address) {
-        this.companyID = companyID;
+        this.company_id = companyID;
         this.CompanyName = companyName;
-        this.city = city;
+//        this.city = city;
         this.companyDescription = companyDescription;
         this.CompanyPhone = companyPhone;
         this.CompanyFax = companyFax;
@@ -66,11 +69,11 @@ public class Company {
     }
 
     public Integer getCompanyID() {
-        return companyID;
+        return company_id;
     }
 
     public void setCompanyID(Integer companyID) {
-        this.companyID = companyID;
+        this.company_id = companyID;
     }
 
     public String getCompanyName() {
@@ -81,13 +84,13 @@ public class Company {
         CompanyName = companyName;
     }
 
-    public Set<City> getCity() {
-        return city;
-    }
+//    public Set<City> getCity() {
+//        return city;
+//    }
 
-    public void setCity(Set<City> city) {
-        this.city = city;
-    }
+//    public void setCity(Set<City> city) {
+//        this.city = city;
+//    }
 
     public String getCompanyDescription() {
         return companyDescription;
@@ -140,9 +143,9 @@ public class Company {
     @Override
     public String toString() {
         return "Company{" +
-                "companyID=" + companyID +
+                "companyID=" + company_id +
                 ", CompanyName='" + CompanyName + '\'' +
-                ", city=" + city +
+//                ", city=" + city +
                 ", companyDescription='" + companyDescription + '\'' +
                 ", CompanyPhone=" + CompanyPhone +
                 ", CompanyFax=" + CompanyFax +

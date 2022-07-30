@@ -2,46 +2,50 @@ package com.example.BIWorld.models;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
-@Entity
-@Table
+@Entity(name = "jobs")
+@Table(name = "jobs")
 public class Jobs {
 
     @Id
     @GeneratedValue
-    private Integer jobId;
+    private Integer job_id;
 
-    @ManyToOne
-    @JoinColumn(name="companyID")
-    private City companyID ;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="company_id")
+    private City companies ;
 
-    @Column(name = "jobDescription")
+    @Column(name = "job_description")
     private String jobDescription ;
 
-    @Column(name = "jobField")
+    @Column(name = "job_field")
     private String jobField ;
 
-    @Column(name = "jobStartDate")
+    @Column(name = "job_start_date")
     private LocalDate jobStartDate ;
 
-    @Column(name = "jobEndDate")
+    @Column(name = "job_end_date")
     private LocalDate jobEndDate ;
 
-    @Column(name = "jobIsFinished")
+    @Column(name = "job_is_finished")
     private Boolean jobIsFinished ;
 
-    @Column(name = "degreeRequierd")
+    @Column(name = "degree_requierd")
     private String degreeRequierd ;
 
-    @Column(name = "genderToJob")
+    @Column(name = "gender_to_job")
     private String genderToJob ;
 
-    @Column(name = "jobTime")
+    @Column(name = "job_time")
     private String jobTime ;
+
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "jobs_To_application")
+    private Set<ApplyToJob> applyToJobs ;
 
     public Jobs(){}
 
-    public Jobs(Integer jobId,
+    public Jobs(Integer job_id,
                 City companyID,
                 String jobDescription,
                 String jobField,
@@ -51,8 +55,8 @@ public class Jobs {
                 String degreeRequierd,
                 String genderToJob,
                 String jobTime) {
-        this.jobId = jobId;
-        this.companyID = companyID;
+        this.job_id = job_id;
+        this.companies = companyID;
         this.jobDescription = jobDescription;
         this.jobField = jobField;
         this.jobStartDate = jobStartDate;
@@ -64,19 +68,19 @@ public class Jobs {
     }
 
     public Integer getJobId() {
-        return jobId;
+        return job_id;
     }
 
     public void setJobId(Integer jobId) {
-        this.jobId = jobId;
+        this.job_id = jobId;
     }
 
     public City getCompanyID() {
-        return companyID;
+        return companies;
     }
 
     public void setCompanyID(City companyID) {
-        this.companyID = companyID;
+        this.companies = companyID;
     }
 
     public String getJobDescription() {
@@ -146,8 +150,8 @@ public class Jobs {
     @Override
     public String toString() {
         return "Jobs{" +
-                "jobId=" + jobId +
-                ", companyID=" + companyID +
+                "jobId=" + job_id +
+                ", companyID=" + companies +
                 ", jobDescription='" + jobDescription + '\'' +
                 ", jobField='" + jobField + '\'' +
                 ", jobStartDate=" + jobStartDate +
