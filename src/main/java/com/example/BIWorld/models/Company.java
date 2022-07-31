@@ -2,6 +2,7 @@ package com.example.BIWorld.models;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -30,6 +31,20 @@ public class Company {
             columnDefinition = "TEXT"
     )
     private String CompanyName ;
+
+    @Column(
+            name = "company_user_name",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
+    private String companyUserName ;
+
+    @Column(
+            name = "company_password",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
+    private String companyPassword ;
 
     @ManyToMany(cascade = CascadeType.ALL,mappedBy = "companies")
     private Set<City> cities ;
@@ -85,28 +100,32 @@ public class Company {
 
     }
 
-    public Company(
-                   String companyName,
-                   Set<City> city,
+    public Company(String companyName,
+                   String companyUserName,
+                   String companyPassword,
+                   Set<City> cities,
                    String companyDescription,
                    Double companyPhone,
                    Long companyFax,
                    String companyEmail,
                    Integer companyTax,
                    String address) {
-        this.CompanyName = companyName;
-//        this.city = city;
+        CompanyName = companyName;
+        this.companyUserName = companyUserName;
+        this.companyPassword = companyPassword;
+        this.cities = cities;
         this.companyDescription = companyDescription;
-        this.CompanyPhone = companyPhone;
-        this.CompanyFax = companyFax;
-        this.CompanyEmail = companyEmail;
-        this.CompanyTax = companyTax;
+        CompanyPhone = companyPhone;
+        CompanyFax = companyFax;
+        CompanyEmail = companyEmail;
+        CompanyTax = companyTax;
         this.address = address;
     }
 
-    public Integer getCompanyID() {
+    public Integer getCompany_id() {
         return company_id;
     }
+
 
     public String getCompanyName() {
         return CompanyName;
@@ -116,13 +135,29 @@ public class Company {
         CompanyName = companyName;
     }
 
-//    public Set<City> getCity() {
-//        return city;
-//    }
+    public String getCompanyUserName() {
+        return companyUserName;
+    }
 
-//    public void setCity(Set<City> city) {
-//        this.city = city;
-//    }
+    public void setCompanyUserName(String companyUserName) {
+        this.companyUserName = companyUserName;
+    }
+
+    public String getCompanyPassword() {
+        return companyPassword;
+    }
+
+    public void setCompanyPassword(String companyPassword) {
+        this.companyPassword = companyPassword;
+    }
+
+    public Set<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(Set<City> cities) {
+        this.cities = cities;
+    }
 
     public String getCompanyDescription() {
         return companyDescription;
@@ -173,11 +208,37 @@ public class Company {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Company company = (Company) o;
+        return Objects.equals(company_id, company.company_id) &&
+                Objects.equals(CompanyName, company.CompanyName) &&
+                Objects.equals(companyUserName, company.companyUserName) &&
+                Objects.equals(companyPassword, company.companyPassword) &&
+                Objects.equals(cities, company.cities) &&
+                Objects.equals(companyDescription, company.companyDescription) &&
+                Objects.equals(CompanyPhone, company.CompanyPhone) &&
+                Objects.equals(CompanyFax, company.CompanyFax) &&
+                Objects.equals(CompanyEmail, company.CompanyEmail) &&
+                Objects.equals(CompanyTax, company.CompanyTax) &&
+                Objects.equals(address, company.address) &&
+                Objects.equals(jobs, company.jobs) &&
+                Objects.equals(applyToJobs, company.applyToJobs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(company_id, CompanyName, companyUserName, companyPassword, cities, companyDescription, CompanyPhone, CompanyFax, CompanyEmail, CompanyTax, address, jobs, applyToJobs);
+    }
+
+    @Override
     public String toString() {
         return "Company{" +
-                "companyID=" + company_id +
+                "company_id=" + company_id +
                 ", CompanyName='" + CompanyName + '\'' +
-//                ", city=" + city +
+                ", companyUserName='" + companyUserName + '\'' +
+                ", cities=" + cities +
                 ", companyDescription='" + companyDescription + '\'' +
                 ", CompanyPhone=" + CompanyPhone +
                 ", CompanyFax=" + CompanyFax +

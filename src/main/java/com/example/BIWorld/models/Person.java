@@ -2,6 +2,7 @@ package com.example.BIWorld.models;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "persons")
@@ -167,13 +168,13 @@ public class Person {
         UserName = userName;
     }
 
-//    public City getCity() {
-//        return city;
-//    }
+    public City getCity() {
+        return cities;
+    }
 
-//    public void setCity(City city) {
-//        this.city = city;
-//    }
+    public void setCity(City city) {
+        this.cities = city;
+    }
 
     public String getPersonEmail() {
         return PersonEmail;
@@ -256,14 +257,40 @@ public class Person {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(person_id, person.person_id) &&
+                Objects.equals(FullName, person.FullName) &&
+                Objects.equals(UserName, person.UserName) &&
+                Objects.equals(cities, person.cities) &&
+                Objects.equals(PersonEmail, person.PersonEmail) &&
+                Objects.equals(password, person.password) &&
+                Objects.equals(personPhone, person.personPhone) &&
+                Objects.equals(personField, person.personField) &&
+                Objects.equals(dateOfBirth, person.dateOfBirth) &&
+                Objects.equals(gender, person.gender) &&
+                Objects.equals(studyDegree, person.studyDegree) &&
+                Objects.equals(description, person.description) &&
+                Objects.equals(picPath, person.picPath) &&
+                Objects.equals(haveCV, person.haveCV) &&
+                Objects.equals(applyToJobs, person.applyToJobs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(person_id, FullName, UserName, cities, PersonEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, haveCV, applyToJobs);
+    }
+
+    @Override
     public String toString() {
         return "Person{" +
                 "personID=" + person_id +
                 ", FullName='" + FullName + '\'' +
                 ", UserName='" + UserName + '\'' +
-//                ", city=" + city +
+                ", cities=" + cities +
                 ", PersonEmail='" + PersonEmail + '\'' +
-                ", password='" + password + '\'' +
                 ", personPhone=" + personPhone +
                 ", personField='" + personField + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
