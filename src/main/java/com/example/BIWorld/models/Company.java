@@ -9,31 +9,68 @@ import java.util.Set;
 public class Company {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            name = "company_sequence",
+            sequenceName = "company_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "company_sequence"
+    )
+    @Column(
+            name = "company_id",
+            updatable = false
+    )
     private Integer company_id ;
 
-    @Column(name = "company_name")
+    @Column(
+            name = "company_name",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String CompanyName ;
 
     @ManyToMany(cascade = CascadeType.ALL,mappedBy = "companies")
     private Set<City> cities ;
 
-    @Column(name = "company_description")
+    @Column(
+            name = "company_description",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String companyDescription ;
 
-    @Column(name = "company_phone")
+    @Column(
+            name = "company_phone",
+            nullable = false
+    )
     private Double CompanyPhone ;
 
-    @Column(name = "company_fax")
+    @Column(
+            name = "company_fax",
+            nullable = false
+    )
     private Long CompanyFax ;
 
-    @Column(name = "company_email")
+    @Column(
+            name = "company_email",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String CompanyEmail ;
 
-    @Column(name = "company_tax")
+    @Column(
+            name = "company_tax",
+            nullable = false
+    )
     private Integer CompanyTax ;
 
-    @Column(name = "address")
+    @Column(
+            name = "address",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String address ;
 
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "companies")
@@ -48,7 +85,7 @@ public class Company {
 
     }
 
-    public Company(Integer companyID,
+    public Company(
                    String companyName,
                    Set<City> city,
                    String companyDescription,
@@ -57,7 +94,6 @@ public class Company {
                    String companyEmail,
                    Integer companyTax,
                    String address) {
-        this.company_id = companyID;
         this.CompanyName = companyName;
 //        this.city = city;
         this.companyDescription = companyDescription;
@@ -70,10 +106,6 @@ public class Company {
 
     public Integer getCompanyID() {
         return company_id;
-    }
-
-    public void setCompanyID(Integer companyID) {
-        this.company_id = companyID;
     }
 
     public String getCompanyName() {

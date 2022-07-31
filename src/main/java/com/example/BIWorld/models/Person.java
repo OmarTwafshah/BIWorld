@@ -8,47 +8,104 @@ import java.util.Set;
 @Table(name = "persons")
 public class Person {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            name = "persons_sequence",
+            sequenceName = "persons_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "persons_sequence"
+    )
+    @Column(
+            name = "person_id",
+            updatable = false
+    )
     private Integer person_id;
 
-    @Column(name = "full_name")
+    @Column(
+            name = "full_name",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String FullName ;
 
-    @Column(name = "user_name")
+    @Column(
+            name = "user_name",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String UserName ;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="city_id")
     private City cities ;
 
-    @Column(name = "person_email")
+    @Column(
+            name = "person_email",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String PersonEmail ;
 
-    @Column(name = "password")
+    @Column(
+            name = "password",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String password ;
 
-    @Column(name = "person_phone")
+    @Column(
+            name = "person_phone",
+            nullable = false
+    )
     private Double personPhone ;
 
-    @Column(name = "person_field")
+    @Column(
+            name = "person_field",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String personField ;
 
-    @Column(name = "date_of_birth")
+    @Column(
+            name = "date_of_birth",
+            nullable = false
+    )
     private LocalDate dateOfBirth ;
 
-    @Column(name = "gender")
+    @Column(
+            name = "gender",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String gender ;
 
-    @Column(name = "study_degree")
+    @Column(
+            name = "study_degree",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String studyDegree ;
 
-    @Column(name = "description")
+    @Column(
+            name = "description",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String description ;
 
-    @Column(name = "pic_path")
+    @Column(
+            name = "pic_path",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String picPath ;
 
-    @Column(name = "have_cv")
+    @Column(
+            name = "have_cv",
+            nullable = false
+    )
     private Boolean haveCV ;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -61,7 +118,7 @@ public class Person {
 
     public Person(){}
 
-    public Person(Integer personID,
+    public Person(
                   String fullName,
                   String userName,
                   City city,
@@ -75,7 +132,6 @@ public class Person {
                   String description,
                   String picPath,
                   boolean haveCV) {
-        this.person_id = personID;
         FullName = fullName;
         UserName = userName;
 //        this.city = city;
@@ -93,10 +149,6 @@ public class Person {
 
     public Integer getPersonID() {
         return person_id;
-    }
-
-    public void setPersonID(Integer personID) {
-        this.person_id = personID;
     }
 
     public String getFullName() {

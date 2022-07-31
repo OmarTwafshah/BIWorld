@@ -9,43 +9,85 @@ import java.util.Set;
 public class Jobs {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            name = "jobs_sequence",
+            sequenceName = "jobs_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "jobs_sequence"
+    )
+    @Column(
+            name = "job_id",
+            updatable = false
+    )
     private Integer job_id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="company_id")
     private City companies ;
 
-    @Column(name = "job_description")
+    @Column(
+            name = "job_description",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String jobDescription ;
 
-    @Column(name = "job_field")
+    @Column(
+            name = "job_field",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String jobField ;
 
-    @Column(name = "job_start_date")
+    @Column(
+            name = "job_start_date",
+            nullable = false
+
+    )
     private LocalDate jobStartDate ;
 
-    @Column(name = "job_end_date")
+    @Column(
+            name = "job_end_date",
+            nullable = false
+    )
     private LocalDate jobEndDate ;
 
-    @Column(name = "job_is_finished")
+    @Column(
+            name = "job_is_finished",
+            nullable = false
+    )
     private Boolean jobIsFinished ;
 
-    @Column(name = "degree_requierd")
+    @Column(
+            name = "degree_requierd",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String degreeRequierd ;
 
-    @Column(name = "gender_to_job")
+    @Column(
+            name = "gender_to_job",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String genderToJob ;
 
-    @Column(name = "job_time")
+    @Column(
+            name = "job_time",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String jobTime ;
 
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "jobs_To_application")
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "jobsToApplication")
     private Set<ApplyToJob> applyToJobs ;
 
     public Jobs(){}
 
-    public Jobs(Integer job_id,
+    public Jobs(
                 City companyID,
                 String jobDescription,
                 String jobField,
@@ -55,7 +97,6 @@ public class Jobs {
                 String degreeRequierd,
                 String genderToJob,
                 String jobTime) {
-        this.job_id = job_id;
         this.companies = companyID;
         this.jobDescription = jobDescription;
         this.jobField = jobField;
@@ -69,10 +110,6 @@ public class Jobs {
 
     public Integer getJobId() {
         return job_id;
-    }
-
-    public void setJobId(Integer jobId) {
-        this.job_id = jobId;
     }
 
     public City getCompanyID() {

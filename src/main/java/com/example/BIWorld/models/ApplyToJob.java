@@ -8,7 +8,19 @@ import java.util.Set;
 @Table(name = "apply_to_job")
 public class ApplyToJob {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            name = "apply_to_job_sequence",
+            sequenceName = "apply_to_job_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "apply_to_job_sequence"
+    )
+    @Column(
+            name = "application_id",
+            updatable = false
+    )
     private Integer application_id;
 
     @ManyToMany(cascade = CascadeType.ALL,mappedBy = "applyToJobs")
@@ -20,12 +32,19 @@ public class ApplyToJob {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="job_id")
-    private Jobs jobs_To_application ;
+    private Jobs jobsToApplication ;
 
-    @Column(name="date_of_application")
-    private LocalDate date_of_application;
+    @Column(
+            name="date_of_application",
+            nullable = false
+    )
+    private LocalDate dateOfApplication;
 
-    @Column(name="status")
+    @Column(
+            name="status",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String status;
 
     @OneToOne(mappedBy = "applyToJob")
@@ -35,26 +54,21 @@ public class ApplyToJob {
 
     }
 
-    public ApplyToJob(Integer application_id,
+    public ApplyToJob(
                       Set<Person> persons,
                       Company company,
                       Jobs jobs_To_application,
                       LocalDate date_of_application,
                       String status) {
-        this.application_id = application_id;
         this.persons = persons;
         this.company = company;
-        this.jobs_To_application = jobs_To_application;
-        this.date_of_application = date_of_application;
+        this.jobsToApplication = jobs_To_application;
+        this.dateOfApplication = date_of_application;
         this.status = status;
     }
 
     public Integer getApplication_id() {
         return application_id;
-    }
-
-    public void setApplication_id(Integer application_id) {
-        this.application_id = application_id;
     }
 
     public Set<Person> getPersons() {
@@ -74,19 +88,19 @@ public class ApplyToJob {
     }
 
     public Jobs getJobs_To_application() {
-        return jobs_To_application;
+        return jobsToApplication;
     }
 
     public void setJobs_To_application(Jobs jobs_To_application) {
-        this.jobs_To_application = jobs_To_application;
+        this.jobsToApplication = jobs_To_application;
     }
 
     public LocalDate getDate_of_application() {
-        return date_of_application;
+        return dateOfApplication;
     }
 
     public void setDate_of_application(LocalDate date_of_application) {
-        this.date_of_application = date_of_application;
+        this.dateOfApplication = date_of_application;
     }
 
     public String getStatus() {
@@ -103,8 +117,8 @@ public class ApplyToJob {
                 "application_id=" + application_id +
                 ", persons=" + persons +
                 ", company=" + company +
-                ", jobs_To_application=" + jobs_To_application +
-                ", date_of_application=" + date_of_application +
+                ", jobs_To_application=" + jobsToApplication +
+                ", date_of_application=" + dateOfApplication +
                 ", status='" + status + '\'' +
                 '}';
     }

@@ -10,9 +10,25 @@ import java.util.Set;
 @Table(name = "cities")
 public class City {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            name = "city_sequence",
+            sequenceName = "city_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "city_sequence"
+    )
+    @Column(
+            name = "city_id",
+            updatable = false
+    )
     private Integer city_id;
-    @Column(name = "city_name")
+    @Column(
+            name = "city_name",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String cityName;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -28,17 +44,12 @@ public class City {
 
     public City(){}
 
-    public City(Integer cityId, String cityName) {
-        this.city_id = cityId;
+    public City(String cityName) {
         this.cityName = cityName;
     }
 
     public Integer getCityId() {
         return city_id;
-    }
-
-    public void setCityId(Integer cityId) {
-        this.city_id = cityId;
     }
 
     public String getCityName() {
