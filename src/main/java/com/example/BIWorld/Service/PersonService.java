@@ -67,7 +67,11 @@ public class PersonService {
     }
 
     public Person authenticatePerson(String userName , String password ){
-        return personRepository.findByUserNameAndPassword(userName,password).orElse(null);
+        if(personRepository.findByUserName(userName)){
+            return personRepository.findByUserNameAndPassword(userName,password).orElse(null);
+        }else {
+            return null;
+        }
     }
 
     public List<Person> getPerson(){

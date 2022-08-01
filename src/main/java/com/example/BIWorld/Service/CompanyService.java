@@ -56,7 +56,11 @@ public class CompanyService {
     }
 
     public Company authenticateCompany(String userName , String password ){
-        return companyRepository.findByCompanyUserNameAndCompanyPassword(userName,password).orElse(null);
+        if(companyRepository.findByCompanyUserName(userName)){
+            return companyRepository.findByCompanyUserNameAndCompanyPassword(userName,password).orElse(null);
+        }else {
+            return null;
+        }
     }
 
     public List<Company> getCompany(){
