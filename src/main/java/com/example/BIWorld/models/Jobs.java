@@ -22,7 +22,7 @@ public class Jobs {
             name = "job_id",
             updatable = false
     )
-    private Integer job_id;
+    private Integer jobId;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="company_id")
@@ -109,7 +109,7 @@ public class Jobs {
     }
 
     public Integer getJobId() {
-        return job_id;
+        return jobId;
     }
 
     public Company getCompanyID() {
@@ -187,7 +187,7 @@ public class Jobs {
     @Override
     public String toString() {
         return "Jobs{" +
-                "jobId=" + job_id +
+                "jobId=" + jobId +
                 ", companyID=" + companies +
                 ", jobDescription='" + jobDescription + '\'' +
                 ", jobField='" + jobField + '\'' +

@@ -134,7 +134,7 @@ public class Person {
                   String picPath,
                   boolean haveCV) {
         FullName = fullName;
-        userName = user_name;
+        this.userName = userName;
 //        this.city = city;
         PersonEmail = personEmail;
         this.password = password;
