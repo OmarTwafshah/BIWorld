@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class PersonService {
@@ -67,6 +68,10 @@ public class PersonService {
 
     public Person authenticatePerson(String userName , String password ){
         return personRepository.findByUserNameAndPassword(userName,password).orElse(null);
+    }
+
+    public List<Person> getPerson(){
+        return personRepository.findAll();
     }
 
 }

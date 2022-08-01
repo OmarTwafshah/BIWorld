@@ -238,7 +238,6 @@ public class Company {
                 "company_id=" + company_id +
                 ", CompanyName='" + CompanyName + '\'' +
                 ", companyUserName='" + companyUserName + '\'' +
-                ", cities=" + cities +
                 ", companyDescription='" + companyDescription + '\'' +
                 ", CompanyPhone=" + CompanyPhone +
                 ", CompanyFax=" + CompanyFax +

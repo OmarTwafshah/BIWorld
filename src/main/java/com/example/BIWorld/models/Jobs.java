@@ -26,7 +26,7 @@ public class Jobs {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="company_id")
-    private City companies ;
+    private Company companies ;
 
     @Column(
             name = "job_description",
@@ -88,7 +88,7 @@ public class Jobs {
     public Jobs(){}
 
     public Jobs(
-                City companyID,
+                Company companyID,
                 String jobDescription,
                 String jobField,
                 LocalDate jobStartDate,
@@ -112,11 +112,11 @@ public class Jobs {
         return job_id;
     }
 
-    public City getCompanyID() {
+    public Company getCompanyID() {
         return companies;
     }
 
-    public void setCompanyID(City companyID) {
+    public void setCompanyID(Company companyID) {
         this.companies = companyID;
     }
 

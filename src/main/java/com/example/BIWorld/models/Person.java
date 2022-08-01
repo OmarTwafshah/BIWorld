@@ -36,7 +36,7 @@ public class Person {
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String UserName ;
+    private String userName ;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="city_id")
@@ -121,7 +121,7 @@ public class Person {
 
     public Person(
                   String fullName,
-                  String userName,
+                  String user_name,
                   City city,
                   String personEmail,
                   String password,
@@ -134,7 +134,7 @@ public class Person {
                   String picPath,
                   boolean haveCV) {
         FullName = fullName;
-        UserName = userName;
+        userName = user_name;
 //        this.city = city;
         PersonEmail = personEmail;
         this.password = password;
@@ -161,11 +161,11 @@ public class Person {
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
-    public void setUserName(String userName) {
-        UserName = userName;
+    public void setUserName(String UserName) {
+        userName = UserName;
     }
 
     public City getCity() {
@@ -263,7 +263,7 @@ public class Person {
         Person person = (Person) o;
         return Objects.equals(person_id, person.person_id) &&
                 Objects.equals(FullName, person.FullName) &&
-                Objects.equals(UserName, person.UserName) &&
+                Objects.equals(userName, person.userName) &&
                 Objects.equals(cities, person.cities) &&
                 Objects.equals(PersonEmail, person.PersonEmail) &&
                 Objects.equals(password, person.password) &&
@@ -280,7 +280,7 @@ public class Person {
 
     @Override
     public int hashCode() {
-        return Objects.hash(person_id, FullName, UserName, cities, PersonEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, haveCV, applyToJobs);
+        return Objects.hash(person_id, FullName, userName, cities, PersonEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, haveCV, applyToJobs);
     }
 
     @Override
@@ -288,7 +288,7 @@ public class Person {
         return "Person{" +
                 "personID=" + person_id +
                 ", FullName='" + FullName + '\'' +
-                ", UserName='" + UserName + '\'' +
+                ", UserName='" + userName + '\'' +
                 ", cities=" + cities +
                 ", PersonEmail='" + PersonEmail + '\'' +
                 ", personPhone=" + personPhone +

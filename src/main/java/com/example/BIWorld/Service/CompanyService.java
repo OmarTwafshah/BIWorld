@@ -6,6 +6,7 @@ import com.example.BIWorld.models.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -18,7 +19,7 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    public Company registerPerson(String companyName,
+    public Company registerCompany(String companyName,
                                   String companyUserName,
                                   String companyPassword,
                                   Set<City> cities,
@@ -31,7 +32,6 @@ public class CompanyService {
         if (companyName == null
                 || companyUserName == null
                 || companyPassword == null
-                || cities == null
                 || companyDescription == null
                 || companyPhone == null
                 || companyFax == null
@@ -57,5 +57,9 @@ public class CompanyService {
 
     public Company authenticateCompany(String userName , String password ){
         return companyRepository.findByCompanyUserNameAndCompanyPassword(userName,password).orElse(null);
+    }
+
+    public List<Company> getCompany(){
+        return companyRepository.findAll();
     }
 }
