@@ -29,7 +29,7 @@ public class Person {
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String FullName ;
+    private String fullName ;
 
     @Column(
             name = "user_name",
@@ -47,7 +47,7 @@ public class Person {
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String PersonEmail ;
+    private String personEmail ;
 
     @Column(
             name = "password",
@@ -133,10 +133,10 @@ public class Person {
                   String description,
                   String picPath,
                   boolean haveCV) {
-        FullName = fullName;
+        this.fullName = fullName;
         this.userName = userName;
 //        this.city = city;
-        PersonEmail = personEmail;
+        this.personEmail = personEmail;
         this.password = password;
         this.personPhone = personPhone;
         this.personField = personField;
@@ -153,11 +153,11 @@ public class Person {
     }
 
     public String getFullName() {
-        return FullName;
+        return fullName;
     }
 
     public void setFullName(String fullName) {
-        FullName = fullName;
+        this.fullName = fullName;
     }
 
     public String getUserName() {
@@ -177,11 +177,11 @@ public class Person {
     }
 
     public String getPersonEmail() {
-        return PersonEmail;
+        return personEmail;
     }
 
     public void setPersonEmail(String personEmail) {
-        PersonEmail = personEmail;
+        this.personEmail = personEmail;
     }
 
     public String getPassword() {
@@ -262,10 +262,10 @@ public class Person {
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
         return Objects.equals(person_id, person.person_id) &&
-                Objects.equals(FullName, person.FullName) &&
+                Objects.equals(fullName, person.fullName) &&
                 Objects.equals(userName, person.userName) &&
                 Objects.equals(cities, person.cities) &&
-                Objects.equals(PersonEmail, person.PersonEmail) &&
+                Objects.equals(personEmail, person.personEmail) &&
                 Objects.equals(password, person.password) &&
                 Objects.equals(personPhone, person.personPhone) &&
                 Objects.equals(personField, person.personField) &&
@@ -280,17 +280,17 @@ public class Person {
 
     @Override
     public int hashCode() {
-        return Objects.hash(person_id, FullName, userName, cities, PersonEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, haveCV, applyToJobs);
+        return Objects.hash(person_id, fullName, userName, cities, personEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, haveCV, applyToJobs);
     }
 
     @Override
     public String toString() {
         return "Person{" +
                 "personID=" + person_id +
-                ", FullName='" + FullName + '\'' +
+                ", FullName='" + fullName + '\'' +
                 ", UserName='" + userName + '\'' +
                 ", cities=" + cities +
-                ", PersonEmail='" + PersonEmail + '\'' +
+                ", PersonEmail='" + personEmail + '\'' +
                 ", personPhone=" + personPhone +
                 ", personField='" + personField + '\'' +
                 ", dateOfBirth=" + dateOfBirth +

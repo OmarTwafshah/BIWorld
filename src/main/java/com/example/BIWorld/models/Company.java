@@ -30,7 +30,7 @@ public class Company {
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String CompanyName ;
+    private String companyName ;
 
     @Column(
             name = "company_user_name",
@@ -60,26 +60,26 @@ public class Company {
             name = "company_phone",
             nullable = false
     )
-    private Double CompanyPhone ;
+    private Double companyPhone ;
 
     @Column(
             name = "company_fax",
             nullable = false
     )
-    private Long CompanyFax ;
+    private Long companyFax ;
 
     @Column(
             name = "company_email",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String CompanyEmail ;
+    private String companyEmail ;
 
     @Column(
             name = "company_tax",
             nullable = false
     )
-    private Integer CompanyTax ;
+    private Integer companyTax ;
 
     @Column(
             name = "address",
@@ -105,20 +105,20 @@ public class Company {
                    String companyPassword,
                    Set<City> cities,
                    String companyDescription,
-                   Double companyPhone,
+                   Double CompanyPhone,
                    Long companyFax,
                    String companyEmail,
                    Integer companyTax,
                    String address) {
-        CompanyName = companyName;
+        this.companyName = companyName;
         this.companyUserName = companyUserName;
         this.companyPassword = companyPassword;
         this.cities = cities;
         this.companyDescription = companyDescription;
-        CompanyPhone = companyPhone;
-        CompanyFax = companyFax;
-        CompanyEmail = companyEmail;
-        CompanyTax = companyTax;
+        this.companyPhone = CompanyPhone;
+        this.companyFax = companyFax;
+        this.companyEmail = companyEmail;
+        this.companyTax = companyTax;
         this.address = address;
     }
 
@@ -128,11 +128,11 @@ public class Company {
 
 
     public String getCompanyName() {
-        return CompanyName;
+        return companyName;
     }
 
     public void setCompanyName(String companyName) {
-        CompanyName = companyName;
+        this.companyName = companyName;
     }
 
     public String getCompanyUserName() {
@@ -168,35 +168,35 @@ public class Company {
     }
 
     public Double getCompanyPhone() {
-        return CompanyPhone;
+        return companyPhone;
     }
 
     public void setCompanyPhone(Double companyPhone) {
-        CompanyPhone = companyPhone;
+        this.companyPhone = companyPhone;
     }
 
     public Long getCompanyFax() {
-        return CompanyFax;
+        return companyFax;
     }
 
     public void setCompanyFax(Long companyFax) {
-        CompanyFax = companyFax;
+        this.companyFax = companyFax;
     }
 
     public String getCompanyEmail() {
-        return CompanyEmail;
+        return companyEmail;
     }
 
     public void setCompanyEmail(String companyEmail) {
-        CompanyEmail = companyEmail;
+        this.companyEmail = companyEmail;
     }
 
     public Integer getCompanyTax() {
-        return CompanyTax;
+        return companyTax;
     }
 
     public void setCompanyTax(Integer companyTax) {
-        CompanyTax = companyTax;
+        this.companyTax = companyTax;
     }
 
     public String getAddress() {
@@ -213,15 +213,15 @@ public class Company {
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
         return Objects.equals(company_id, company.company_id) &&
-                Objects.equals(CompanyName, company.CompanyName) &&
+                Objects.equals(companyName, company.companyName) &&
                 Objects.equals(companyUserName, company.companyUserName) &&
                 Objects.equals(companyPassword, company.companyPassword) &&
                 Objects.equals(cities, company.cities) &&
                 Objects.equals(companyDescription, company.companyDescription) &&
-                Objects.equals(CompanyPhone, company.CompanyPhone) &&
-                Objects.equals(CompanyFax, company.CompanyFax) &&
-                Objects.equals(CompanyEmail, company.CompanyEmail) &&
-                Objects.equals(CompanyTax, company.CompanyTax) &&
+                Objects.equals(companyPhone, company.companyPhone) &&
+                Objects.equals(companyFax, company.companyFax) &&
+                Objects.equals(companyEmail, company.companyEmail) &&
+                Objects.equals(companyTax, company.companyTax) &&
                 Objects.equals(address, company.address) &&
                 Objects.equals(jobs, company.jobs) &&
                 Objects.equals(applyToJobs, company.applyToJobs);
@@ -229,20 +229,20 @@ public class Company {
 
     @Override
     public int hashCode() {
-        return Objects.hash(company_id, CompanyName, companyUserName, companyPassword, cities, companyDescription, CompanyPhone, CompanyFax, CompanyEmail, CompanyTax, address, jobs, applyToJobs);
+        return Objects.hash(company_id, companyName, companyUserName, companyPassword, cities, companyDescription, companyPhone, companyFax, companyEmail, companyTax, address, jobs, applyToJobs);
     }
 
     @Override
     public String toString() {
         return "Company{" +
                 "company_id=" + company_id +
-                ", CompanyName='" + CompanyName + '\'' +
+                ", CompanyName='" + companyName + '\'' +
                 ", companyUserName='" + companyUserName + '\'' +
                 ", companyDescription='" + companyDescription + '\'' +
-                ", CompanyPhone=" + CompanyPhone +
-                ", CompanyFax=" + CompanyFax +
-                ", CompanyEmail='" + CompanyEmail + '\'' +
-                ", CompanyTax=" + CompanyTax +
+                ", CompanyPhone=" + companyPhone +
+                ", CompanyFax=" + companyFax +
+                ", CompanyEmail='" + companyEmail + '\'' +
+                ", CompanyTax=" + companyTax +
                 ", address='" + address + '\'' +
                 '}';
     }

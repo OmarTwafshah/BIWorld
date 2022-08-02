@@ -40,23 +40,46 @@ public class CompanyService {
                 || address == null) {
                     return null ;
                 } else {
-                    Company company = new Company();
-                    company.setCompanyName(companyName);
-                    company.setCompanyUserName(companyUserName);
-                    company.setCompanyPassword(companyPassword);
-                    company.setCities(cities);
-                    company.setCompanyDescription(companyDescription);
-                    company.setCompanyPhone(companyPhone);
-                    company.setCompanyFax(companyFax);
-                    company.setCompanyEmail(companyEmail);
-                    company.setCompanyTax(companyTax);
-                    company.setAddress(address);
-                    return companyRepository.save(company);
+            System.out.println(companyUserName);
+            System.out.println(companyPhone);
+            System.out.println(companyFax);
+            System.out.println(companyEmail);
+            System.out.println(companyTax);
+            System.out.println("dfsfsdfsdf");
+            System.out.println(companyRepository.findByCompanyUserNameAndCompanyPhoneAndCompanyFaxAndCompanyEmailAndCompanyTax(
+                    companyUserName,
+                    companyPhone,
+                    companyFax,
+                    companyEmail,
+                    companyTax));
+                    if(companyRepository.findByCompanyUserNameAndCompanyPhoneAndCompanyFaxAndCompanyEmailAndCompanyTax(
+                            companyUserName,
+                            companyPhone,
+                            companyFax,
+                            companyEmail,
+                            companyTax).isEmpty()){
+                        Company company = new Company();
+                        company.setCompanyName(companyName);
+                        company.setCompanyUserName(companyUserName);
+                        company.setCompanyPassword(companyPassword);
+                        company.setCities(cities);
+                        company.setCompanyDescription(companyDescription);
+                        company.setCompanyPhone(companyPhone);
+                        company.setCompanyFax(companyFax);
+                        company.setCompanyEmail(companyEmail);
+                        company.setCompanyTax(companyTax);
+                        company.setAddress(address);
+                        return companyRepository.save(company);
+                    }else {
+                        System.out.println("IsUSed");
+                        return null ;
+                    }
+
                 }
     }
 
     public Company authenticateCompany(String userName , String password ){
-        if(companyRepository.findByCompanyUserName(userName)){
+        if(!companyRepository.findByCompanyUserName(userName).isEmpty()){
             return companyRepository.findByCompanyUserNameAndCompanyPassword(userName,password).orElse(null);
         }else {
             return null;

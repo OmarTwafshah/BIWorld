@@ -11,6 +11,12 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company,Integer> {
     Optional<Company> findByCompanyUserNameAndCompanyPassword(String userName , String Password);
 
-    boolean findByCompanyUserName(String userName);
+    Optional<Company> findByCompanyUserName(String userName);
+
+    Optional<Company> findByCompanyUserNameAndCompanyPhoneAndCompanyFaxAndCompanyEmailAndCompanyTax(String userName ,
+                                                                                                      Double companyPhone ,
+                                                                                                      Long companyFax ,
+                                                                                                      String companyEmail ,
+                                                                                                      Integer companyTax);
 
 }
