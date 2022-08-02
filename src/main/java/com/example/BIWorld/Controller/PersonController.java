@@ -4,6 +4,7 @@ import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,20 +28,25 @@ public class PersonController {
 
     @PostMapping("/registerPerson")
     public String register(@ModelAttribute Person person){
+        System.out.println("OMARRRRRRRRR");
         System.out.println("register Requiest" +person);
-        Person rePerson = personService.registerPerson(person.getFullName(),
+        String date;
+        date = String.valueOf(person.getDateOfBirth());
+        Person rePerson = personService.registerPerson(
+                person.getPersonID(),
+                person.getFullName(),
                 person.getUserName(),
                 person.getCity(),
                 person.getPersonEmail(),
                 person.getPassword(),
                 person.getPersonPhone(),
                 person.getPersonField(),
-                person.getDateOfBirth(),
+                date,
                 person.getGender(),
                 person.getStudyDegree(),
                 person.getDescription(),
                 person.getPicPath(),
-                person.isHaveCV());
+                String.valueOf(person.isHaveCV()));
         if(rePerson != null){
             System.out.println("Doneeeeeeeeee");
         }

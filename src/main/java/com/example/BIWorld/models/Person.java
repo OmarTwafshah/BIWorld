@@ -1,5 +1,7 @@
 package com.example.BIWorld.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -73,6 +75,7 @@ public class Person {
             name = "date_of_birth",
             nullable = false
     )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth ;
 
     @Column(
@@ -146,6 +149,10 @@ public class Person {
         this.description = description;
         this.picPath = picPath;
         this.haveCV = haveCV;
+    }
+
+    public void setPerson_id(Integer person_id) {
+        this.person_id = person_id;
     }
 
     public Integer getPersonID() {
