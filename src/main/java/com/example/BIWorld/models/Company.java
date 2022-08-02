@@ -23,7 +23,7 @@ public class Company {
             name = "company_id",
             updatable = false
     )
-    private Integer company_id ;
+    private Integer companyID ;
 
     @Column(
             name = "company_name",
@@ -88,7 +88,7 @@ public class Company {
     )
     private String address ;
 
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "companies")
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "companyID")
     private Set<Jobs> jobs ;
 
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "company")
@@ -123,7 +123,7 @@ public class Company {
     }
 
     public Integer getCompany_id() {
-        return company_id;
+        return companyID;
     }
 
 
@@ -212,7 +212,7 @@ public class Company {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
-        return Objects.equals(company_id, company.company_id) &&
+        return Objects.equals(companyID, company.companyID) &&
                 Objects.equals(companyName, company.companyName) &&
                 Objects.equals(companyUserName, company.companyUserName) &&
                 Objects.equals(companyPassword, company.companyPassword) &&
@@ -229,13 +229,13 @@ public class Company {
 
     @Override
     public int hashCode() {
-        return Objects.hash(company_id, companyName, companyUserName, companyPassword, cities, companyDescription, companyPhone, companyFax, companyEmail, companyTax, address, jobs, applyToJobs);
+        return Objects.hash(companyID, companyName, companyUserName, companyPassword, cities, companyDescription, companyPhone, companyFax, companyEmail, companyTax, address, jobs, applyToJobs);
     }
 
     @Override
     public String toString() {
         return "Company{" +
-                "company_id=" + company_id +
+                "company_id=" + companyID +
                 ", CompanyName='" + companyName + '\'' +
                 ", companyUserName='" + companyUserName + '\'' +
                 ", companyDescription='" + companyDescription + '\'' +

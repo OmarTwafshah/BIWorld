@@ -1,5 +1,7 @@
 package com.example.BIWorld.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
@@ -26,7 +28,7 @@ public class Jobs {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="company_id")
-    private Company companies ;
+    private Company companyID ;
 
     @Column(
             name = "job_description",
@@ -47,12 +49,14 @@ public class Jobs {
             nullable = false
 
     )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate jobStartDate ;
 
     @Column(
             name = "job_end_date",
             nullable = false
     )
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate jobEndDate ;
 
     @Column(
@@ -97,7 +101,7 @@ public class Jobs {
                 String degreeRequierd,
                 String genderToJob,
                 String jobTime) {
-        this.companies = companyID;
+        this.companyID = companyID;
         this.jobDescription = jobDescription;
         this.jobField = jobField;
         this.jobStartDate = jobStartDate;
@@ -113,11 +117,11 @@ public class Jobs {
     }
 
     public Company getCompanyID() {
-        return companies;
+        return companyID;
     }
 
     public void setCompanyID(Company companyID) {
-        this.companies = companyID;
+        this.companyID = companyID;
     }
 
     public String getJobDescription() {
@@ -188,7 +192,7 @@ public class Jobs {
     public String toString() {
         return "Jobs{" +
                 "jobId=" + jobId +
-                ", companyID=" + companies +
+                ", companyID=" + companyID +
                 ", jobDescription='" + jobDescription + '\'' +
                 ", jobField='" + jobField + '\'' +
                 ", jobStartDate=" + jobStartDate +
