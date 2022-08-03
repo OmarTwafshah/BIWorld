@@ -28,7 +28,8 @@ public class CompanyController {
     @PostMapping("/registerCompany")
     public String register(@ModelAttribute Company company){
         System.out.println("register Requiest" +company);
-        Company reCompany = companyService.registerCompany(company.getCompanyName(),
+        Company reCompany = companyService.registerCompany(
+                company.getCompanyName(),
                 company.getCompanyUserName(),
                 company.getCompanyPassword(),
                 company.getCities(),

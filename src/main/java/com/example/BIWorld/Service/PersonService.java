@@ -1,13 +1,12 @@
 package com.example.BIWorld.Service;
 
+import com.example.BIWorld.Repository.CityRepository;
+import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.PersonRepository;
 import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,12 +15,19 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
+    private final CompanyRepository companyRepository;
+
+    private final CityRepository cityRepository;
+
+
     @Autowired
-    public PersonService(PersonRepository personRepository) {
+    public PersonService(PersonRepository personRepository, CompanyRepository companyRepository, CityRepository cityRepository) {
         this.personRepository = personRepository;
+        this.companyRepository = companyRepository;
+        this.cityRepository = cityRepository;
     }
 
-    public Person registerPerson(Integer personId,
+    public Person registerPerson(
                                  String fullName,
                                  String userName,
                                  City city,
@@ -48,11 +54,12 @@ public class PersonService {
             System.out.println("ERORRRRRRRRRRR OMAr");
                     return null ;
                 } else {
-            if(personRepository.findByUserNameAndPersonEmailAndPersonPhone(userName, personEmail, personPhone).isEmpty()){
+            if(personRepository.findByUserNameAndPersonEmailAndPersonPhone(userName, personEmail, personPhone).isEmpty()
+                    && companyRepository.findByCompanyUserNameAndCompanyEmail(userName,personEmail).isEmpty() ){
                 Person person = new Person();
-                person.setPerson_id(personId);
                 person.setFullName(fullName);
                 person.setUserName(userName);
+                //person.setCity(cityRepository.findBycity_id(city));
                 person.setCity(city);
                 person.setPersonEmail(personEmail);
                 person.setPassword(password);

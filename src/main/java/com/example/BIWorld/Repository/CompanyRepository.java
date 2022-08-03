@@ -20,4 +20,5 @@ public interface CompanyRepository extends JpaRepository<Company,Integer> {
                                                                                                       Integer companyTax);
     Optional<Company> findByCompanyUserNameAndCompanyEmail(String userName , String companyEmail);
 
+
 }

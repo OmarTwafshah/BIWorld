@@ -25,7 +25,10 @@ public class JobsController {
     }
     @PostMapping("/addjob")
     public void jobs(@ModelAttribute Jobs job){
-      jobsService.add(job.getCompanyID(),
+        System.out.println(job.getCompanyID().getCompanyUserName());
+      jobsService.add(
+
+              job.getCompanyID(),
               job.getJobDescription(),
               job.getJobField(),
               String.valueOf(job.getJobStartDate()),

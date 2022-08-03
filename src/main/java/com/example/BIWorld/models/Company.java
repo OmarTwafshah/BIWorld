@@ -1,6 +1,9 @@
 package com.example.BIWorld.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -46,7 +49,8 @@ public class Company {
     )
     private String companyPassword ;
 
-    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "companies")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY , mappedBy = "companies")
+    @JsonIgnoreProperties(value = "companies")
     private Set<City> cities ;
 
     @Column(
@@ -237,6 +241,7 @@ public class Company {
         return "Company{" +
                 "company_id=" + companyID +
                 ", CompanyName='" + companyName + '\'' +
+                ", City ='" + cities + '\'' +
                 ", companyUserName='" + companyUserName + '\'' +
                 ", companyDescription='" + companyDescription + '\'' +
                 ", CompanyPhone=" + companyPhone +

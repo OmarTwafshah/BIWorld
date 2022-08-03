@@ -1,7 +1,8 @@
 package com.example.BIWorld.models;
 
-import jdk.jfr.Relational;
-import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -31,12 +32,21 @@ public class City {
     )
     private String cityName;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    public Set<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(Set<Company> companies) {
+        this.companies = companies;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(
             name = "city_company",
-            joinColumns = { @JoinColumn(name = "city_id") },
+            joinColumns = { @JoinColumn(name = "city_id" , nullable = true) },
             inverseJoinColumns = { @JoinColumn(name = "company_id") }
     )
+    @JsonIgnoreProperties(value = "cities")
     private Set<Company> companies ;
 
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "cities")
@@ -48,8 +58,12 @@ public class City {
         this.cityName = cityName;
     }
 
-    public Integer getCityId() {
+    public Integer getCity_id() {
         return city_id;
+    }
+
+    public void setCity_id(Integer city_id) {
+        this.city_id = city_id;
     }
 
     public String getCityName() {

@@ -26,7 +26,7 @@ public class Jobs {
     )
     private Integer jobId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="company_id")
     private Company companyID ;
 
@@ -49,14 +49,14 @@ public class Jobs {
             nullable = false
 
     )
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate jobStartDate ;
 
     @Column(
             name = "job_end_date",
             nullable = false
     )
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate jobEndDate ;
 
     @Column(

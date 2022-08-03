@@ -33,9 +33,9 @@ public class PersonController {
         String date;
         date = String.valueOf(person.getDateOfBirth());
         Person rePerson = personService.registerPerson(
-                person.getPersonID(),
                 person.getFullName(),
                 person.getUserName(),
+               // Integer.parseInt(String.valueOf(person.getCity())),
                 person.getCity(),
                 person.getPersonEmail(),
                 person.getPassword(),

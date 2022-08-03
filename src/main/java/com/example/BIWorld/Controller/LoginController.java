@@ -14,10 +14,14 @@ public class LoginController {
     private final CompanyService companyService ;
     private final PersonService personService ;
 
-    public static int id_User = -1 ;
-    public static String user_Name = "null" ;
 
-    public static String type = "null" ;
+
+    public static Company companyAll ;
+
+    public static Person personAll;
+
+    public static String type = null ;
+
 
     @Autowired
     public LoginController(CompanyService companyService, PersonService personService) {
@@ -33,14 +37,12 @@ public class LoginController {
         Person person = personService.authenticatePerson(userName,Password);
         if(company!= null){
             System.out.println("Company");
-            id_User = company.getCompany_id();
-            user_Name = company.getCompanyUserName();
+            companyAll = company;
             type = "company";
             return "Company";
         }else if(person!=null){
             System.out.println("Person");
-            id_User = person.getPersonID();
-            user_Name = person.getUserName();
+            personAll = person ;
             type = "person";
             return "Person";
         }else {
