@@ -3,10 +3,7 @@ package com.example.BIWorld.Controller;
 import com.example.BIWorld.Service.JobsService;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,6 +35,29 @@ public class JobsController {
               job.getGenderToJob(),
               job.getJobTime());
 
+    }
+    @PutMapping("/updatejob")
+    public void UpdateJob(
+            @RequestParam(required = true) int JobId,
+            @RequestParam(required = false) Company companyID,
+            @RequestParam(required = false) String jobDescription,
+            @RequestParam(required = false) String jobField,
+            @RequestParam(required = false)  String jobStartDate,
+            @RequestParam(required = false) String jobEndDate,
+            @RequestParam(required = false) Boolean jobIsFinished,
+            @RequestParam(required = false) String degreeRequierd,
+            @RequestParam(required = false) String genderToJob,
+            @RequestParam(required = false) String jobTime
+    ){
+        jobsService.UpdateJob(JobId, companyID,
+                 jobDescription,
+                 jobField,
+                 jobStartDate,
+                 jobEndDate,
+                 jobIsFinished,
+                 degreeRequierd,
+                 genderToJob,
+                 jobTime);
     }
 
     @GetMapping("/searchByFiled")

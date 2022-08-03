@@ -5,6 +5,7 @@ import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -67,6 +68,32 @@ public class JobsService {
                 jobs.setJobTime(jobTime);
                 return jobsRepository.save(jobs);
             }
+
+    }
+    @Transactional
+    public void UpdateJob(int JobId,Company companyID,
+                          String jobDescription,
+                          String jobField,
+                          String jobStartDate,
+                          String jobEndDate,
+                          Boolean jobIsFinished,
+                          String degreeRequierd,
+                          String genderToJob,
+                          String jobTime){
+
+        Jobs jobs=jobsRepository.findById(JobId).orElseThrow(() -> new IllegalStateException("id is not found"));
+        if(companyID!= null){jobs.setCompanyID(companyID);}
+        if(jobDescription!=null){jobs.setJobDescription(jobDescription);}
+        if(jobField!=null){jobs.setJobField(jobField);}
+        if(jobStartDate!=null){jobs.setJobStartDate(LocalDate.parse(jobStartDate));}
+        if(jobEndDate!=null){jobs.setJobEndDate(LocalDate.parse(jobEndDate));}
+        if(jobIsFinished!=null){jobs.setJobIsFinished(jobIsFinished);}
+        if(degreeRequierd!=null){jobs.setDegreeRequierd(degreeRequierd);}
+        if(genderToJob!=null){jobs.setGenderToJob(genderToJob);}
+        if(jobTime!=null){jobs.setJobTime(jobTime);}
+
+
+
 
     }
 

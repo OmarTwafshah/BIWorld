@@ -16,4 +16,15 @@ public interface JobsRepository extends JpaRepository<Jobs,Integer> {
         List<Jobs> findByGenderToJob(String GenderToJob);
         List<Jobs> findByDegreeRequierd(String DegreeRequierd);
         List<Jobs> findByJobTime(String JobTime);
+        List<Jobs> findByJobFieldAndGenderToJob(String jobfiled,String Gender);
+        List<Jobs> findByJobFieldAndAndDegreeRequierd(String jobfield, String Degree);
+        List<Jobs> findByJobFieldAndJobTime(String jobfield,String time);
+        List<Jobs> findByJobFieldAndGenderToJobAndDegreeRequierd(String jobfield,String gender,String degree);
+        List<Jobs> findByJobFieldAndGenderToJobAndJobTime(String jobfield,String gender,String jobtime);
+        List<Jobs> findByJobFieldAndAndDegreeRequierdAndJobTime(String field, String time,String degree);
+        List<Jobs> findByJobFieldAndDegreeRequierdAndGenderToJob(String field, String Degree,String Gender);
+        List<Jobs> findByJobFieldAndJobTimeAndDegreeRequierd(String field,String time,String Degree);
+        List<Jobs> findByJobFieldAndJobTimeAndGenderToJob(String field,String time,String Gender);
+
+
 }
