@@ -59,7 +59,10 @@ public class JobsController {
                  genderToJob,
                  jobTime);
     }
-
+    @DeleteMapping(path = "/deleteStudent")
+    public void deleteStudent(@RequestParam(required = true) int id){
+           jobsService.deleteJob(id);
+    }
     @GetMapping("/searchByFiled")
     public List<Jobs> findByFiled(String filed){
         return jobsService.getJobsByFiled(filed);

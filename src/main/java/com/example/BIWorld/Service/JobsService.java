@@ -110,4 +110,11 @@ public class JobsService {
 
     }
 
+    public void deleteJob(int id) {
+        Boolean exist=jobsRepository.existsById(id);
+        if(!exist){
+            throw new IllegalStateException("job does not exist");
+        }
+        jobsRepository.deleteById(id);
+    }
 }
