@@ -7,6 +7,7 @@ import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -96,5 +97,38 @@ public class CompanyService {
 
     public List<Company> getCompany(){
         return companyRepository.findAll();
+    }
+
+   @Transactional
+   public void updatecompany(int companyId,
+                             String companyName,
+                             String companyUserName,
+                             String companyPassword,
+                             Set<City> cities,
+                             String companyDescription,
+                             Double companyPhone,
+                             Long companyFax,
+                             String companyEmail,
+                             Integer companyTax,
+                             String address) {
+        Company comp=companyRepository.findById(companyId).orElseThrow(() -> new IllegalStateException("id is not found"));
+        if(companyDescription != null){comp.setCompanyDescription(companyDescription);}
+        if(companyName != null){comp.setCompanyName(companyName);}
+        if(companyUserName != null){comp.setCompanyUserName(companyUserName);}
+        if(companyPassword != null){comp.setCompanyPassword(companyPassword);}
+        if(companyEmail != null){comp.setCompanyEmail(companyEmail);}
+        if(cities != null){comp.setCities(cities);}
+        if(companyFax != null){comp.setCompanyFax(companyFax);}
+        if(companyPhone != null){comp.setCompanyPhone(companyPhone);}
+        if(companyTax != null){comp.setCompanyTax(companyTax);}
+        if(address != null){comp.setAddress(address);}
+    }
+
+    public void deleteJob(int id) {
+        Boolean exist=companyRepository.existsById(id);
+        if(!exist){
+            throw new IllegalStateException("company does not exist");
+        }
+        companyRepository.deleteById(id);
     }
 }

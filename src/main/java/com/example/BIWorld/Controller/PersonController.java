@@ -1,14 +1,12 @@
 package com.example.BIWorld.Controller;
 
 import com.example.BIWorld.Service.PersonService;
+import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,5 +49,38 @@ public class PersonController {
             System.out.println("Doneeeeeeeeee");
         }
         return rePerson == null ? "error":"done";
+    }
+    @PutMapping("/updatePerson")
+    public void updatePerson(int id,String fullName,
+                             String userName,
+                             City city,
+                             String personEmail,
+                             String password,
+                             Double personPhone,
+                             String personField,
+                             String dateOfBirth,
+                             String gender,
+                             String studyDegree,
+                             String description,
+                             String picPath,
+                             String haveCV){
+            personService.updatePerson( id, fullName,
+                 userName,
+                 city,
+                 personEmail,
+                 password,
+                 personPhone,
+                 personField,
+                 dateOfBirth,
+                 gender,
+                 studyDegree,
+                 description,
+                 picPath,
+                 haveCV);
+
+    }
+    @DeleteMapping(path = "/deletePerson")
+    public void deleteStudent(@RequestParam(required = true) int id){
+        personService.deleteJob(id);
     }
 }

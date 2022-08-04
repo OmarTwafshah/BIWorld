@@ -1,14 +1,13 @@
 package com.example.BIWorld.Controller;
 
 import com.example.BIWorld.Service.CompanyService;
+import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Company;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class CompanyController {
@@ -43,6 +42,33 @@ public class CompanyController {
             System.out.println("Doneeeeeeeeee");
         }
         return reCompany == null ? "error":"done";
+    }
+    @PutMapping(path = "/updateCompany")
+    public void updatecompany(int CompanyId,String companyName,
+                              String companyUserName,
+                              String companyPassword,
+                              Set<City> cities,
+                              String companyDescription,
+                              Double CompanyPhone,
+                              Long companyFax,
+                              String companyEmail,
+                              Integer companyTax,
+                              String address){
+        companyService.updatecompany(CompanyId, companyName,
+                 companyUserName,
+                 companyPassword,
+                  cities,
+                 companyDescription,
+                 CompanyPhone,
+                 companyFax,
+                 companyEmail,
+                 companyTax,
+                 address);
+
+    }
+    @DeleteMapping(path = "/deleteCompany")
+    public void deleteStudent(@RequestParam(required = true) int id){
+        companyService.deleteJob(id);
     }
 
 }

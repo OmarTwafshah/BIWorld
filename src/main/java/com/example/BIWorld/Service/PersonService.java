@@ -7,6 +7,8 @@ import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -87,9 +89,48 @@ public class PersonService {
             return null;
         }
     }
+   @Transactional
+   public void updatePerson(int id, String fullName,
+                            String userName,
+                            City city,
+                            String personEmail,
+                            String password,
+                            Double personPhone,
+                            String personField,
+                            String dateOfBirth,
+                            String gender,
+                            String studyDegree,
+                            String description,
+                            String picPath,
+                            String haveCV){
+         Person per=personRepository.findById(id).orElseThrow(() -> new IllegalStateException("id is not found"));
+         if(fullName != null){per.setFullName(fullName);}
+         if(userName != null){per.setUserName(userName);}
+         if(city != null){per.setCity(city);}
+         if(personEmail != null){per.setPersonEmail(personEmail);}
+         if(password != null){per.setPassword(password);}
+         if(personPhone != null){per.setPersonPhone(personPhone);}
+         if(personField != null){per.setPersonField(personField);}
+         if(dateOfBirth != null){per.setDateOfBirth(LocalDate.parse(dateOfBirth));}
+         if(gender != null){per.setGender(gender);}
+         if(studyDegree != null){per.setStudyDegree(studyDegree);}
+         if(description != null){per.setDescription(description);}
+         if(picPath != null){per.setPicPath(picPath);}
+         if(haveCV != null ){per.setHaveCV(Boolean.parseBoolean(haveCV));}
+
+    }
 
     public List<Person> getPerson(){
         return personRepository.findAll();
     }
 
+    @Transactional
+    public void deleteJob(int id) {
+
+        Boolean exist=personRepository.existsById(id);
+        if(!exist){
+            throw new IllegalStateException("person does not exist");
+        }
+        personRepository.deleteById(id);
+    }
 }

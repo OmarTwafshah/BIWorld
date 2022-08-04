@@ -59,7 +59,7 @@ public class JobsController {
                  genderToJob,
                  jobTime);
     }
-    @DeleteMapping(path = "/deleteStudent")
+    @DeleteMapping(path = "/deleteJob")
     public void deleteStudent(@RequestParam(required = true) int id){
            jobsService.deleteJob(id);
     }
