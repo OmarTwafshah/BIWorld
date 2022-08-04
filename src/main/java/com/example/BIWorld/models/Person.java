@@ -3,13 +3,14 @@ package com.example.BIWorld.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "persons")
 @Table(name = "persons")
-public class Person {
+public class Person implements Serializable {
     @Id
     @SequenceGenerator(
             name = "persons_sequence",

@@ -1,14 +1,16 @@
 package com.example.BIWorld.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity(name = "jobs")
 @Table(name = "jobs")
-public class Jobs {
+public class Jobs implements Serializable {
 
     @Id
     @SequenceGenerator(
@@ -27,7 +29,12 @@ public class Jobs {
     private Integer jobId;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name="company_id")
+    @JoinTable(
+            name = "jobs_company",
+            joinColumns = { @JoinColumn(name = "job_id" ) },
+            inverseJoinColumns = { @JoinColumn(name = "company_id") }
+    )
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Company companyID ;
 
     @Column(
@@ -192,7 +199,6 @@ public class Jobs {
     public String toString() {
         return "Jobs{" +
                 "jobId=" + jobId +
-                ", companyID=" + companyID +
                 ", jobDescription='" + jobDescription + '\'' +
                 ", jobField='" + jobField + '\'' +
                 ", jobStartDate=" + jobStartDate +

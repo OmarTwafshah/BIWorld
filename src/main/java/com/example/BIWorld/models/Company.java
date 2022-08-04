@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "companies")
-public class Company {
+public class Company implements Serializable {
 
     @Id
     @SequenceGenerator(
@@ -92,7 +93,8 @@ public class Company {
     )
     private String address ;
 
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "companyID")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL , mappedBy = "companyID")
+    @JsonIgnoreProperties(value = "companyID")
     private Set<Jobs> jobs ;
 
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "company")
@@ -209,6 +211,14 @@ public class Company {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Set<Jobs> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(Set<Jobs> jobs) {
+        this.jobs = jobs;
     }
 
     @Override

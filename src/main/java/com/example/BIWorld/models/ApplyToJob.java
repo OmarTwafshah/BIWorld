@@ -1,12 +1,13 @@
 package com.example.BIWorld.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity(name = "apply_to_job")
 @Table(name = "apply_to_job")
-public class ApplyToJob {
+public class ApplyToJob implements Serializable {
     @Id
     @SequenceGenerator(
             name = "apply_to_job_sequence",

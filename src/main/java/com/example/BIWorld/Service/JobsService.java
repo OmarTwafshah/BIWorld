@@ -1,6 +1,8 @@
 package com.example.BIWorld.Service;
 
+import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.JobsRepository;
+import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,17 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class JobsService {
     private final JobsRepository jobsRepository;
 
+    private final CompanyRepository companyRepository;
+
 
     @Autowired
-    public JobsService(JobsRepository jobsRepository) {
+    public JobsService(JobsRepository jobsRepository, CompanyRepository companyRepository) {
         this.jobsRepository = jobsRepository;
+        this.companyRepository = companyRepository;
     }
     public List<Jobs> Showjobs(){
         return jobsRepository.findAll() ;
@@ -66,7 +73,13 @@ public class JobsService {
                 jobs.setDegreeRequierd(degreeRequierd);
                 jobs.setGenderToJob(genderToJob);
                 jobs.setJobTime(jobTime);
-                return jobsRepository.save(jobs);
+
+                Jobs jobs1 = jobsRepository.save(jobs);
+                Set<Jobs> jobs2 = new HashSet<>();
+                jobs2.add(jobs1);
+                companyID.setJobs(jobs2);
+                return jobs ;
+
             }
 
     }
