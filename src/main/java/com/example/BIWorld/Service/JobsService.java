@@ -21,6 +21,8 @@ public class JobsService {
 
     private final CompanyRepository companyRepository;
 
+    public static String select ;
+
 
     @Autowired
     public JobsService(JobsRepository jobsRepository, CompanyRepository companyRepository) {
@@ -116,5 +118,25 @@ public class JobsService {
             throw new IllegalStateException("job does not exist");
         }
         jobsRepository.deleteById(id);
+    }
+
+    public List<Jobs> SearchJob(Jobs job) {
+        select = "SELECT j FROM jobs j where ";
+        if(job.getGenderToJob()!=null && job.getGenderToJob()!=""){
+            select+="j.genderToJob = ?1 ";
+        }
+
+        if(job.getJobField()!=null && job.getJobField()!=""){
+            select+="AND j.jobField = ?2 ";
+        }
+
+        if(job.getJobTime()!=null && job.getJobTime()!=""){
+            select+="AND j.jobTime = ?3 ";
+        }
+
+        if(job.getDegreeRequierd()!=null && job.getDegreeRequierd()!=""){
+            select+="AND j.degreeRequierd = ?4 ";
+        }
+        return null ;
     }
 }

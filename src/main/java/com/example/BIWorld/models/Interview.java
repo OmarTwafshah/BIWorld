@@ -1,6 +1,9 @@
 package com.example.BIWorld.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -25,12 +28,14 @@ public class Interview {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "application_information")
+    @JsonIgnoreProperties(value = "interview")
     private ApplyToJob applyToJob;
 
     @Column(
             name = "date",
             nullable = false
     )
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
 
     @Column(

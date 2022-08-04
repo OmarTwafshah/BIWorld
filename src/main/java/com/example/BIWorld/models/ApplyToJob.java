@@ -1,5 +1,7 @@
 package com.example.BIWorld.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -49,6 +51,7 @@ public class ApplyToJob implements Serializable {
     private String status;
 
     @OneToOne(mappedBy = "applyToJob")
+    @JsonIgnoreProperties(value = "applyToJob")
     private Interview interview ;
 
     public ApplyToJob() {
@@ -78,6 +81,14 @@ public class ApplyToJob implements Serializable {
 
     public void setPersons(Set<Person> persons) {
         this.persons = persons;
+    }
+
+    public Interview getInterview() {
+        return interview;
+    }
+
+    public void setInterview(Interview interview) {
+        this.interview = interview;
     }
 
     public Company getCompany() {
