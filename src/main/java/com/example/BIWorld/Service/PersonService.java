@@ -68,7 +68,12 @@ public class PersonService {
                 person.setFullName(fullName);
                 person.setUserName(userName);
                 //person.setCity(cityRepository.findBycity_id(city));
-                person.setCity(city);
+                if(!cityRepository.findBycity_id(city.getCity_id()).isEmpty()){
+                    person.setCity(city);
+                }else {
+                    System.out.println(city.getCity_id() +" is not found ");
+                    return null;
+                }
                 person.setPersonEmail(personEmail);
                 person.setPassword(password);
                 person.setPersonPhone(personPhone);

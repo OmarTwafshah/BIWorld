@@ -2,7 +2,6 @@ package com.example.BIWorld.Service;
 
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.JobsRepository;
-import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class JobsService {
@@ -59,14 +55,19 @@ public class JobsService {
                     String jobTime){
 
             if(
-                    jobDescription==null || jobField==null || jobStartDate==null
+                    companyID == null || jobDescription==null || jobField==null || jobStartDate==null
                     || jobEndDate== null || jobIsFinished==null
                     || degreeRequierd==null || genderToJob==null|| jobTime==null){
                 return null;
 
             }else{
                 Jobs jobs=new Jobs();
-                jobs.setCompanyID(companyID);
+                if(companyRepository.findById(companyID.getCompany_id()).isEmpty()){
+                    System.out.println(companyID.getCompany_id() +" is not found ");
+                    return null;
+                }else {
+                    jobs.setCompanyID(companyID);
+                }
                 jobs.setJobDescription(jobDescription);
                 jobs.setJobField(jobField);
                 jobs.setJobStartDate(LocalDate.parse(jobStartDate));
@@ -76,17 +77,14 @@ public class JobsService {
                 jobs.setGenderToJob(genderToJob);
                 jobs.setJobTime(jobTime);
 
-                Jobs jobs1 = jobsRepository.save(jobs);
-                Set<Jobs> jobs2 = new HashSet<>();
-                jobs2.add(jobs1);
-                companyID.setJobs(jobs2);
-                return jobs ;
+                return  jobsRepository.save(jobs);
 
             }
 
     }
     @Transactional
-    public void UpdateJob(int JobId,Company companyID,
+    public void UpdateJob(int JobId,
+                          Company companyID,
                           String jobDescription,
                           String jobField,
                           String jobStartDate,
@@ -96,7 +94,10 @@ public class JobsService {
                           String genderToJob,
                           String jobTime){
 
-        Jobs jobs=jobsRepository.findById(JobId).orElseThrow(() -> new IllegalStateException("id is not found"));
+        Jobs jobs=jobsRepository.findById(JobId).orElse(null);
+        if(jobs == null){
+            return ;
+        }
         if(companyID!= null){jobs.setCompanyID(companyID);}
         if(jobDescription!=null){jobs.setJobDescription(jobDescription);}
         if(jobField!=null){jobs.setJobField(jobField);}
@@ -112,12 +113,14 @@ public class JobsService {
 
     }
 
-    public void deleteJob(int id) {
+    public Boolean deleteJob(int id) {
         Boolean exist=jobsRepository.existsById(id);
         if(!exist){
-            throw new IllegalStateException("job does not exist");
+            System.out.println("job does not exist");
+            return false ;
         }
         jobsRepository.deleteById(id);
+        return true;
     }
 
     public List<Jobs> SearchJob(Jobs job) {

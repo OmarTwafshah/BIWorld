@@ -16,13 +16,12 @@ public class JobsController {
     }
 
 
-    @GetMapping("/home")
+    @GetMapping("/jobs")
     public List<Jobs> Showjobs(){
         return jobsService.Showjobs();
     }
     @PostMapping("/addjob")
     public void jobs(@ModelAttribute Jobs job){
-        System.out.println(job.getCompanyID().getCompanyUserName());
       jobsService.add(
 
               job.getCompanyID(),
@@ -60,8 +59,8 @@ public class JobsController {
                  jobTime);
     }
     @DeleteMapping(path = "/deleteJob")
-    public void deleteStudent(@RequestParam(required = true) int id){
-           jobsService.deleteJob(id);
+    public Boolean deleteStudent(@RequestParam(required = true) int id){
+           return jobsService.deleteJob(id);
     }
     @GetMapping("/searchByFiled")
     public List<Jobs> findByFiled(String filed){

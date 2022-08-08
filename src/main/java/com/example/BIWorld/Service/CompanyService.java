@@ -76,8 +76,13 @@ public class CompanyService {
                         companies.add(createdCompany1);
                         for (Iterator<City> it = cities.iterator(); it.hasNext(); ) {
                             City f = it.next();
-                            f.setCompanies(companies);
-                            cityRepository.save(f);
+                            if(!cityRepository.findBycity_id(f.getCity_id()).isEmpty()){
+                                f.setCompanies(companies);
+                                cityRepository.save(f);
+                            }else {
+                                System.out.println(f.getCity_id() +" is not found ");
+                            }
+
                         }
                         return company;
 
