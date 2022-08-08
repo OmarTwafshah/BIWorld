@@ -67,8 +67,9 @@ public class CompanyController {
 
     }
     @DeleteMapping(path = "/deleteCompany")
-    public void deleteStudent(@RequestParam(required = true) int id){
-        companyService.deleteJob(id);
+    public
+    Boolean deleteStudent(@RequestParam(required = true) int id){
+        return companyService.deleteJob(id);
     }
 
 }

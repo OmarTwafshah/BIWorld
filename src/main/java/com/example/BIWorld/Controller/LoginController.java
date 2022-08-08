@@ -38,12 +38,15 @@ public class LoginController {
         if(company!= null){
             System.out.println("Company");
             companyAll = company;
+            System.out.println("The Company Login");
             type = "company";
             return "Company";
         }else if(person!=null){
             System.out.println("Person");
             personAll = person ;
             type = "person";
+            System.out.println(personAll.getDateOfBirth());
+            System.out.println("The Person Login");
             return "Person";
         }else {
             System.out.println("null");

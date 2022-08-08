@@ -13,12 +13,13 @@ public interface CompanyRepository extends JpaRepository<Company,Integer> {
 
     Optional<Company> findByCompanyUserName(String userName);
 
-    Optional<Company> findByCompanyUserNameAndCompanyPhoneAndCompanyFaxAndCompanyEmailAndCompanyTax(String userName ,
-                                                                                                      Double companyPhone ,
-                                                                                                      Long companyFax ,
-                                                                                                      String companyEmail ,
-                                                                                                      Integer companyTax);
-    Optional<Company> findByCompanyUserNameAndCompanyEmail(String userName , String companyEmail);
+    Optional<Company> findByCompanyPhone(Double companyPhone);
+
+    Optional<Company> findByCompanyFax(Long companyFax);
+
+    Optional<Company> findByCompanyTax(Integer companyTax);
+
+    Optional<Company> findByCompanyEmail(String companyEmail);
 
 
 }

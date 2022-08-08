@@ -42,22 +42,28 @@ public class PersonService {
                                  String studyDegree,
                                  String description,
                                  String picPath,
-                                 String haveCV) {
+                                 String interests) {
         if (fullName == null
                 || userName == null
                 || personEmail == null
                 || password == null
+                || city == null
                 || personPhone == null
                 || personField == null
+                || dateOfBirth == null
                 || gender == null
                 || studyDegree == null
                 || description == null
-                || picPath == null) {
+                || picPath == null
+                || interests == null) {
             System.out.println("ERORRRRRRRRRRR OMAr");
                     return null ;
                 } else {
-            if(personRepository.findByUserNameAndPersonEmailAndPersonPhone(userName, personEmail, personPhone).isEmpty()
-                    && companyRepository.findByCompanyUserNameAndCompanyEmail(userName,personEmail).isEmpty() ){
+            if(personRepository.findByUserName(userName).isEmpty() &&
+                    personRepository.findByPersonPhone(personPhone).isEmpty() &&
+                    personRepository.findByPersonEmail(personEmail).isEmpty() &&
+                    companyRepository.findByCompanyUserName(userName).isEmpty() &&
+                    companyRepository.findByCompanyEmail(personEmail).isEmpty() ){
                 Person person = new Person();
                 person.setFullName(fullName);
                 person.setUserName(userName);
@@ -72,9 +78,10 @@ public class PersonService {
                 person.setStudyDegree(studyDegree);
                 person.setDescription(description);
                 person.setPicPath(picPath);
-                person.setHaveCV(Boolean.parseBoolean(haveCV));
+                person.setInterests(interests);
                 return personRepository.save(person);
             }else {
+                System.out.println("IsUSed");
                 return null;
             }
 
@@ -84,8 +91,10 @@ public class PersonService {
 
     public Person authenticatePerson(String userName , String password ){
         if(!personRepository.findByUserName(userName).isEmpty()){
+            System.out.println("The UserName Person true");
             return personRepository.findByUserNameAndPassword(userName,password).orElse(null);
         }else {
+            System.out.println("The UserName Person wrong");
             return null;
         }
     }
@@ -102,7 +111,7 @@ public class PersonService {
                             String studyDegree,
                             String description,
                             String picPath,
-                            String haveCV){
+                            String interests){
          Person per=personRepository.findById(id).orElseThrow(() -> new IllegalStateException("id is not found"));
          if(fullName != null){per.setFullName(fullName);}
          if(userName != null){per.setUserName(userName);}
@@ -116,7 +125,7 @@ public class PersonService {
          if(studyDegree != null){per.setStudyDegree(studyDegree);}
          if(description != null){per.setDescription(description);}
          if(picPath != null){per.setPicPath(picPath);}
-         if(haveCV != null ){per.setHaveCV(Boolean.parseBoolean(haveCV));}
+         if(interests != null ){per.setInterests(interests);}
 
     }
 
@@ -125,12 +134,15 @@ public class PersonService {
     }
 
     @Transactional
-    public void deleteJob(int id) {
+    public Boolean deletePerson(int id) {
 
         Boolean exist=personRepository.existsById(id);
         if(!exist){
-            throw new IllegalStateException("person does not exist");
+            System.out.println("person does not exist");
+            return false ;
+        }else {
+            personRepository.deleteById(id);
+            return true;
         }
-        personRepository.deleteById(id);
     }
 }

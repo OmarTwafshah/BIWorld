@@ -2,10 +2,8 @@ package com.example.BIWorld.Controller;
 
 import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.models.City;
-import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,7 +42,7 @@ public class PersonController {
                 person.getStudyDegree(),
                 person.getDescription(),
                 person.getPicPath(),
-                String.valueOf(person.isHaveCV()));
+                person.getInterests());
         if(rePerson != null){
             System.out.println("Doneeeeeeeeee");
         }
@@ -63,7 +61,7 @@ public class PersonController {
                              String studyDegree,
                              String description,
                              String picPath,
-                             String haveCV){
+                             String interests){
             personService.updatePerson( id, fullName,
                  userName,
                  city,
@@ -76,11 +74,11 @@ public class PersonController {
                  studyDegree,
                  description,
                  picPath,
-                 haveCV);
+                    interests);
 
     }
     @DeleteMapping(path = "/deletePerson")
-    public void deleteStudent(@RequestParam(required = true) int id){
-        personService.deleteJob(id);
+    public Boolean deleteStudent(@RequestParam(required = true) int id){
+        return personService.deletePerson(id);
     }
 }

@@ -76,7 +76,7 @@ public class Person implements Serializable {
             name = "date_of_birth",
             nullable = false
     )
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfBirth ;
 
     @Column(
@@ -108,10 +108,10 @@ public class Person implements Serializable {
     private String picPath ;
 
     @Column(
-            name = "have_cv",
+            name = "interests",
             nullable = false
     )
-    private Boolean haveCV ;
+    private String interests ;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -136,7 +136,7 @@ public class Person implements Serializable {
                   String studyDegree,
                   String description,
                   String picPath,
-                  boolean haveCV) {
+                  String Interests) {
         this.fullName = fullName;
         this.userName = user_name;
         this.cities = city;
@@ -149,7 +149,7 @@ public class Person implements Serializable {
         this.studyDegree = studyDegree;
         this.description = description;
         this.picPath = picPath;
-        this.haveCV = haveCV;
+        this.interests = Interests;
     }
 
     public void setPerson_id(Integer person_id) {
@@ -256,12 +256,12 @@ public class Person implements Serializable {
         this.picPath = picPath;
     }
 
-    public boolean isHaveCV() {
-        return haveCV;
+    public String getInterests() {
+        return interests;
     }
 
-    public void setHaveCV(boolean haveCV) {
-        this.haveCV = haveCV;
+    public void setInterests(String interests) {
+        this.interests = interests;
     }
 
     @Override
@@ -282,13 +282,13 @@ public class Person implements Serializable {
                 Objects.equals(studyDegree, person.studyDegree) &&
                 Objects.equals(description, person.description) &&
                 Objects.equals(picPath, person.picPath) &&
-                Objects.equals(haveCV, person.haveCV) &&
+                Objects.equals(interests, person.interests) &&
                 Objects.equals(applyToJobs, person.applyToJobs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(person_id, fullName, userName, cities, personEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, haveCV, applyToJobs);
+        return Objects.hash(person_id, fullName, userName, cities, personEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, interests, applyToJobs);
     }
 
     @Override
@@ -306,7 +306,7 @@ public class Person implements Serializable {
                 ", studyDegree='" + studyDegree + '\'' +
                 ", description='" + description + '\'' +
                 ", picPath='" + picPath + '\'' +
-                ", haveCV=" + haveCV +
+                ", haveCV=" + interests +
                 '}';
     }
 }

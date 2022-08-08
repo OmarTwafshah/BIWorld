@@ -45,6 +45,7 @@ public class CompanyService {
         if (companyName == null
                 || companyUserName == null
                 || companyPassword == null
+                || cities == null
                 || companyDescription == null
                 || companyPhone == null
                 || companyFax == null
@@ -53,12 +54,13 @@ public class CompanyService {
                 || address == null) {
                     return null ;
                 } else {
-                    if(companyRepository.findByCompanyUserNameAndCompanyPhoneAndCompanyFaxAndCompanyEmailAndCompanyTax(
-                            companyUserName,
-                            companyPhone,
-                            companyFax,
-                            companyEmail,
-                            companyTax).isEmpty() && personRepository.findByUserNameAndPersonEmail(companyUserName,companyEmail).isEmpty()){
+                    if(personRepository.findByUserName(companyUserName).isEmpty() &&
+                            personRepository.findByPersonEmail(companyEmail).isEmpty() &&
+                            companyRepository.findByCompanyUserName(companyUserName).isEmpty() &&
+                            companyRepository.findByCompanyEmail(companyEmail).isEmpty() &&
+                            companyRepository.findByCompanyFax(companyFax).isEmpty() &&
+                            companyRepository.findByCompanyTax(companyTax).isEmpty() &&
+                            companyRepository.findByCompanyPhone(companyPhone).isEmpty() ){
                         Company company = new Company();
                         company.setCompanyName(companyName);
                         company.setCompanyUserName(companyUserName);
@@ -89,8 +91,10 @@ public class CompanyService {
 
     public Company authenticateCompany(String userName , String password ){
         if(!companyRepository.findByCompanyUserName(userName).isEmpty()){
+            System.out.println("The UserName Company true");
             return companyRepository.findByCompanyUserNameAndCompanyPassword(userName,password).orElse(null);
         }else {
+            System.out.println("The UserName Company wrong");
             return null;
         }
     }
@@ -124,11 +128,14 @@ public class CompanyService {
         if(address != null){comp.setAddress(address);}
     }
 
-    public void deleteJob(int id) {
+    public Boolean deleteJob(int id) {
         Boolean exist=companyRepository.existsById(id);
         if(!exist){
-            throw new IllegalStateException("company does not exist");
+            System.out.println("company does not exist");
+            return false ;
+        }else {
+            companyRepository.deleteById(id);
+            return true ;
         }
-        companyRepository.deleteById(id);
     }
 }
