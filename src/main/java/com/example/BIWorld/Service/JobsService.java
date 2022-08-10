@@ -123,6 +123,7 @@ public class JobsService {
         return true;
     }
 
+
     public List<Jobs> SearchJob(Jobs job) {
         select = "SELECT j FROM jobs j where ";
         if(job.getGenderToJob()!=null && job.getGenderToJob()!=""){

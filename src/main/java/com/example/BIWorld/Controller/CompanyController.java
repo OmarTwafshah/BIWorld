@@ -20,9 +20,9 @@ public class CompanyController {
     }
 
     @GetMapping("/getCompany")
-    public List<Company> getCompany(){
-        return companyService.getCompany();
-    }
+        public List<Company> getCompany(){
+            return companyService.getCompany();
+        }
 
     @PostMapping("/registerCompany")
     public String register(@ModelAttribute Company company){

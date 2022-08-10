@@ -1,5 +1,12 @@
 package com.example.BIWorld.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -7,9 +14,15 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity(name = "persons")
 @Table(name = "persons")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@AllArgsConstructor
+@ToString
+
 public class Person implements Serializable {
     @Id
     @SequenceGenerator(
@@ -113,13 +126,22 @@ public class Person implements Serializable {
     )
     private String interests ;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    public Set<ApplyToJob> getApplyToJobs() {
+        return theApplyToJobs;
+    }
+
+    public void setApplyToJobs(Set<ApplyToJob> applyToJobs) {
+        this.theApplyToJobs = applyToJobs;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
     @JoinTable(
             name = "applyToJob_Person",
             joinColumns = { @JoinColumn(name = "person_id") },
             inverseJoinColumns = { @JoinColumn(name = "application_id") }
     )
-    private Set<ApplyToJob> applyToJobs ;
+    @JsonIgnoreProperties(value = "myPersons")
+    private Set<ApplyToJob> theApplyToJobs ;
 
     public Person(){}
 
@@ -283,12 +305,12 @@ public class Person implements Serializable {
                 Objects.equals(description, person.description) &&
                 Objects.equals(picPath, person.picPath) &&
                 Objects.equals(interests, person.interests) &&
-                Objects.equals(applyToJobs, person.applyToJobs);
+                Objects.equals(theApplyToJobs, person.theApplyToJobs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(person_id, fullName, userName, cities, personEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, interests, applyToJobs);
+        return Objects.hash(person_id, fullName, userName, cities, personEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, interests, theApplyToJobs);
     }
 
     @Override

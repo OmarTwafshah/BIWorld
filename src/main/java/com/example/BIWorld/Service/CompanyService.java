@@ -25,10 +25,10 @@ public class CompanyService {
 
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepository, PersonService personService, PersonRepository personRepository, CityRepository cityRepository, CityRepository cityRepository1) {
+    public CompanyService(CompanyRepository companyRepository, PersonRepository personRepository, CityRepository cityRepository) {
         this.companyRepository = companyRepository;
         this.personRepository = personRepository;
-        this.cityRepository = cityRepository1;
+        this.cityRepository = cityRepository;
     }
 
     public Company registerCompany(

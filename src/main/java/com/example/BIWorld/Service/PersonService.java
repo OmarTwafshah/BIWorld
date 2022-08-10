@@ -95,6 +95,9 @@ public class PersonService {
     }
 
     public Person authenticatePerson(String userName , String password ){
+        System.out.println(userName);
+        System.out.println(password);
+
         if(!personRepository.findByUserName(userName).isEmpty()){
             System.out.println("The UserName Person true");
             return personRepository.findByUserNameAndPassword(userName,password).orElse(null);

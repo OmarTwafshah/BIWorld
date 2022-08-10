@@ -5,6 +5,7 @@ import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,14 +35,15 @@ public class LoginController {
         System.out.println("The userNAme is : "+userName);
         System.out.println("The PAssword is : "+Password);
         Company company = companyService.authenticateCompany(userName,Password) ;
-        Person person = personService.authenticatePerson(userName,Password);
         if(company!= null){
             System.out.println("Company");
             companyAll = company;
             System.out.println("The Company Login");
             type = "company";
             return "Company";
-        }else if(person!=null){
+        }
+        Person person = personService.authenticatePerson(userName,Password);
+        if(person!=null){
             System.out.println("Person");
             personAll = person ;
             type = "person";
@@ -53,5 +55,14 @@ public class LoginController {
             return null ;
         }
 
+    }
+
+    @GetMapping("/test")
+    public void testappp(){
+        if(type != null){
+            System.out.println(type);
+        }else {
+            System.out.println("NOT LOGIN");
+        }
     }
 }

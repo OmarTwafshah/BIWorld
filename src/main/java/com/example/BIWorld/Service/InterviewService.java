@@ -34,20 +34,20 @@ public class InterviewService {
                     String description){
 
         if(
-                applyToJob==null || date==null || location==null
+//                applyToJob==null ||
+                        date==null || location==null
                         || employee_name== null || description==null){
             return null;
 
         }else{
             Interview interview=new Interview();
-            interview.setApplyToJob(applyToJob);
+            //interview.setApplyToJob(applyToJob);
             interview.setDate(LocalDate.parse(date));
             interview.setLocation(location);
             interview.setEmployee_name(employee_name);
             interview.setDescription(description);
-
-            Interview interview1 = interViewRepository.save(interview);
-            applyToJob.setInterview(interview1);
+            interViewRepository.save(interview);
+            //applyToJob.setInterview(interview1);
             return interview ;
 
         }

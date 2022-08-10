@@ -1,7 +1,13 @@
 package com.example.BIWorld.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -9,7 +15,14 @@ import java.util.Set;
 
 @Entity(name = "apply_to_job")
 @Table(name = "apply_to_job")
+@AllArgsConstructor
+@ToString
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ApplyToJob implements Serializable {
+    public void setApplication_id(Integer application_id) {
+        this.application_id = application_id;
+    }
+
     @Id
     @SequenceGenerator(
             name = "apply_to_job_sequence",
@@ -26,8 +39,9 @@ public class ApplyToJob implements Serializable {
     )
     private Integer application_id;
 
-    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "applyToJobs")
-    private Set<Person> persons ;
+    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "theApplyToJobs",fetch = FetchType.LAZY )
+    @JsonIgnoreProperties(value = "theApplyToJobs")
+    private Set<Person> myPersons ;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="company_id")
@@ -38,17 +52,18 @@ public class ApplyToJob implements Serializable {
     private Jobs jobsToApplication ;
 
     @Column(
-            name="date_of_application",
-            nullable = false
-    )
-    private LocalDate dateOfApplication;
-
-    @Column(
             name="status",
             nullable = false,
             columnDefinition = "TEXT"
     )
     private String status;
+
+    @Column(
+            name = "date_of_application",
+            nullable = false
+    )
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateOfApplication ;
 
     @OneToOne(mappedBy = "applyToJob")
     @JsonIgnoreProperties(value = "applyToJob")
@@ -64,7 +79,7 @@ public class ApplyToJob implements Serializable {
                       Jobs jobs_To_application,
                       LocalDate date_of_application,
                       String status) {
-        this.persons = persons;
+        this.myPersons = persons;
         this.company = company;
         this.jobsToApplication = jobs_To_application;
         this.dateOfApplication = date_of_application;
@@ -76,11 +91,11 @@ public class ApplyToJob implements Serializable {
     }
 
     public Set<Person> getPersons() {
-        return persons;
+        return myPersons;
     }
 
     public void setPersons(Set<Person> persons) {
-        this.persons = persons;
+        this.myPersons = persons;
     }
 
     public Interview getInterview() {
@@ -127,7 +142,7 @@ public class ApplyToJob implements Serializable {
     public String toString() {
         return "ApplyToJob{" +
                 "application_id=" + application_id +
-                ", persons=" + persons +
+                ", persons=" + myPersons +
                 ", company=" + company +
                 ", jobs_To_application=" + jobsToApplication +
                 ", date_of_application=" + dateOfApplication +

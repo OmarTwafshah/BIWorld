@@ -32,13 +32,6 @@ public class Interview {
     private ApplyToJob applyToJob;
 
     @Column(
-            name = "date",
-            nullable = false
-    )
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date;
-
-    @Column(
             name = "location",
             nullable = false,
             columnDefinition = "TEXT"
@@ -58,6 +51,13 @@ public class Interview {
             columnDefinition = "TEXT"
     )
     private String description;
+
+    @Column(
+            name = "date",
+            nullable = false
+    )
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate date;
 
     public Interview(){}
 
