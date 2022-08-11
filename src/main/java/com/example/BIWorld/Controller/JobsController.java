@@ -18,21 +18,31 @@ public class JobsController {
 
     @GetMapping("/jobs")
     public List<Jobs> Showjobs(){
+        System.out.println(LoginController.type);
+        if(LoginController.type == null){
+            return null ;
+        }
         return jobsService.Showjobs();
     }
     @PostMapping("/addjob")
     public void jobs(@ModelAttribute Jobs job){
-      jobsService.add(
+        if(LoginController.type == "company"){
+            jobsService.add(
 
-              job.getCompanyID(),
-              job.getJobDescription(),
-              job.getJobField(),
-              String.valueOf(job.getJobStartDate()),
-              String.valueOf(job.getJobEndDate()),
-              job.getJobIsFinished(),
-              job.getDegreeRequierd(),
-              job.getGenderToJob(),
-              job.getJobTime());
+                    job.getCompanyID(),
+                    job.getJobDescription(),
+                    job.getJobField(),
+                    String.valueOf(job.getJobStartDate()),
+                    String.valueOf(job.getJobEndDate()),
+                    job.getJobIsFinished(),
+                    job.getDegreeRequierd(),
+                    job.getGenderToJob(),
+                    job.getJobTime());
+        }else {
+            System.out.println("Can Not Do It ");
+            return;
+        }
+
 
     }
     @PutMapping("/updatejob")
