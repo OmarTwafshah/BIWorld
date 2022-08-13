@@ -1,6 +1,7 @@
 package com.example.BIWorld.Controller;
 
 import com.example.BIWorld.Service.JobsService;
+import com.example.BIWorld.Service.JobsServiceImp;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
 import org.springframework.web.bind.annotation.*;
@@ -11,22 +12,23 @@ import java.util.List;
 public class JobsController {
     private final JobsService jobsService;
 
-    public JobsController(JobsService jobsService) {
+    public JobsController(JobsServiceImp jobsService) {
         this.jobsService = jobsService;
     }
 
 
     @GetMapping("/jobs")
-    public List<Jobs> Showjobs(){
+    public List<Jobs> Showjobs() {
         System.out.println(LoginController.type);
-        if(LoginController.type == null){
-            return null ;
+        if (LoginController.type == null) {
+            return null;
         }
         return jobsService.Showjobs();
     }
+
     @PostMapping("/addjob")
-    public void jobs(@ModelAttribute Jobs job){
-        if(LoginController.type == "company"){
+    public void jobs(@ModelAttribute Jobs job) {
+        if (LoginController.type == "company") {
             jobsService.add(
 
                     job.getCompanyID(),
@@ -38,59 +40,66 @@ public class JobsController {
                     job.getDegreeRequierd(),
                     job.getGenderToJob(),
                     job.getJobTime());
-        }else {
+        } else {
             System.out.println("Can Not Do It ");
             return;
         }
 
 
     }
+
     @PutMapping("/updatejob")
     public void UpdateJob(
             @RequestParam(required = true) int JobId,
             @RequestParam(required = false) Company companyID,
             @RequestParam(required = false) String jobDescription,
             @RequestParam(required = false) String jobField,
-            @RequestParam(required = false)  String jobStartDate,
+            @RequestParam(required = false) String jobStartDate,
             @RequestParam(required = false) String jobEndDate,
             @RequestParam(required = false) Boolean jobIsFinished,
             @RequestParam(required = false) String degreeRequierd,
             @RequestParam(required = false) String genderToJob,
             @RequestParam(required = false) String jobTime
-    ){
+    ) {
         jobsService.UpdateJob(JobId, companyID,
-                 jobDescription,
-                 jobField,
-                 jobStartDate,
-                 jobEndDate,
-                 jobIsFinished,
-                 degreeRequierd,
-                 genderToJob,
-                 jobTime);
+                jobDescription,
+                jobField,
+                jobStartDate,
+                jobEndDate,
+                jobIsFinished,
+                degreeRequierd,
+                genderToJob,
+                jobTime);
     }
+
     @DeleteMapping(path = "/deleteJob")
-    public Boolean deleteStudent(@RequestParam(required = true) int id){
-           return jobsService.deleteJob(id);
+    public Boolean deleteStudent(@RequestParam(required = true) int id) {
+        return jobsService.deleteJob(id);
     }
-    @GetMapping("/searchByFiled")
-    public List<Jobs> findByFiled(String filed){
-        return jobsService.getJobsByFiled(filed);
-    }
-    @GetMapping("/searchByGender")
-    public List<Jobs> getJobByGender(String Gender){
-        return jobsService.getJobByGender(Gender);
-    }
-    @GetMapping("/searchByDegree")
-    public List<Jobs> getJobByDegree(String Degree){
-        return jobsService.getJobByDegree(Degree);
-    }
-    @GetMapping("/searchByTime")
-    public List<Jobs> getJobByTime(String Time){
-        return jobsService.getJobByTime(Time);
-    }
-    @GetMapping("/searchByCompany")
-    public List<Jobs> getJobByCompany(Company CompanyID){
-        return jobsService.getJobByCompany(CompanyID);
-    }
+
+//    @GetMapping("/searchByFiled")
+//    public List<Jobs> findByFiled(String filed) {
+//        return jobsService.getJobsByFiled(filed);
+//    }
+//
+//    @GetMapping("/searchByGender")
+//    public List<Jobs> getJobByGender(String Gender) {
+//        return jobsService.getJobByGender(Gender);
+//    }
+//
+//    @GetMapping("/searchByDegree")
+//    public List<Jobs> getJobByDegree(String Degree) {
+//        return jobsService.getJobByDegree(Degree);
+//    }
+//
+//    @GetMapping("/searchByTime")
+//    public List<Jobs> getJobByTime(String Time) {
+//        return jobsService.getJobByTime(Time);
+//    }
+//
+//    @GetMapping("/searchByCompany")
+//    public List<Jobs> getJobByCompany(Company CompanyID) {
+//        return jobsService.getJobByCompany(CompanyID);
+//    }
 
 }

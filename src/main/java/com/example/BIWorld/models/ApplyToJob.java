@@ -1,13 +1,7 @@
 package com.example.BIWorld.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.ToString;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,8 +9,6 @@ import java.util.Set;
 
 @Entity(name = "apply_to_job")
 @Table(name = "apply_to_job")
-@AllArgsConstructor
-@ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ApplyToJob implements Serializable {
     public void setApplication_id(Integer application_id) {

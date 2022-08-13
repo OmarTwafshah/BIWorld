@@ -1,6 +1,7 @@
 package com.example.BIWorld.Controller;
 
 import com.example.BIWorld.Service.PersonService;
+import com.example.BIWorld.Service.PersonServiceImp;
 import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,28 +11,27 @@ import java.util.List;
 
 @RestController
 public class PersonController {
-    private final PersonService personService ;
+    private final PersonService personService;
 
-    @Autowired
-    public PersonController(PersonService personRepository) {
+    public PersonController(PersonServiceImp personRepository) {
         this.personService = personRepository;
     }
 
     @GetMapping("/getPerson")
-    public List<Person> getCompany(){
+    public List<Person> getCompany() {
         return personService.getPerson();
     }
 
     @PostMapping("/registerPerson")
-    public String register(@ModelAttribute Person person){
+    public String register(@RequestBody @ModelAttribute Person person) {
         System.out.println("OMARRRRRRRRR");
-        System.out.println("register Requiest" +person);
+        System.out.println("register Requiest" + person);
         String date;
         date = String.valueOf(person.getDateOfBirth());
         Person rePerson = personService.registerPerson(
                 person.getFullName(),
                 person.getUserName(),
-               // Integer.parseInt(String.valueOf(person.getCity())),
+                // Integer.parseInt(String.valueOf(person.getCity())),
                 person.getCity(),
                 person.getPersonEmail(),
                 person.getPassword(),
@@ -43,13 +43,14 @@ public class PersonController {
                 person.getDescription(),
                 person.getPicPath(),
                 person.getInterests());
-        if(rePerson != null){
+        if (rePerson != null) {
             System.out.println("Doneeeeeeeeee");
         }
-        return rePerson == null ? "error":"done";
+        return rePerson == null ? "error" : "done";
     }
+
     @PutMapping("/updatePerson")
-    public void updatePerson(int id,String fullName,
+    public void updatePerson(int id, String fullName,
                              String userName,
                              City city,
                              String personEmail,
@@ -61,24 +62,25 @@ public class PersonController {
                              String studyDegree,
                              String description,
                              String picPath,
-                             String interests){
-            personService.updatePerson( id, fullName,
-                 userName,
-                 city,
-                 personEmail,
-                 password,
-                 personPhone,
-                 personField,
-                 dateOfBirth,
-                 gender,
-                 studyDegree,
-                 description,
-                 picPath,
-                    interests);
+                             String interests) {
+        personService.updatePerson(id, fullName,
+                userName,
+                city,
+                personEmail,
+                password,
+                personPhone,
+                personField,
+                dateOfBirth,
+                gender,
+                studyDegree,
+                description,
+                picPath,
+                interests);
 
     }
+
     @DeleteMapping(path = "/deletePerson")
-    public Boolean deleteStudent(@RequestParam(required = true) int id){
+    public Boolean deleteStudent(@RequestParam(required = true) int id) {
         return personService.deletePerson(id);
     }
 }

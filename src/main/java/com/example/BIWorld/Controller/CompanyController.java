@@ -1,6 +1,7 @@
 package com.example.BIWorld.Controller;
 
 import com.example.BIWorld.Service.CompanyService;
+import com.example.BIWorld.Service.CompanyServiceImp;
 import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Company;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,21 +13,20 @@ import java.util.Set;
 @RestController
 public class CompanyController {
 
-    private final CompanyService companyService ;
+    private final CompanyService companyService;
 
-    @Autowired
-    public CompanyController(CompanyService companyService) {
+    public CompanyController(CompanyServiceImp companyService) {
         this.companyService = companyService;
     }
 
     @GetMapping("/getCompany")
-        public List<Company> getCompany(){
-            return companyService.getCompany();
-        }
+    public List<Company> getCompany() {
+        return companyService.getCompany();
+    }
 
     @PostMapping("/registerCompany")
-    public String register(@ModelAttribute Company company){
-        System.out.println("register Requiest" +company);
+    public String register(@ModelAttribute Company company) {
+        System.out.println("register Requiest" + company);
         Company reCompany = companyService.registerCompany(
                 company.getCompanyName(),
                 company.getCompanyUserName(),
@@ -38,13 +38,14 @@ public class CompanyController {
                 company.getCompanyEmail(),
                 company.getCompanyTax(),
                 company.getAddress());
-        if(reCompany != null){
+        if (reCompany != null) {
             System.out.println("Doneeeeeeeeee");
         }
-        return reCompany == null ? "error":"done";
+        return reCompany == null ? "error" : "done";
     }
+
     @PutMapping(path = "/updateCompany")
-    public void updatecompany(int CompanyId,String companyName,
+    public void updatecompany(int CompanyId, String companyName,
                               String companyUserName,
                               String companyPassword,
                               Set<City> cities,
@@ -53,22 +54,22 @@ public class CompanyController {
                               Long companyFax,
                               String companyEmail,
                               Integer companyTax,
-                              String address){
+                              String address) {
         companyService.updatecompany(CompanyId, companyName,
-                 companyUserName,
-                 companyPassword,
-                  cities,
-                 companyDescription,
-                 CompanyPhone,
-                 companyFax,
-                 companyEmail,
-                 companyTax,
-                 address);
+                companyUserName,
+                companyPassword,
+                cities,
+                companyDescription,
+                CompanyPhone,
+                companyFax,
+                companyEmail,
+                companyTax,
+                address);
 
     }
+
     @DeleteMapping(path = "/deleteCompany")
-    public
-    Boolean deleteStudent(@RequestParam(required = true) int id){
+    public Boolean deleteStudent(@RequestParam(required = true) int id) {
         return companyService.deleteJob(id);
     }
 

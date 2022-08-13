@@ -140,7 +140,6 @@ public class Person implements Serializable {
             joinColumns = { @JoinColumn(name = "person_id") },
             inverseJoinColumns = { @JoinColumn(name = "application_id") }
     )
-    @JsonIgnoreProperties(value = "myPersons")
     private Set<ApplyToJob> theApplyToJobs ;
 
     public Person(){}
