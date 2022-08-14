@@ -2,6 +2,7 @@ package com.example.BIWorld.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -31,20 +32,20 @@ public class ApplyToJob implements Serializable {
     )
     private Integer application_id;
 
-    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "theApplyToJobs",fetch = FetchType.LAZY )
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "theApplyToJobs", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = "theApplyToJobs")
-    private Set<Person> myPersons ;
+    private Set<Person> myPersons;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="company_id")
-    private Company company ;
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="job_id")
-    private Jobs jobsToApplication ;
+    @JoinColumn(name = "job_id")
+    private Jobs jobsToApplication;
 
     @Column(
-            name="status",
+            name = "status",
             nullable = false,
             columnDefinition = "TEXT"
     )
@@ -55,22 +56,22 @@ public class ApplyToJob implements Serializable {
             nullable = false
     )
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateOfApplication ;
+    private LocalDate dateOfApplication;
 
     @OneToOne(mappedBy = "applyToJob")
     @JsonIgnoreProperties(value = "applyToJob")
-    private Interview interview ;
+    private Interview interview;
 
     public ApplyToJob() {
 
     }
 
     public ApplyToJob(
-                      Set<Person> persons,
-                      Company company,
-                      Jobs jobs_To_application,
-                      LocalDate date_of_application,
-                      String status) {
+            Set<Person> persons,
+            Company company,
+            Jobs jobs_To_application,
+            LocalDate date_of_application,
+            String status) {
         this.myPersons = persons;
         this.company = company;
         this.jobsToApplication = jobs_To_application;

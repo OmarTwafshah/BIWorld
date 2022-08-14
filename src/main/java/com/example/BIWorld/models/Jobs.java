@@ -1,6 +1,7 @@
 package com.example.BIWorld.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity(name = "jobs")
 @Table(name = "jobs")
+@Data
 public class Jobs implements Serializable {
 
     @Id

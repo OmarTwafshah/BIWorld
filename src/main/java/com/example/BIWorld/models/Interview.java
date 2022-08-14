@@ -59,14 +59,15 @@ public class Interview {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
 
-    public Interview(){}
+    public Interview() {
+    }
 
     public Interview(
-                     ApplyToJob applyToJob,
-                     LocalDate date,
-                     String location,
-                     String employee_name,
-                     String description) {
+            ApplyToJob applyToJob,
+            LocalDate date,
+            String location,
+            String employee_name,
+            String description) {
         this.applyToJob = applyToJob;
         this.date = date;
         this.location = location;

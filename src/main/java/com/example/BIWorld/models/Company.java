@@ -27,79 +27,78 @@ public class Company implements Serializable {
             name = "company_id",
             updatable = false
     )
-    private Integer companyID ;
+    private Integer companyID;
 
     @Column(
             name = "company_name",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String companyName ;
+    private String companyName;
 
     @Column(
             name = "company_user_name",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String companyUserName ;
+    private String companyUserName;
 
     @Column(
             name = "company_password",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String companyPassword ;
+    private String companyPassword;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY , mappedBy = "companies")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "companies")
     @JsonIgnoreProperties(value = "companies")
-    private Set<City> cities ;
+    private Set<City> cities;
 
     @Column(
             name = "company_description",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String companyDescription ;
+    private String companyDescription;
 
     @Column(
             name = "company_phone",
             nullable = false
     )
-    private Double companyPhone ;
+    private Double companyPhone;
 
     @Column(
             name = "company_fax",
             nullable = false
     )
-    private Long companyFax ;
+    private Long companyFax;
 
     @Column(
             name = "company_email",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String companyEmail ;
+    private String companyEmail;
 
     @Column(
             name = "company_tax",
             nullable = false
     )
-    private Integer companyTax ;
+    private Integer companyTax;
 
     @Column(
             name = "address",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String address ;
+    private String address;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL , mappedBy = "companyID")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "companyID")
     @JsonIgnoreProperties(value = "companyID")
-    private Set<Jobs> jobs ;
+    private Set<Jobs> jobs;
 
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "company")
-    private Set<ApplyToJob> applyToJobs ;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    private Set<ApplyToJob> applyToJobs;
 
 
     public Company() {

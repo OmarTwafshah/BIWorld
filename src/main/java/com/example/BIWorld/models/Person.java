@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -45,86 +46,86 @@ public class Person implements Serializable {
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String fullName ;
+    private String fullName;
 
     @Column(
             name = "user_name",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String userName ;
+    private String userName;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="city_id")
-    private City cities ;
+    @JoinColumn(name = "city_id")
+    private City cities;
 
     @Column(
             name = "person_email",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String personEmail ;
+    private String personEmail;
 
     @Column(
             name = "password",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String password ;
+    private String password;
 
     @Column(
             name = "person_phone",
             nullable = false
     )
-    private Double personPhone ;
+    private Double personPhone;
 
     @Column(
             name = "person_field",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String personField ;
+    private String personField;
 
     @Column(
             name = "date_of_birth",
             nullable = false
     )
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateOfBirth ;
+    private LocalDate dateOfBirth;
 
     @Column(
             name = "gender",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String gender ;
+    private String gender;
 
     @Column(
             name = "study_degree",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String studyDegree ;
+    private String studyDegree;
 
     @Column(
             name = "description",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String description ;
+    private String description;
 
     @Column(
             name = "pic_path",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String picPath ;
+    private String picPath;
 
     @Column(
             name = "interests",
             nullable = false
     )
-    private String interests ;
+    private String interests;
 
     public Set<ApplyToJob> getApplyToJobs() {
         return theApplyToJobs;
@@ -134,30 +135,31 @@ public class Person implements Serializable {
         this.theApplyToJobs = applyToJobs;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY )
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "applyToJob_Person",
-            joinColumns = { @JoinColumn(name = "person_id") },
-            inverseJoinColumns = { @JoinColumn(name = "application_id") }
+            joinColumns = {@JoinColumn(name = "person_id")},
+            inverseJoinColumns = {@JoinColumn(name = "application_id")}
     )
-    private Set<ApplyToJob> theApplyToJobs ;
+    private Set<ApplyToJob> theApplyToJobs;
 
-    public Person(){}
+    public Person() {
+    }
 
     public Person(
-                  String fullName,
-                  String user_name,
-                  City city,
-                  String personEmail,
-                  String password,
-                  Double personPhone,
-                  String personField,
-                  LocalDate dateOfBirth,
-                  String gender,
-                  String studyDegree,
-                  String description,
-                  String picPath,
-                  String Interests) {
+            String fullName,
+            String user_name,
+            City city,
+            String personEmail,
+            String password,
+            Double personPhone,
+            String personField,
+            LocalDate dateOfBirth,
+            String gender,
+            String studyDegree,
+            String description,
+            String picPath,
+            String Interests) {
         this.fullName = fullName;
         this.userName = user_name;
         this.cities = city;
