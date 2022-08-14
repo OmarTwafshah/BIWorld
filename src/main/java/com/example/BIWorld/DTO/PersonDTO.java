@@ -2,12 +2,14 @@ package com.example.BIWorld.DTO;
 
 
 import com.example.BIWorld.models.City;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
 public class PersonDTO {
     private String fullName;
     private String userName;
