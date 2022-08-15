@@ -3,7 +3,6 @@ package com.example.BIWorld.Controller;
 import com.example.BIWorld.DTO.UserDTO;
 import com.example.BIWorld.Service.UserService;
 import com.example.BIWorld.models.User;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

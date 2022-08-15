@@ -1,14 +1,19 @@
 package com.example.BIWorld.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "cities")
 @Table(name = "cities")
+@Data
 public class City implements Serializable {
     @Id
     @SequenceGenerator(
@@ -40,46 +45,13 @@ public class City implements Serializable {
         this.companies = companies;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "city_company",
-            joinColumns = { @JoinColumn(name = "city_id" , nullable = true) },
-            inverseJoinColumns = { @JoinColumn(name = "company_id") }
-    )
-    @JsonIgnoreProperties(value = "cities")
+    @OneToMany(mappedBy = "cities")
+    @JsonIgnore
     private Set<Company> companies ;
 
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "cities")
+    @OneToMany(mappedBy = "cities")
+    @JsonIgnore
     private Set<Person> persons ;
 
-    public City(){}
 
-    public City(String cityName) {
-        this.cityName = cityName;
-    }
-
-    public Integer getCity_id() {
-        return city_id;
-    }
-
-    public void setCity_id(Integer city_id) {
-        this.city_id = city_id;
-    }
-
-    public String getCityName() {
-        return cityName;
-    }
-
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
-    }
-
-
-    @Override
-    public String toString() {
-        return "City{" +
-                "cityId=" + city_id +
-                ", cityName='" + cityName + '\'' +
-                '}';
-    }
 }

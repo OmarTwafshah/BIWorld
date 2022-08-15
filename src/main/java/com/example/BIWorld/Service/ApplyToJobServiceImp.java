@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ApplyToJobServiceImp implements ApplyToJobService {
             //applyToJob.setPersons(persons);
             applyToJob.setCompany(company);
             applyToJob.setJobs_To_application(jobs_to_application);
-            LocalDate currentDateTime = LocalDate.now();
+            LocalDateTime currentDateTime = LocalDateTime.from(LocalDate.now());
             applyToJob.setDate_of_application(currentDateTime);
             applyToJob.setStatus(status);
 

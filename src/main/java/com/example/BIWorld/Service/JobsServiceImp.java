@@ -1,10 +1,10 @@
 package com.example.BIWorld.Service;
 
+import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.JobsRepository;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,39 +46,30 @@ public class JobsServiceImp implements JobsService{
         return jobsRepository.findByCompanyID(CompanyId);
     }
     @Override
-    public Jobs add(Company companyID,
-                    String jobDescription,
-                    String jobField,
-                    String jobStartDate,
-                    String jobEndDate,
-                    Boolean jobIsFinished,
-                    String degreeRequierd,
-                    String genderToJob,
-                    String jobTime){
+    public Jobs add(JobsDTO jobsDTO){
 
             if(
-                    companyID == null || jobDescription==null || jobField==null || jobStartDate==null
-                    || jobEndDate== null || jobIsFinished==null
-                    || degreeRequierd==null || genderToJob==null|| jobTime==null){
+                    jobsDTO.getJobCompany() == null || jobsDTO.getJobDescription()==null || jobsDTO.getJobField()==null || jobsDTO.getJobStartDate()==null
+                    || jobsDTO.getJobEndDate()== null || jobsDTO.getJobIsFinished()==null
+                    || jobsDTO.getDegreeRequierd()==null || jobsDTO.getGenderToJob()==null|| jobsDTO.getJobTime()==null){
                 return null;
 
             }else{
                 Jobs jobs=new Jobs();
-                if(companyRepository.findById(companyID.getCompany_id()).isEmpty()){
-                    System.out.println(companyID.getCompany_id() +" is not found ");
+                if(companyRepository.findById(jobsDTO.getJobCompany().getCompany_id()).isEmpty()){
+                    System.out.println(jobsDTO.getJobCompany().getCompany_id() +" is not found ");
                     return null;
                 }else {
-                    jobs.setCompanyID(companyID);
+                    jobs.setCompanyID(jobsDTO.getJobCompany());
                 }
-                jobs.setJobDescription(jobDescription);
-                jobs.setJobField(jobField);
-                jobs.setJobStartDate(LocalDate.parse(jobStartDate));
-                jobs.setJobEndDate(LocalDate.parse(jobEndDate));
-                jobs.setJobIsFinished(jobIsFinished);
-                jobs.setDegreeRequierd(degreeRequierd);
-                jobs.setGenderToJob(genderToJob);
-                jobs.setJobTime(jobTime);
-
+                jobs.setJobDescription(jobsDTO.getJobDescription());
+                jobs.setJobField(jobsDTO.getJobField());
+                jobs.setJobStartDate(LocalDate.parse(jobsDTO.getJobStartDate()));
+                jobs.setJobEndDate(LocalDate.parse(jobsDTO.getJobEndDate()));
+                jobs.setJobIsFinished(jobsDTO.getJobIsFinished());
+                jobs.setDegreeRequierd(jobsDTO.getDegreeRequierd());
+                jobs.setGenderToJob(jobsDTO.getGenderToJob());
+                jobs.setJobTime(jobsDTO.getJobTime());
                 return  jobsRepository.save(jobs);
 
             }
@@ -86,34 +77,21 @@ public class JobsServiceImp implements JobsService{
     }
     @Override
     @Transactional
-    public void UpdateJob(int JobId,
-                          Company companyID,
-                          String jobDescription,
-                          String jobField,
-                          String jobStartDate,
-                          String jobEndDate,
-                          Boolean jobIsFinished,
-                          String degreeRequierd,
-                          String genderToJob,
-                          String jobTime){
+    public void UpdateJob(JobsDTO jobsDTO){
 
-        Jobs jobs=jobsRepository.findById(JobId).orElse(null);
+        Jobs jobs=jobsRepository.findById(jobsDTO.getJobId()).orElse(null);
         if(jobs == null){
             return ;
         }
-        if(companyID!= null){jobs.setCompanyID(companyID);}
-        if(jobDescription!=null){jobs.setJobDescription(jobDescription);}
-        if(jobField!=null){jobs.setJobField(jobField);}
-        if(jobStartDate!=null){jobs.setJobStartDate(LocalDate.parse(jobStartDate));}
-        if(jobEndDate!=null){jobs.setJobEndDate(LocalDate.parse(jobEndDate));}
-        if(jobIsFinished!=null){jobs.setJobIsFinished(jobIsFinished);}
-        if(degreeRequierd!=null){jobs.setDegreeRequierd(degreeRequierd);}
-        if(genderToJob!=null){jobs.setGenderToJob(genderToJob);}
-        if(jobTime!=null){jobs.setJobTime(jobTime);}
-
-
-
-
+        if(jobsDTO.getJobCompany()!= null){jobs.setCompanyID(jobsDTO.getJobCompany());}
+        if(jobsDTO.getJobDescription()!=null){jobs.setJobDescription(jobsDTO.getJobDescription());}
+        if(jobsDTO.getJobField()!=null){jobs.setJobField(jobsDTO.getJobField());}
+        if(jobsDTO.getJobStartDate()!=null){jobs.setJobStartDate(LocalDate.parse(jobsDTO.getJobStartDate()));}
+        if(jobsDTO.getJobEndDate()!=null){jobs.setJobEndDate(LocalDate.parse(jobsDTO.getJobEndDate()));}
+        if(jobsDTO.getJobIsFinished()!=null){jobs.setJobIsFinished(jobsDTO.getJobIsFinished());}
+        if(jobsDTO.getDegreeRequierd()!=null){jobs.setDegreeRequierd(jobsDTO.getDegreeRequierd());}
+        if(jobsDTO.getGenderToJob()!=null){jobs.setGenderToJob(jobsDTO.getGenderToJob());}
+        if(jobsDTO.getJobTime()!=null){jobs.setJobTime(jobsDTO.getJobTime());}
     }
 
     @Override

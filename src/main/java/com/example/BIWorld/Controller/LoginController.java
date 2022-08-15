@@ -6,7 +6,6 @@ import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.Service.PersonServiceImp;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Person;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

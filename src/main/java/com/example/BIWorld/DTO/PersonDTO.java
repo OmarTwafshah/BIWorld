@@ -2,15 +2,18 @@ package com.example.BIWorld.DTO;
 
 
 import com.example.BIWorld.models.City;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
-@Builder
 public class PersonDTO {
+    private Integer person_id;
     private String fullName;
     private String userName;
     private City cities;
@@ -18,13 +21,14 @@ public class PersonDTO {
     private String password;
     private Double personPhone;
     private String personField;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateOfBirth;
+    @NotNull
+    private String dateOfBirth;
     private String gender;
     private String studyDegree;
     private String description;
     private String picPath;
     private String interests;
 
+    public PersonDTO(){}
 
 }

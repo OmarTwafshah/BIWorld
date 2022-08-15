@@ -1,11 +1,13 @@
 package com.example.BIWorld.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity(name = "apply_to_job")
@@ -55,8 +57,8 @@ public class ApplyToJob implements Serializable {
             name = "date_of_application",
             nullable = false
     )
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateOfApplication;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDateTime dateOfApplication;
 
     @OneToOne(mappedBy = "applyToJob")
     @JsonIgnoreProperties(value = "applyToJob")
@@ -70,7 +72,7 @@ public class ApplyToJob implements Serializable {
             Set<Person> persons,
             Company company,
             Jobs jobs_To_application,
-            LocalDate date_of_application,
+            LocalDateTime date_of_application,
             String status) {
         this.myPersons = persons;
         this.company = company;
@@ -115,11 +117,11 @@ public class ApplyToJob implements Serializable {
         this.jobsToApplication = jobs_To_application;
     }
 
-    public LocalDate getDate_of_application() {
+    public LocalDateTime getDate_of_application() {
         return dateOfApplication;
     }
 
-    public void setDate_of_application(LocalDate date_of_application) {
+    public void setDate_of_application(LocalDateTime date_of_application) {
         this.dateOfApplication = date_of_application;
     }
 

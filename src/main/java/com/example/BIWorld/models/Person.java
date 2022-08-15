@@ -1,5 +1,6 @@
 package com.example.BIWorld.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,7 +56,7 @@ public class Person implements Serializable {
     )
     private String userName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "city_id")
     private City cities;
 
@@ -71,6 +72,7 @@ public class Person implements Serializable {
             nullable = false,
             columnDefinition = "TEXT"
     )
+    @JsonIgnore
     private String password;
 
     @Column(

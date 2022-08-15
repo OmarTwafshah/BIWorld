@@ -1,6 +1,8 @@
 package com.example.BIWorld.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -24,8 +26,7 @@ public class Company implements Serializable {
             generator = "company_sequence"
     )
     @Column(
-            name = "company_id",
-            updatable = false
+            name = "company_id"
     )
     private Integer companyID;
 
@@ -50,9 +51,9 @@ public class Company implements Serializable {
     )
     private String companyPassword;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "companies")
-    @JsonIgnoreProperties(value = "companies")
-    private Set<City> cities;
+    @ManyToOne()
+    @JoinColumn(name = "city_id")
+    private City cities;
 
     @Column(
             name = "company_description",
@@ -93,10 +94,11 @@ public class Company implements Serializable {
     )
     private String address;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "companyID")
-    @JsonIgnoreProperties(value = "companyID")
+    @JsonIgnore
+    @OneToMany(mappedBy = "companyID")
     private Set<Jobs> jobs;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private Set<ApplyToJob> applyToJobs;
 
@@ -108,7 +110,7 @@ public class Company implements Serializable {
     public Company(String companyName,
                    String companyUserName,
                    String companyPassword,
-                   Set<City> cities,
+                   City cities,
                    String companyDescription,
                    Double CompanyPhone,
                    Long companyFax,
@@ -156,11 +158,11 @@ public class Company implements Serializable {
         this.companyPassword = companyPassword;
     }
 
-    public Set<City> getCities() {
+    public City getCities() {
         return cities;
     }
 
-    public void setCities(Set<City> cities) {
+    public void setCities(City cities) {
         this.cities = cities;
     }
 

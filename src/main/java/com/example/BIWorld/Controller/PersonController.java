@@ -1,15 +1,16 @@
 package com.example.BIWorld.Controller;
 
+import com.example.BIWorld.DTO.PersonDTO;
 import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.Service.PersonServiceImp;
-import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Person;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/Person")
 public class PersonController {
     private final PersonService personService;
 
@@ -17,69 +18,28 @@ public class PersonController {
         this.personService = personRepository;
     }
 
-    @GetMapping("/getPerson")
+    @GetMapping("/alldata")
     public List<Person> getCompany() {
         return personService.getPerson();
     }
 
-    @PostMapping("/registerPerson")
-    public String register(@RequestBody @ModelAttribute Person person) {
-        System.out.println("OMARRRRRRRRR");
-        System.out.println("register Requiest" + person);
-        String date;
-        date = String.valueOf(person.getDateOfBirth());
-        Person rePerson = personService.registerPerson(
-                person.getFullName(),
-                person.getUserName(),
-                // Integer.parseInt(String.valueOf(person.getCity())),
-                person.getCity(),
-                person.getPersonEmail(),
-                person.getPassword(),
-                person.getPersonPhone(),
-                person.getPersonField(),
-                date,
-                person.getGender(),
-                person.getStudyDegree(),
-                person.getDescription(),
-                person.getPicPath(),
-                person.getInterests());
+    @PostMapping("/register")
+    public String register(@RequestBody PersonDTO personDTO) {
+        System.out.println(personDTO.toString());
+        Person rePerson = personService.registerPerson(personDTO);
         if (rePerson != null) {
             System.out.println("Doneeeeeeeeee");
         }
         return rePerson == null ? "error" : "done";
     }
 
-    @PutMapping("/updatePerson")
-    public void updatePerson(int id, String fullName,
-                             String userName,
-                             City city,
-                             String personEmail,
-                             String password,
-                             Double personPhone,
-                             String personField,
-                             String dateOfBirth,
-                             String gender,
-                             String studyDegree,
-                             String description,
-                             String picPath,
-                             String interests) {
-        personService.updatePerson(id, fullName,
-                userName,
-                city,
-                personEmail,
-                password,
-                personPhone,
-                personField,
-                dateOfBirth,
-                gender,
-                studyDegree,
-                description,
-                picPath,
-                interests);
+    @PutMapping("/update")
+    public void updatePerson(@RequestBody PersonDTO personDTO) {
+        personService.updatePerson(personDTO);
 
     }
 
-    @DeleteMapping(path = "/deletePerson")
+    @DeleteMapping(path = "/delete")
     public Boolean deleteStudent(@RequestParam(required = true) int id) {
         return personService.deletePerson(id);
     }

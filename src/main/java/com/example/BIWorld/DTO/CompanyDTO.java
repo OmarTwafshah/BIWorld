@@ -8,10 +8,11 @@ import java.util.Set;
 
 @Data
 public class CompanyDTO {
+    private Integer companyID;
     private String companyName;
     private String companyUserName;
     private String companyPassword;
-    private Set<City> cities;
+    private City cities;
     private String companyDescription;
     private Double companyPhone;
     private Long companyFax;

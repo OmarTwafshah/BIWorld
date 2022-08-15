@@ -1,11 +1,13 @@
 package com.example.BIWorld.models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "interview")
 @Table(name = "interview")
@@ -56,15 +58,15 @@ public class Interview {
             name = "date",
             nullable = false
     )
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDateTime date;
 
     public Interview() {
     }
 
     public Interview(
             ApplyToJob applyToJob,
-            LocalDate date,
+            LocalDateTime date,
             String location,
             String employee_name,
             String description) {
@@ -87,11 +89,11 @@ public class Interview {
         this.applyToJob = applyToJob;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

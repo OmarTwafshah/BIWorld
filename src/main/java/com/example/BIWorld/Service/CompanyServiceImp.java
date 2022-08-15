@@ -1,5 +1,6 @@
 package com.example.BIWorld.Service;
 
+import com.example.BIWorld.DTO.CompanyDTO;
 import com.example.BIWorld.Repository.CityRepository;
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.PersonRepository;
@@ -31,60 +32,43 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
-    public Company registerCompany(
-            String companyName,
-            String companyUserName,
-            String companyPassword,
-            Set<City> cities,
-            String companyDescription,
-            Double companyPhone,
-            Long companyFax,
-            String companyEmail,
-            Integer companyTax,
-            String address) {
-        if (companyName == null
-                || companyUserName == null
-                || companyPassword == null
-                || cities == null
-                || companyDescription == null
-                || companyPhone == null
-                || companyFax == null
-                || companyEmail == null
-                || companyTax == null
-                || address == null) {
+    public Company registerCompany(CompanyDTO companyDTO) {
+        if (companyDTO.getCompanyName() == null
+                || companyDTO.getCompanyUserName() == null
+                || companyDTO.getCompanyPassword() == null
+                || companyDTO.getCities() == null
+                || companyDTO.getCompanyDescription() == null
+                || companyDTO.getCompanyPhone() == null
+                || companyDTO.getCompanyFax() == null
+                || companyDTO.getCompanyEmail() == null
+                || companyDTO.getCompanyTax() == null
+                || companyDTO.getAddress() == null) {
             return null;
         } else {
-            if (personRepository.findByUserName(companyUserName).isEmpty() &&
-                    personRepository.findByPersonEmail(companyEmail).isEmpty() &&
-                    companyRepository.findByCompanyUserName(companyUserName).isEmpty() &&
-                    companyRepository.findByCompanyEmail(companyEmail).isEmpty() &&
-                    companyRepository.findByCompanyFax(companyFax).isEmpty() &&
-                    companyRepository.findByCompanyTax(companyTax).isEmpty() &&
-                    companyRepository.findByCompanyPhone(companyPhone).isEmpty()) {
+            if (personRepository.findByUserName(companyDTO.getCompanyUserName()).isEmpty() &&
+                    personRepository.findByPersonEmail(companyDTO.getCompanyEmail()).isEmpty() &&
+                    companyRepository.findByCompanyUserName(companyDTO.getCompanyUserName()).isEmpty() &&
+                    companyRepository.findByCompanyEmail(companyDTO.getCompanyEmail()).isEmpty() &&
+                    companyRepository.findByCompanyFax(companyDTO.getCompanyFax()).isEmpty() &&
+                    companyRepository.findByCompanyTax(companyDTO.getCompanyTax()).isEmpty() &&
+                    companyRepository.findByCompanyPhone(companyDTO.getCompanyPhone()).isEmpty()) {
                 Company company = new Company();
-                company.setCompanyName(companyName);
-                company.setCompanyUserName(companyUserName);
-                company.setCompanyPassword(companyPassword);
-                company.setCompanyDescription(companyDescription);
-                company.setCompanyPhone(companyPhone);
-                company.setCompanyFax(companyFax);
-                company.setCompanyEmail(companyEmail);
-                company.setCompanyTax(companyTax);
-                company.setAddress(address);
-                Company createdCompany1 = companyRepository.save(company);
-                Set<Company> companies = new HashSet<>();
-                companies.add(createdCompany1);
-                for (Iterator<City> it = cities.iterator(); it.hasNext(); ) {
-                    City f = it.next();
-                    if (!cityRepository.findBycity_id(f.getCity_id()).isEmpty()) {
-                        f.setCompanies(companies);
-                        cityRepository.save(f);
-                    } else {
-                        System.out.println(f.getCity_id() + " is not found ");
-                    }
-
+                company.setCompanyName(companyDTO.getCompanyName());
+                company.setCompanyUserName(companyDTO.getCompanyUserName());
+                company.setCompanyPassword(companyDTO.getCompanyPassword());
+                if (!cityRepository.findBycity_id(companyDTO.getCities().getCity_id()).isEmpty()) {
+                    company.setCities(companyDTO.getCities());
+                } else {
+                    System.out.println(companyDTO.getCities().getCity_id() + " is not found ");
+                    return null;
                 }
-                return company;
+                company.setCompanyDescription(companyDTO.getCompanyDescription());
+                company.setCompanyPhone(companyDTO.getCompanyPhone());
+                company.setCompanyFax(companyDTO.getCompanyFax());
+                company.setCompanyEmail(companyDTO.getCompanyEmail());
+                company.setCompanyTax(companyDTO.getCompanyTax());
+                company.setAddress(companyDTO.getAddress());
+                return companyRepository.save(company);
 
             } else {
                 System.out.println("IsUSed");
@@ -112,47 +96,37 @@ public class CompanyServiceImp implements CompanyService {
 
     @Override
     @Transactional
-    public void updatecompany(int companyId,
-                              String companyName,
-                              String companyUserName,
-                              String companyPassword,
-                              Set<City> cities,
-                              String companyDescription,
-                              Double companyPhone,
-                              Long companyFax,
-                              String companyEmail,
-                              Integer companyTax,
-                              String address) {
-        Company comp = companyRepository.findById(companyId).orElseThrow(() -> new IllegalStateException("id is not found"));
-        if (companyDescription != null) {
-            comp.setCompanyDescription(companyDescription);
+    public void updatecompany(CompanyDTO companyDTO) {
+        Company comp = companyRepository.findById(companyDTO.getCompanyID()).orElse(null);
+        if (companyDTO.getCompanyDescription() != null) {
+            comp.setCompanyDescription(companyDTO.getCompanyDescription());
         }
-        if (companyName != null) {
-            comp.setCompanyName(companyName);
+        if (companyDTO.getCompanyName() != null) {
+            comp.setCompanyName(companyDTO.getCompanyName());
         }
-        if (companyUserName != null) {
-            comp.setCompanyUserName(companyUserName);
+        if (companyDTO.getCompanyUserName() != null) {
+            comp.setCompanyUserName(companyDTO.getCompanyUserName());
         }
-        if (companyPassword != null) {
-            comp.setCompanyPassword(companyPassword);
+        if (companyDTO.getCompanyPassword() != null) {
+            comp.setCompanyPassword(companyDTO.getCompanyPassword());
         }
-        if (companyEmail != null) {
-            comp.setCompanyEmail(companyEmail);
+        if (companyDTO.getCompanyEmail() != null) {
+            comp.setCompanyEmail(companyDTO.getCompanyEmail());
         }
-        if (cities != null) {
-            comp.setCities(cities);
+        if (companyDTO.getCities() != null) {
+            comp.setCities(companyDTO.getCities());
         }
-        if (companyFax != null) {
-            comp.setCompanyFax(companyFax);
+        if (companyDTO.getCompanyFax() != null) {
+            comp.setCompanyFax(companyDTO.getCompanyFax());
         }
-        if (companyPhone != null) {
-            comp.setCompanyPhone(companyPhone);
+        if (companyDTO.getCompanyPhone() != null) {
+            comp.setCompanyPhone(companyDTO.getCompanyPhone());
         }
-        if (companyTax != null) {
-            comp.setCompanyTax(companyTax);
+        if (companyDTO.getCompanyTax() != null) {
+            comp.setCompanyTax(companyDTO.getCompanyTax());
         }
-        if (address != null) {
-            comp.setAddress(address);
+        if (companyDTO.getAddress() != null) {
+            comp.setAddress(companyDTO.getAddress());
         }
     }
 

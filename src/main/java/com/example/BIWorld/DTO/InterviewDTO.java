@@ -2,10 +2,12 @@ package com.example.BIWorld.DTO;
 
 
 import com.example.BIWorld.models.ApplyToJob;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class InterviewDTO {
@@ -13,6 +15,6 @@ public class InterviewDTO {
     private String location;
     private String employeeName;
     private String description;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDateTime date;
 }

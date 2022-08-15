@@ -1,14 +1,15 @@
 package com.example.BIWorld.Controller;
 
+import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.Service.JobsService;
 import com.example.BIWorld.Service.JobsServiceImp;
-import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/Job")
 public class JobsController {
     private final JobsService jobsService;
 
@@ -17,7 +18,7 @@ public class JobsController {
     }
 
 
-    @GetMapping("/jobs")
+    @GetMapping("/Show")
     public List<Jobs> Showjobs() {
         System.out.println(LoginController.type);
         if (LoginController.type == null) {
@@ -26,20 +27,12 @@ public class JobsController {
         return jobsService.Showjobs();
     }
 
-    @PostMapping("/addjob")
-    public void jobs(@ModelAttribute Jobs job) {
+    @PostMapping("/add")
+    public void jobs(@RequestBody JobsDTO jobsDTO) {
         if (LoginController.type == "company") {
-            jobsService.add(
-
-                    job.getCompanyID(),
-                    job.getJobDescription(),
-                    job.getJobField(),
-                    String.valueOf(job.getJobStartDate()),
-                    String.valueOf(job.getJobEndDate()),
-                    job.getJobIsFinished(),
-                    job.getDegreeRequierd(),
-                    job.getGenderToJob(),
-                    job.getJobTime());
+            System.out.println(jobsDTO.toString());
+            System.out.println("MYYYYYYYYYYYYY NUMBER" +jobsDTO.getJobCompany().getCompanyName());
+            jobsService.add(jobsDTO);
         } else {
             System.out.println("Can Not Do It ");
             return;
@@ -49,27 +42,8 @@ public class JobsController {
     }
 
     @PutMapping("/updatejob")
-    public void UpdateJob(
-            @RequestParam(required = true) int JobId,
-            @RequestParam(required = false) Company companyID,
-            @RequestParam(required = false) String jobDescription,
-            @RequestParam(required = false) String jobField,
-            @RequestParam(required = false) String jobStartDate,
-            @RequestParam(required = false) String jobEndDate,
-            @RequestParam(required = false) Boolean jobIsFinished,
-            @RequestParam(required = false) String degreeRequierd,
-            @RequestParam(required = false) String genderToJob,
-            @RequestParam(required = false) String jobTime
-    ) {
-        jobsService.UpdateJob(JobId, companyID,
-                jobDescription,
-                jobField,
-                jobStartDate,
-                jobEndDate,
-                jobIsFinished,
-                degreeRequierd,
-                genderToJob,
-                jobTime);
+    public void UpdateJob(JobsDTO jobsDTO) {
+        jobsService.UpdateJob(jobsDTO);
     }
 
     @DeleteMapping(path = "/deleteJob")

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class InterviewServiceImp implements InterviewService {
@@ -38,7 +39,7 @@ public class InterviewServiceImp implements InterviewService {
         }else{
             Interview interview=new Interview();
             //interview.setApplyToJob(applyToJob);
-            interview.setDate(LocalDate.parse(date));
+            interview.setDate(LocalDateTime.parse(date));
             interview.setLocation(location);
             interview.setEmployee_name(employee_name);
             interview.setDescription(description);

@@ -30,13 +30,8 @@ public class Jobs implements Serializable {
     )
     private Integer jobId;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "jobs_company",
-            joinColumns = { @JoinColumn(name = "job_id" ) },
-            inverseJoinColumns = { @JoinColumn(name = "company_id") }
-    )
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne()
+    @JoinColumn(name = "companyID")
     private Company companyID ;
 
     @Column(
