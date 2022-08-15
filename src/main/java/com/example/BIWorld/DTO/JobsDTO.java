@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class JobsDTO {
     private Integer jobId;
-    private Company jobCompany;
     private String jobDescription;
     private String jobField;
     private String jobStartDate;

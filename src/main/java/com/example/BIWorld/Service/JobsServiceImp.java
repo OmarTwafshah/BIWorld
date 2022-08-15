@@ -1,5 +1,6 @@
 package com.example.BIWorld.Service;
 
+import com.example.BIWorld.Controller.LoginController;
 import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.JobsRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -49,23 +51,22 @@ public class JobsServiceImp implements JobsService{
     public Jobs add(JobsDTO jobsDTO){
 
             if(
-                    jobsDTO.getJobCompany() == null || jobsDTO.getJobDescription()==null || jobsDTO.getJobField()==null || jobsDTO.getJobStartDate()==null
+                    jobsDTO.getJobDescription()==null || jobsDTO.getJobField()==null || jobsDTO.getJobStartDate()==null
                     || jobsDTO.getJobEndDate()== null || jobsDTO.getJobIsFinished()==null
                     || jobsDTO.getDegreeRequierd()==null || jobsDTO.getGenderToJob()==null|| jobsDTO.getJobTime()==null){
                 return null;
 
             }else{
                 Jobs jobs=new Jobs();
-                if(companyRepository.findById(jobsDTO.getJobCompany().getCompany_id()).isEmpty()){
-                    System.out.println(jobsDTO.getJobCompany().getCompany_id() +" is not found ");
-                    return null;
-                }else {
-                    jobs.setCompanyID(jobsDTO.getJobCompany());
-                }
+
+                jobs.setCompanyID(LoginController.companyAll);
                 jobs.setJobDescription(jobsDTO.getJobDescription());
                 jobs.setJobField(jobsDTO.getJobField());
-                jobs.setJobStartDate(LocalDate.parse(jobsDTO.getJobStartDate()));
-                jobs.setJobEndDate(LocalDate.parse(jobsDTO.getJobEndDate()));
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate localDate =  LocalDate.parse(jobsDTO.getJobStartDate(), format);
+                jobs.setJobStartDate(localDate);
+                LocalDate localDate2 =  LocalDate.parse(jobsDTO.getJobEndDate(), format);
+                jobs.setJobEndDate(localDate2);
                 jobs.setJobIsFinished(jobsDTO.getJobIsFinished());
                 jobs.setDegreeRequierd(jobsDTO.getDegreeRequierd());
                 jobs.setGenderToJob(jobsDTO.getGenderToJob());
@@ -83,7 +84,6 @@ public class JobsServiceImp implements JobsService{
         if(jobs == null){
             return ;
         }
-        if(jobsDTO.getJobCompany()!= null){jobs.setCompanyID(jobsDTO.getJobCompany());}
         if(jobsDTO.getJobDescription()!=null){jobs.setJobDescription(jobsDTO.getJobDescription());}
         if(jobsDTO.getJobField()!=null){jobs.setJobField(jobsDTO.getJobField());}
         if(jobsDTO.getJobStartDate()!=null){jobs.setJobStartDate(LocalDate.parse(jobsDTO.getJobStartDate()));}

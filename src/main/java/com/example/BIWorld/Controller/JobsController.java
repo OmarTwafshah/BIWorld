@@ -31,7 +31,6 @@ public class JobsController {
     public void jobs(@RequestBody JobsDTO jobsDTO) {
         if (LoginController.type == "company") {
             System.out.println(jobsDTO.toString());
-            System.out.println("MYYYYYYYYYYYYY NUMBER" +jobsDTO.getJobCompany().getCompanyName());
             jobsService.add(jobsDTO);
         } else {
             System.out.println("Can Not Do It ");

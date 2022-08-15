@@ -1,5 +1,6 @@
 package com.example.BIWorld.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -90,6 +91,7 @@ public class Jobs implements Serializable {
     )
     private String jobTime ;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "jobsToApplication")
     private Set<ApplyToJob> applyToJobs ;
 
