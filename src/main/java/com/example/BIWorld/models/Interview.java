@@ -58,15 +58,15 @@ public class Interview {
             name = "date",
             nullable = false
     )
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private LocalDateTime date;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate date;
 
     public Interview() {
     }
 
     public Interview(
             ApplyToJob applyToJob,
-            LocalDateTime date,
+            LocalDate date,
             String location,
             String employee_name,
             String description) {
@@ -89,11 +89,11 @@ public class Interview {
         this.applyToJob = applyToJob;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

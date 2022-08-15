@@ -15,6 +15,5 @@ public class InterviewDTO {
     private String location;
     private String employeeName;
     private String description;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private LocalDateTime date;
+    private String date;
 }
