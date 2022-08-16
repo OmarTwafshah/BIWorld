@@ -6,28 +6,32 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
+@Setter
+@Getter
 public class PersonDTO {
     private Integer person_id;
     private String fullName;
-    private String userName;
-    private City cities;
-    private String personEmail;
+    private String username;
+    private String city;
+    private String email;
     private String password;
-    private Double personPhone;
-    private String personField;
+    private Double phone;
+    private String field;
     @NotNull
     private String dateOfBirth;
     private String gender;
     private String studyDegree;
-    private String description;
+    private String canddescription;
     private String picPath;
-    private String interests;
+    private String intrest;
 
     public PersonDTO(){}
 

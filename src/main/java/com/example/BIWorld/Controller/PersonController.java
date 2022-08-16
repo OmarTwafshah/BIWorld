@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Person")
+@CrossOrigin
 public class PersonController {
     private final PersonService personService;
 
@@ -24,13 +25,13 @@ public class PersonController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody PersonDTO personDTO) {
+    public Object register(@RequestBody PersonDTO personDTO) {
         System.out.println(personDTO.toString());
         Person rePerson = personService.registerPerson(personDTO);
         if (rePerson != null) {
-            System.out.println("Doneeeeeeeeee");
+            return true;
         }
-        return rePerson == null ? "error" : "done";
+        return false ;
     }
 
     @PutMapping("/update")

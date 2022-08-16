@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
 @ToString
-
+@Data
 public class Person implements Serializable {
     @Id
     @SequenceGenerator(
@@ -129,20 +129,8 @@ public class Person implements Serializable {
     )
     private String interests;
 
-    public Set<ApplyToJob> getApplyToJobs() {
-        return theApplyToJobs;
-    }
-
-    public void setApplyToJobs(Set<ApplyToJob> applyToJobs) {
-        this.theApplyToJobs = applyToJobs;
-    }
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "applyToJob_Person",
-            joinColumns = {@JoinColumn(name = "person_id")},
-            inverseJoinColumns = {@JoinColumn(name = "application_id")}
-    )
+    @OneToMany(mappedBy = "myPersons")
+    @JsonIgnore
     private Set<ApplyToJob> theApplyToJobs;
 
     public Person() {
@@ -316,22 +304,4 @@ public class Person implements Serializable {
         return Objects.hash(person_id, fullName, userName, cities, personEmail, password, personPhone, personField, dateOfBirth, gender, studyDegree, description, picPath, interests, theApplyToJobs);
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "personID=" + person_id +
-                ", FullName='" + fullName + '\'' +
-                ", UserName='" + userName + '\'' +
-                ", cities=" + cities +
-                ", PersonEmail='" + personEmail + '\'' +
-                ", personPhone=" + personPhone +
-                ", personField='" + personField + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", gender='" + gender + '\'' +
-                ", studyDegree='" + studyDegree + '\'' +
-                ", description='" + description + '\'' +
-                ", picPath='" + picPath + '\'' +
-                ", haveCV=" + interests +
-                '}';
-    }
 }

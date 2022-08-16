@@ -3,6 +3,7 @@ package com.example.BIWorld.Service;
 import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
+import com.example.BIWorld.requests.SearchRequest;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface JobsService {
 
     Boolean deleteJob(int id);
 
-    List<Jobs> SearchJob(Jobs job);
+   // List<Jobs> SearchJob(SearchRequest searchRequest);
 
     List<Jobs> Showjobs();
 }

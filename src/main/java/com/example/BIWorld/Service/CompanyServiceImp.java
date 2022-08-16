@@ -34,39 +34,40 @@ public class CompanyServiceImp implements CompanyService {
     @Override
     public Company registerCompany(CompanyDTO companyDTO) {
         if (companyDTO.getCompanyName() == null
-                || companyDTO.getCompanyUserName() == null
-                || companyDTO.getCompanyPassword() == null
-                || companyDTO.getCities() == null
-                || companyDTO.getCompanyDescription() == null
-                || companyDTO.getCompanyPhone() == null
-                || companyDTO.getCompanyFax() == null
-                || companyDTO.getCompanyEmail() == null
-                || companyDTO.getCompanyTax() == null
+                || companyDTO.getUsername() == null
+                || companyDTO.getPassword() == null
+                || companyDTO.getCity() == null
+                || companyDTO.getCompdescription() == null
+                || companyDTO.getPhone() == null
+                || companyDTO.getFax() == null
+                || companyDTO.getEmail() == null
+                || companyDTO.getTax() == null
                 || companyDTO.getAddress() == null) {
             return null;
         } else {
-            if (personRepository.findByUserName(companyDTO.getCompanyUserName()).isEmpty() &&
-                    personRepository.findByPersonEmail(companyDTO.getCompanyEmail()).isEmpty() &&
-                    companyRepository.findByCompanyUserName(companyDTO.getCompanyUserName()).isEmpty() &&
-                    companyRepository.findByCompanyEmail(companyDTO.getCompanyEmail()).isEmpty() &&
-                    companyRepository.findByCompanyFax(companyDTO.getCompanyFax()).isEmpty() &&
-                    companyRepository.findByCompanyTax(companyDTO.getCompanyTax()).isEmpty() &&
-                    companyRepository.findByCompanyPhone(companyDTO.getCompanyPhone()).isEmpty()) {
+            if (personRepository.findByUserName(companyDTO.getUsername()).isEmpty() &&
+                    personRepository.findByPersonEmail(companyDTO.getEmail()).isEmpty() &&
+                    companyRepository.findByCompanyUserName(companyDTO.getUsername()).isEmpty() &&
+                    companyRepository.findByCompanyEmail(companyDTO.getEmail()).isEmpty() &&
+                    companyRepository.findByCompanyFax(companyDTO.getFax()).isEmpty() &&
+                    companyRepository.findByCompanyTax(companyDTO.getTax()).isEmpty() &&
+                    companyRepository.findByCompanyPhone(companyDTO.getPhone()).isEmpty()) {
                 Company company = new Company();
                 company.setCompanyName(companyDTO.getCompanyName());
-                company.setCompanyUserName(companyDTO.getCompanyUserName());
-                company.setCompanyPassword(companyDTO.getCompanyPassword());
-                if (!cityRepository.findBycity_id(companyDTO.getCities().getCity_id()).isEmpty()) {
-                    company.setCities(companyDTO.getCities());
+                company.setCompanyUserName(companyDTO.getUsername());
+                company.setCompanyPassword(companyDTO.getPassword());
+                City city = cityRepository.findByCityName(companyDTO.getCity());
+                if (city != null ) {
+                    company.setCities(city);
                 } else {
-                    System.out.println(companyDTO.getCities().getCity_id() + " is not found ");
+                    System.out.println(companyDTO.getCity() + " is not found ");
                     return null;
                 }
-                company.setCompanyDescription(companyDTO.getCompanyDescription());
-                company.setCompanyPhone(companyDTO.getCompanyPhone());
-                company.setCompanyFax(companyDTO.getCompanyFax());
-                company.setCompanyEmail(companyDTO.getCompanyEmail());
-                company.setCompanyTax(companyDTO.getCompanyTax());
+                company.setCompanyDescription(companyDTO.getCompdescription());
+                company.setCompanyPhone(companyDTO.getPhone());
+                company.setCompanyFax(companyDTO.getFax());
+                company.setCompanyEmail(companyDTO.getEmail());
+                company.setCompanyTax(companyDTO.getTax());
                 company.setAddress(companyDTO.getAddress());
                 return companyRepository.save(company);
 
@@ -98,32 +99,35 @@ public class CompanyServiceImp implements CompanyService {
     @Transactional
     public void updatecompany(CompanyDTO companyDTO) {
         Company comp = companyRepository.findById(companyDTO.getCompanyID()).orElse(null);
-        if (companyDTO.getCompanyDescription() != null) {
-            comp.setCompanyDescription(companyDTO.getCompanyDescription());
+        if (companyDTO.getCompdescription() != null) {
+            comp.setCompanyDescription(companyDTO.getCompdescription());
         }
         if (companyDTO.getCompanyName() != null) {
             comp.setCompanyName(companyDTO.getCompanyName());
         }
-        if (companyDTO.getCompanyUserName() != null) {
-            comp.setCompanyUserName(companyDTO.getCompanyUserName());
+        if (companyDTO.getUsername() != null) {
+            comp.setCompanyUserName(companyDTO.getUsername());
         }
-        if (companyDTO.getCompanyPassword() != null) {
-            comp.setCompanyPassword(companyDTO.getCompanyPassword());
+        if (companyDTO.getPassword() != null) {
+            comp.setCompanyPassword(companyDTO.getPassword());
         }
-        if (companyDTO.getCompanyEmail() != null) {
-            comp.setCompanyEmail(companyDTO.getCompanyEmail());
+        if (companyDTO.getEmail() != null) {
+            comp.setCompanyEmail(companyDTO.getEmail());
         }
-        if (companyDTO.getCities() != null) {
-            comp.setCities(companyDTO.getCities());
+        if (companyDTO.getCity() != null) {
+            City city = cityRepository.findByCityName(companyDTO.getCity());
+            if (city != null ) {
+                comp.setCities(city);
+            }
         }
-        if (companyDTO.getCompanyFax() != null) {
-            comp.setCompanyFax(companyDTO.getCompanyFax());
+        if (companyDTO.getFax() != null) {
+            comp.setCompanyFax(companyDTO.getFax());
         }
-        if (companyDTO.getCompanyPhone() != null) {
-            comp.setCompanyPhone(companyDTO.getCompanyPhone());
+        if (companyDTO.getPhone() != null) {
+            comp.setCompanyPhone(companyDTO.getPhone());
         }
-        if (companyDTO.getCompanyTax() != null) {
-            comp.setCompanyTax(companyDTO.getCompanyTax());
+        if (companyDTO.getTax() != null) {
+            comp.setCompanyTax(companyDTO.getTax());
         }
         if (companyDTO.getAddress() != null) {
             comp.setAddress(companyDTO.getAddress());

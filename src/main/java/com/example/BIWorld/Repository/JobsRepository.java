@@ -13,7 +13,7 @@ public interface JobsRepository extends JpaRepository<Jobs,Integer> {
 
         String select = JobsServiceImp.select;
 
-        List<Jobs> findByJobId(int job_id);
+        Jobs findByJobId(int job_id);
         List<Jobs> findByCompanyID(Company companyID );
         List<Jobs> findByJobField(String jobfield);
         List<Jobs> findByGenderToJob(String GenderToJob);
@@ -28,7 +28,9 @@ public interface JobsRepository extends JpaRepository<Jobs,Integer> {
         List<Jobs> findByJobFieldAndDegreeRequierdAndGenderToJob(String field, String Degree,String Gender);
         List<Jobs> findByJobFieldAndJobTimeAndDegreeRequierd(String field,String time,String Degree);
 
-//        @Query()
+        List<Jobs> findByGenderToJobAndJobFieldAndJobTimeAndDegreeRequierd(String gender , String filed , String time ,String degreeRequierd);
+
+        //        @Query()
 //        List<Jobs> findall();
 
 

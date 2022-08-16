@@ -1,6 +1,7 @@
 package com.example.BIWorld.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -34,15 +35,15 @@ public class ApplyToJob implements Serializable {
     )
     private Integer application_id;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "theApplyToJobs", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = "theApplyToJobs")
-    private Set<Person> myPersons;
+    @ManyToOne()
+    @JoinColumn(name = "person_id")
+    private Person myPersons;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "job_id")
     private Jobs jobsToApplication;
 
@@ -57,8 +58,8 @@ public class ApplyToJob implements Serializable {
             name = "date_of_application",
             nullable = false
     )
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private LocalDateTime dateOfApplication;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateOfApplication;
 
     @OneToOne(mappedBy = "applyToJob")
     @JsonIgnoreProperties(value = "applyToJob")
@@ -69,10 +70,10 @@ public class ApplyToJob implements Serializable {
     }
 
     public ApplyToJob(
-            Set<Person> persons,
+            Person persons,
             Company company,
             Jobs jobs_To_application,
-            LocalDateTime date_of_application,
+            LocalDate date_of_application,
             String status) {
         this.myPersons = persons;
         this.company = company;
@@ -85,11 +86,11 @@ public class ApplyToJob implements Serializable {
         return application_id;
     }
 
-    public Set<Person> getPersons() {
+    public Person getPersons() {
         return myPersons;
     }
 
-    public void setPersons(Set<Person> persons) {
+    public void setPersons(Person persons) {
         this.myPersons = persons;
     }
 
@@ -117,11 +118,11 @@ public class ApplyToJob implements Serializable {
         this.jobsToApplication = jobs_To_application;
     }
 
-    public LocalDateTime getDate_of_application() {
+    public LocalDate getDate_of_application() {
         return dateOfApplication;
     }
 
-    public void setDate_of_application(LocalDateTime date_of_application) {
+    public void setDate_of_application(LocalDate date_of_application) {
         this.dateOfApplication = date_of_application;
     }
 

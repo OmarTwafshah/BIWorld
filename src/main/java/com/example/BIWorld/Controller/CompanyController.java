@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/Company")
+@CrossOrigin
 
 public class CompanyController {
 
@@ -25,13 +26,13 @@ public class CompanyController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody CompanyDTO companyDTO) {
+    public Object register(@RequestBody CompanyDTO companyDTO) {
         System.out.println(companyDTO.toString());
         Company reCompany = companyService.registerCompany(companyDTO);
         if (reCompany != null) {
-            System.out.println("Doneeeeeeeeee");
+            return true ;
         }
-        return reCompany == null ? "error" : "done";
+        return false ;
     }
 
     @PutMapping(path = "/update")

@@ -14,4 +14,6 @@ public interface CityRepository extends JpaRepository<City,Integer> {
     @Query("SELECT c FROM cities c where c.city_id = ?1")
     Optional<City> findBycity_id(Integer integer);
 
+    City findByCityName(String cityName);
+
 }

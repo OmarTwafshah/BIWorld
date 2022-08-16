@@ -1,5 +1,6 @@
 package com.example.BIWorld.Service;
 
+import com.example.BIWorld.DTO.ApplyToJobDTO;
 import com.example.BIWorld.models.ApplyToJob;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface ApplyToJobService {
-    ApplyToJob addJobs(Set<Person> persons, Company company, Jobs jobs_to_application, String status);
+    ApplyToJob addJobs(ApplyToJobDTO applyToJobDTO);
 
     boolean DeleteApp(int appId);
 

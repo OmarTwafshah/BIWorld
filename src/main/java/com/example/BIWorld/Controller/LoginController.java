@@ -6,12 +6,11 @@ import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.Service.PersonServiceImp;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Person;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.BIWorld.requests.LoginRequest;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 public class LoginController {
 
     private final CompanyService companyService;
@@ -31,29 +30,16 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(
-            @RequestParam(required = false) String userName,
-            @RequestParam(required = false) String Password) {
-        System.out.println("The userName is : " + userName);
-        System.out.println("The Password is : " + Password);
-        Company company = companyService.authenticateCompany(userName, Password);
+    public Object login(@RequestBody LoginRequest loginRequest) {
+        System.out.println(loginRequest.toString());
+        Company company = companyService.authenticateCompany(loginRequest.getUserName(), loginRequest.getMyPassword());
         if (company != null) {
-            System.out.println("Company");
-            companyAll = company;
-            System.out.println("The Company Login");
-            type = "company";
-            return "Company";
+            return company;
         }
-        Person person = personService.authenticatePerson(userName, Password);
+        Person person = personService.authenticatePerson(loginRequest.getUserName(), loginRequest.getMyPassword());
         if (person != null) {
-            System.out.println("Person");
-            personAll = person;
-            type = "person";
-            System.out.println(personAll.getDateOfBirth());
-            System.out.println("The Person Login");
-            return "Person";
+            return person;
         } else {
-            System.out.println("null");
             return null;
         }
 

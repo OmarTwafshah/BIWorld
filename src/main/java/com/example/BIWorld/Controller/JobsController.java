@@ -4,6 +4,7 @@ import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.Service.JobsService;
 import com.example.BIWorld.Service.JobsServiceImp;
 import com.example.BIWorld.models.Jobs;
+import com.example.BIWorld.requests.SearchRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,42 +38,21 @@ public class JobsController {
             return;
         }
 
-
     }
 
-    @PutMapping("/updatejob")
+    @PutMapping("/update")
     public void UpdateJob(JobsDTO jobsDTO) {
         jobsService.UpdateJob(jobsDTO);
     }
 
-    @DeleteMapping(path = "/deleteJob")
+    @DeleteMapping(path = "/delete")
     public Boolean deleteStudent(@RequestParam(required = true) int id) {
         return jobsService.deleteJob(id);
     }
 
-//    @GetMapping("/searchByFiled")
-//    public List<Jobs> findByFiled(String filed) {
-//        return jobsService.getJobsByFiled(filed);
-//    }
-//
-//    @GetMapping("/searchByGender")
-//    public List<Jobs> getJobByGender(String Gender) {
-//        return jobsService.getJobByGender(Gender);
-//    }
-//
-//    @GetMapping("/searchByDegree")
-//    public List<Jobs> getJobByDegree(String Degree) {
-//        return jobsService.getJobByDegree(Degree);
-//    }
-//
-//    @GetMapping("/searchByTime")
-//    public List<Jobs> getJobByTime(String Time) {
-//        return jobsService.getJobByTime(Time);
-//    }
-//
-//    @GetMapping("/searchByCompany")
-//    public List<Jobs> getJobByCompany(Company CompanyID) {
-//        return jobsService.getJobByCompany(CompanyID);
+//    @GetMapping("/search")
+//    public List<Jobs> findByFiled(@RequestParam SearchRequest searchRequest) {
+//        return jobsService.SearchJob(searchRequest);
 //    }
 
 }

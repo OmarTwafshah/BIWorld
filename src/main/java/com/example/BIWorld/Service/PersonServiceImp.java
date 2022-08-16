@@ -36,33 +36,34 @@ public class PersonServiceImp implements PersonService {
     @Override
     public Person registerPerson(PersonDTO personDTO) {
 
-        if (personRepository.findByUserName(personDTO.getUserName()).isEmpty() &&
-                personRepository.findByPersonPhone(personDTO.getPersonPhone()).isEmpty() &&
-                personRepository.findByPersonEmail(personDTO.getPersonEmail()).isEmpty() &&
-                companyRepository.findByCompanyUserName(personDTO.getUserName()).isEmpty() &&
-                companyRepository.findByCompanyEmail(personDTO.getPersonEmail()).isEmpty()) {
+        if (personRepository.findByUserName(personDTO.getUsername()).isEmpty() &&
+                personRepository.findByPersonPhone(personDTO.getPhone()).isEmpty() &&
+                personRepository.findByPersonEmail(personDTO.getEmail()).isEmpty() &&
+                companyRepository.findByCompanyUserName(personDTO.getUsername()).isEmpty() &&
+                companyRepository.findByCompanyEmail(personDTO.getEmail()).isEmpty()) {
             Person person = new Person();
             person.setFullName(personDTO.getFullName());
-            person.setUserName(personDTO.getUserName());
+            person.setUserName(personDTO.getUsername());
             //person.setCity(cityRepository.findBycity_id(city));
-            if (!cityRepository.findBycity_id(personDTO.getCities().getCity_id()).isEmpty()) {
-                person.setCity(personDTO.getCities());
+            City city = cityRepository.findByCityName(personDTO.getCity());
+            if (city != null ) {
+                person.setCity(city);
             } else {
-                System.out.println(personDTO.getCities().getCity_id() + " is not found ");
+                System.out.println(personDTO.getCity() + " is not found ");
                 return null;
             }
-            person.setPersonEmail(personDTO.getPersonEmail());
+            person.setPersonEmail(personDTO.getEmail());
             person.setPassword(personDTO.getPassword());
-            person.setPersonPhone(personDTO.getPersonPhone());
-            person.setPersonField(personDTO.getPersonField());
+            person.setPersonPhone(personDTO.getPhone());
+            person.setPersonField(personDTO.getField());
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate localDate =  LocalDate.parse(personDTO.getDateOfBirth(), format);
             person.setDateOfBirth(localDate);
             person.setGender(personDTO.getGender());
             person.setStudyDegree(personDTO.getStudyDegree());
-            person.setDescription(personDTO.getDescription());
+            person.setDescription(personDTO.getCanddescription());
             person.setPicPath(personDTO.getPicPath());
-            person.setInterests(personDTO.getInterests());
+            person.setInterests(personDTO.getIntrest());
             return personRepository.save(person);
         } else {
             System.out.println("IsUSed");
@@ -93,23 +94,26 @@ public class PersonServiceImp implements PersonService {
         if (personDTO.getFullName() != null) {
             per.setFullName(personDTO.getFullName());
         }
-        if (personDTO.getUserName() != null) {
-            per.setUserName(personDTO.getUserName());
+        if (personDTO.getUsername() != null) {
+            per.setUserName(personDTO.getUsername());
         }
-        if (personDTO.getCities() != null) {
-            per.setCity(personDTO.getCities());
+        if (personDTO.getCity() != null) {
+            City city = cityRepository.findByCityName(personDTO.getCity());
+            if (city != null ) {
+                per.setCity(city);
+            }
         }
-        if (personDTO.getPersonEmail() != null) {
-            per.setPersonEmail(personDTO.getPersonEmail());
+        if (personDTO.getEmail() != null) {
+            per.setPersonEmail(personDTO.getEmail());
         }
         if (personDTO.getPassword() != null) {
             per.setPassword(personDTO.getPassword());
         }
-        if (personDTO.getPersonPhone() != null) {
-            per.setPersonPhone(personDTO.getPersonPhone());
+        if (personDTO.getPhone() != null) {
+            per.setPersonPhone(personDTO.getPhone());
         }
-        if (personDTO.getPersonField() != null) {
-            per.setPersonField(personDTO.getPersonField());
+        if (personDTO.getField() != null) {
+            per.setPersonField(personDTO.getField());
         }
         if (personDTO.getDateOfBirth() != null) {
             per.setDateOfBirth(LocalDate.parse(personDTO.getDateOfBirth()));
@@ -120,14 +124,14 @@ public class PersonServiceImp implements PersonService {
         if (personDTO.getStudyDegree() != null) {
             per.setStudyDegree(personDTO.getStudyDegree());
         }
-        if (personDTO.getDescription() != null) {
-            per.setDescription(personDTO.getDescription());
+        if (personDTO.getCanddescription() != null) {
+            per.setDescription(personDTO.getCanddescription());
         }
         if (personDTO.getPicPath() != null) {
             per.setPicPath(personDTO.getPicPath());
         }
-        if (personDTO.getInterests() != null) {
-            per.setInterests(personDTO.getInterests());
+        if (personDTO.getIntrest() != null) {
+            per.setInterests(personDTO.getIntrest());
         }
 
     }

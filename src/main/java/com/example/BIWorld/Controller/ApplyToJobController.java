@@ -1,5 +1,6 @@
 package com.example.BIWorld.Controller;
 
+import com.example.BIWorld.DTO.ApplyToJobDTO;
 import com.example.BIWorld.Service.ApplyToJobService;
 import com.example.BIWorld.Service.ApplyToJobServiceImp;
 import com.example.BIWorld.models.ApplyToJob;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/applyToJob")
 public class ApplyToJobController {
     public final ApplyToJobService applyToJobService;
 
@@ -20,22 +22,13 @@ public class ApplyToJobController {
         this.applyToJobService = applyToJobService;
     }
 
-    @PostMapping("/applyToJob")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "GMT+5:30")
-
-    public String ApplyToJob(@RequestParam(required = false) Set<Person> persons,
-                             @RequestParam(required = false) Jobs jobs_To_application,
-                             @RequestParam(required = false) String status) {
-
-        ApplyToJob reapply = applyToJobService.addJobs(
-                persons,
-                jobs_To_application.getCompanyID(),
-                jobs_To_application,
-                status);
+    @PostMapping("/add")
+    public Object ApplyToJob(@RequestBody ApplyToJobDTO applyToJobDTO) {
+        ApplyToJob reapply = applyToJobService.addJobs(applyToJobDTO);
         if (reapply != null) {
-            System.out.println("Doneeeeeeeeee");
+            return true;
         }
-        return reapply == null ? "error" : "done";
+        return false ;
     }
 
     @DeleteMapping("/deleteApp")
