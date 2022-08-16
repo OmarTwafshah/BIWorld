@@ -23,13 +23,13 @@ public class InterviewController {
     }
 
     @PostMapping("/add")
-    public String register(@RequestBody InterviewDTO interviewDTO) {
+    public Object register(@RequestBody InterviewDTO interviewDTO) {
         System.out.println("register Requiest " + interviewDTO.toString());
         Interview reinterview = interviewServiceImp.add(interviewDTO);
         if (reinterview != null) {
-            System.out.println("Doneeeeeeeeee");
+            return true ;
         }
-        return reinterview == null ? "error" : "done";
+        return false;
     }
 
 

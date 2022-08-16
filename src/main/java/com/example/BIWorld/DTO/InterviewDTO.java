@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class InterviewDTO {
-    private ApplyToJob applyToJob;
+    private String applyToJob;
     private String location;
     private String employeeName;
     private String description;
