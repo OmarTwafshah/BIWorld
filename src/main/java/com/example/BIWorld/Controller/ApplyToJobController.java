@@ -28,7 +28,7 @@ public class ApplyToJobController {
         if (reapply != null) {
             return true;
         }
-        return false ;
+        return false;
     }
 
     @DeleteMapping("/deleteApp")

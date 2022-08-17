@@ -33,21 +33,21 @@ public class Jobs implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "companyID")
-    private Company companyID ;
+    private Company companyID;
 
     @Column(
             name = "job_description",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String jobDescription ;
+    private String jobDescription;
 
     @Column(
             name = "job_field",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String jobField ;
+    private String jobField;
 
     @Column(
             name = "job_start_date",
@@ -55,58 +55,59 @@ public class Jobs implements Serializable {
 
     )
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate jobStartDate ;
+    private LocalDate jobStartDate;
 
     @Column(
             name = "job_end_date",
             nullable = false
     )
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate jobEndDate ;
+    private LocalDate jobEndDate;
 
     @Column(
             name = "job_is_finished",
             nullable = false
     )
-    private Boolean jobIsFinished ;
+    private Boolean jobIsFinished;
 
     @Column(
             name = "degree_requierd",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String degreeRequierd ;
+    private String degreeRequierd;
 
     @Column(
             name = "gender_to_job",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String genderToJob ;
+    private String genderToJob;
 
     @Column(
             name = "job_time",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String jobTime ;
+    private String jobTime;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "jobsToApplication")
-    private Set<ApplyToJob> applyToJobs ;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jobsToApplication")
+    private Set<ApplyToJob> applyToJobs;
 
-    public Jobs(){}
+    public Jobs() {
+    }
 
     public Jobs(
-                Company companyID,
-                String jobDescription,
-                String jobField,
-                LocalDate jobStartDate,
-                LocalDate jobEndDate,
-                Boolean jobIsFinished,
-                String degreeRequierd,
-                String genderToJob,
-                String jobTime) {
+            Company companyID,
+            String jobDescription,
+            String jobField,
+            LocalDate jobStartDate,
+            LocalDate jobEndDate,
+            Boolean jobIsFinished,
+            String degreeRequierd,
+            String genderToJob,
+            String jobTime) {
         this.companyID = companyID;
         this.jobDescription = jobDescription;
         this.jobField = jobField;

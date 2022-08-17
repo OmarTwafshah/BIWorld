@@ -52,11 +52,11 @@ public class City implements Serializable {
 
     @OneToMany(mappedBy = "cities")
     @JsonIgnore
-    private Set<Company> companies ;
+    private Set<Company> companies;
 
     @OneToMany(mappedBy = "cities")
     @JsonIgnore
-    private Set<Person> persons ;
+    private Set<Person> persons;
 
 
 }

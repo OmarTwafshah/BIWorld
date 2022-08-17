@@ -30,9 +30,9 @@ public class CompanyController {
         System.out.println(companyDTO.toString());
         Company reCompany = companyService.registerCompany(companyDTO);
         if (reCompany != null) {
-            return true ;
+            return true;
         }
-        return false ;
+        return false;
     }
 
     @PutMapping(path = "/update")

@@ -29,12 +29,12 @@ public class LoginController {
         System.out.println(loginRequest.toString());
         Company company = companyService.authenticateCompany(loginRequest.getUserName(), loginRequest.getMyPassword());
         if (company != null) {
-            type = "company" ;
+            type = "company";
             return company;
         }
         Person person = personService.authenticatePerson(loginRequest.getUserName(), loginRequest.getMyPassword());
         if (person != null) {
-            type = "person" ;
+            type = "person";
             return person;
         } else {
             return null;

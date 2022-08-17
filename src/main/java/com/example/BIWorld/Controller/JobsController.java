@@ -26,7 +26,7 @@ public class JobsController {
         if (LoginController.type == "person") {
             return jobsService.Showjobs(filterJobs);
         }
-        return null ;
+        return null;
 
     }
 

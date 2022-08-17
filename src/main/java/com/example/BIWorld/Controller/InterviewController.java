@@ -27,7 +27,7 @@ public class InterviewController {
         System.out.println("register Requiest " + interviewDTO.toString());
         Interview reinterview = interviewServiceImp.add(interviewDTO);
         if (reinterview != null) {
-            return true ;
+            return true;
         }
         return false;
     }
