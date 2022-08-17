@@ -16,11 +16,6 @@ public class LoginController {
     private final CompanyService companyService;
     private final PersonService personService;
 
-
-    public static Company companyAll;
-
-    public static Person personAll;
-
     public static String type = null;
 
 
@@ -34,10 +29,12 @@ public class LoginController {
         System.out.println(loginRequest.toString());
         Company company = companyService.authenticateCompany(loginRequest.getUserName(), loginRequest.getMyPassword());
         if (company != null) {
+            type = "company" ;
             return company;
         }
         Person person = personService.authenticatePerson(loginRequest.getUserName(), loginRequest.getMyPassword());
         if (person != null) {
+            type = "person" ;
             return person;
         } else {
             return null;

@@ -4,6 +4,7 @@ import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.Service.JobsService;
 import com.example.BIWorld.Service.JobsServiceImp;
 import com.example.BIWorld.models.Jobs;
+import com.example.BIWorld.requests.FilterJobs;
 import com.example.BIWorld.requests.SearchRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +21,12 @@ public class JobsController {
 
 
     @GetMapping("/Show")
-    public List<Jobs> Showjobs() {
+    public List<Jobs> Showjobs(@RequestBody FilterJobs filterJobs) {
         System.out.println(LoginController.type);
         if (LoginController.type == null) {
             return null;
         }
-        return jobsService.Showjobs();
+        return jobsService.Showjobs(filterJobs);
     }
 
     @PostMapping("/add")

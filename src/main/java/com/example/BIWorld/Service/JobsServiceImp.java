@@ -6,6 +6,7 @@ import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.JobsRepository;
 import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
+import com.example.BIWorld.requests.FilterJobs;
 import com.example.BIWorld.requests.SearchRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +30,8 @@ public class JobsServiceImp implements JobsService {
     }
 
     @Override
-    public List<Jobs> Showjobs() {
-        return jobsRepository.findAll();
+    public List<Jobs> Showjobs(FilterJobs filterJobs) {
+        return jobsRepository.findByAllData(filterJobs.getFiled(), filterJobs.getDegree(), filterJobs.getGender(), filterJobs.getCity());
     }
 
     public List<Jobs> getJobsByFiled(String jobFiled) {
@@ -65,7 +66,7 @@ public class JobsServiceImp implements JobsService {
         } else {
             Jobs jobs = new Jobs();
 
-            jobs.setCompanyID(LoginController.companyAll);
+            jobs.setCompanyID(companyRepository.findByCompany_id(Integer.parseInt(jobsDTO.getCompanyID())));
             jobs.setJobDescription(jobsDTO.getJobDescription());
             jobs.setJobField(jobsDTO.getJobField());
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
