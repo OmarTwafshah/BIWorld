@@ -23,10 +23,11 @@ public class JobsController {
     @GetMapping("/Show")
     public List<Jobs> Showjobs(@RequestBody FilterJobs filterJobs) {
         System.out.println(LoginController.type);
-        if (LoginController.type == null) {
-            return null;
+        if (LoginController.type == "person") {
+            return jobsService.Showjobs(filterJobs);
         }
-        return jobsService.Showjobs(filterJobs);
+        return null ;
+
     }
 
     @PostMapping("/add")
@@ -51,9 +52,9 @@ public class JobsController {
         return jobsService.deleteJob(id);
     }
 
-//    @GetMapping("/search")
-//    public List<Jobs> findByFiled(@RequestParam SearchRequest searchRequest) {
-//        return jobsService.SearchJob(searchRequest);
-//    }
+    @GetMapping("/search")
+    public List<Jobs> SearchJob(@RequestBody SearchRequest searchRequest) {
+        return jobsService.SearchJob(searchRequest);
+    }
 
 }

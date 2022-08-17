@@ -1,10 +1,7 @@
 package com.example.BIWorld.models;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -52,6 +49,8 @@ public class Company implements Serializable {
             columnDefinition = "TEXT"
     )
     private String companyPassword;
+
+    private String type = "company";
 
     @ManyToOne()
     @JoinColumn(name = "city_id")

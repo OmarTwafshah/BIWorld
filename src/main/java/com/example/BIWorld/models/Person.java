@@ -49,6 +49,8 @@ public class Person implements Serializable {
     )
     private String fullName;
 
+    private final String type = "person";
+
     @Column(
             name = "user_name",
             nullable = false,

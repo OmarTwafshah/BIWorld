@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface JobsRepository extends JpaRepository<Jobs, Integer> {
 
-    String select = JobsServiceImp.select;
-
     Jobs findByJobId(int job_id);
 
     List<Jobs> findByCompanyID(Company companyID);
@@ -32,26 +30,6 @@ public interface JobsRepository extends JpaRepository<Jobs, Integer> {
                              String gender,
                              String city);
 
-    List<Jobs> findByJobFieldAndGenderToJob(String jobfiled, String Gender);
-
-    List<Jobs> findByJobFieldAndAndDegreeRequierd(String jobfield, String Degree);
-
-    List<Jobs> findByJobFieldAndJobTime(String jobfield, String time);
-
-    List<Jobs> findByJobFieldAndGenderToJobAndDegreeRequierd(String jobfield, String gender, String degree);
-
-    List<Jobs> findByJobFieldAndGenderToJobAndJobTime(String jobfield, String gender, String jobtime);
-
-    List<Jobs> findByJobFieldAndAndDegreeRequierdAndJobTime(String field, String time, String degree);
-
-    List<Jobs> findByJobFieldAndDegreeRequierdAndGenderToJob(String field, String Degree, String Gender);
-
-    List<Jobs> findByJobFieldAndJobTimeAndDegreeRequierd(String field, String time, String Degree);
-
-    List<Jobs> findByGenderToJobAndJobFieldAndJobTimeAndDegreeRequierd(String gender, String filed, String time, String degreeRequierd);
-
-    //        @Query()
-//        List<Jobs> findall();
-
+    ;
 
 }

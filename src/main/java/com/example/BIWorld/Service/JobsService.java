@@ -15,7 +15,7 @@ public interface JobsService {
 
     Boolean deleteJob(int id);
 
-   // List<Jobs> SearchJob(SearchRequest searchRequest);
+    List<Jobs> SearchJob(SearchRequest searchRequest);
 
     List<Jobs> Showjobs(FilterJobs filterJobs);
 }

@@ -30,6 +30,11 @@ public class City implements Serializable {
             updatable = false
     )
     private Integer city_id;
+
+    public String getCityName() {
+        return cityName;
+    }
+
     @Column(
             name = "city_name",
             nullable = false,
