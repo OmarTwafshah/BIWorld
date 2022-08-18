@@ -31,7 +31,6 @@ public class ApplyToJobServiceImp implements ApplyToJobService {
                 || applyToJobDTO.getJob() == null) {
             return null;
         } else {
-
             ApplyToJob applyToJob = new ApplyToJob();
             Person person = personRepository.findByPerson_id(Integer.parseInt(applyToJobDTO.getPersons()));
             System.out.println(person.getFullName());

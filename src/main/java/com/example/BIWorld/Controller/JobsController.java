@@ -22,8 +22,6 @@ public class JobsController {
 
     @GetMapping("/Show")
     public List<Jobs> Showjobs(@ModelAttribute FilterJobs filterJobs) {
-        System.out.println("HELLLLLLLLLLLO MAHMOUD");
-        System.out.println(LoginController.type);
         if (LoginController.type != null) {
             System.out.println(filterJobs.toString());
             return jobsService.Showjobs(filterJobs);

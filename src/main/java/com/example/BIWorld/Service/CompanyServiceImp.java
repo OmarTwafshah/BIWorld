@@ -33,7 +33,7 @@ public class CompanyServiceImp implements CompanyService {
 
     @Override
     public Company registerCompany(CompanyDTO companyDTO) {
-        if (companyDTO.getCompanyName() == null
+        if (companyDTO.getCompanyName() == null && companyDTO.getCompanyName() == " "
                 || companyDTO.getUsername() == null
                 || companyDTO.getPassword() == null
                 || companyDTO.getCity() == null

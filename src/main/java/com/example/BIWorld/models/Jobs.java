@@ -36,6 +36,13 @@ public class Jobs implements Serializable {
     private Company companyID;
 
     @Column(
+            name = "job_title",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
+    private String jobTitle;
+
+    @Column(
             name = "job_description",
             nullable = false,
             columnDefinition = "TEXT"

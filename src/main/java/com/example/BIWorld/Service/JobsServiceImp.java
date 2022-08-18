@@ -39,7 +39,6 @@ public class JobsServiceImp implements JobsService {
     private EntityManager entityManager;
 
 
-
     public JobsServiceImp(JobsRepository jobsRepository, CompanyRepository companyRepository, CityRepository cityRepository) {
         this.jobsRepository = jobsRepository;
         this.companyRepository = companyRepository;
@@ -54,16 +53,17 @@ public class JobsServiceImp implements JobsService {
     @Override
     public Jobs add(JobsDTO jobsDTO) {
 
-        if (
+        if (jobsDTO.getJobTitle() == null ||
                 jobsDTO.getJobDescription() == null || jobsDTO.getJobField() == null || jobsDTO.getJobStartDate() == null
-                        || jobsDTO.getJobEndDate() == null || jobsDTO.getJobIsFinished() == null
-                        || jobsDTO.getDegreeRequierd() == null || jobsDTO.getGenderToJob() == null || jobsDTO.getJobTime() == null) {
+                || jobsDTO.getJobEndDate() == null || jobsDTO.getJobIsFinished() == null
+                || jobsDTO.getDegreeRequierd() == null || jobsDTO.getGenderToJob() == null || jobsDTO.getJobTime() == null) {
             return null;
 
         } else {
             Jobs jobs = new Jobs();
 
             jobs.setCompanyID(companyRepository.findByCompany_id(Integer.parseInt(jobsDTO.getCompanyID())));
+            jobs.setJobTitle(jobsDTO.getJobTitle());
             jobs.setJobDescription(jobsDTO.getJobDescription());
             jobs.setJobField(jobsDTO.getJobField());
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -88,6 +88,9 @@ public class JobsServiceImp implements JobsService {
         Jobs jobs = jobsRepository.findById(jobsDTO.getJobId()).orElse(null);
         if (jobs == null) {
             return;
+        }
+        if (jobsDTO.getJobTitle() != null) {
+            jobs.setJobTitle(jobsDTO.getJobTitle());
         }
         if (jobsDTO.getJobDescription() != null) {
             jobs.setJobDescription(jobsDTO.getJobDescription());

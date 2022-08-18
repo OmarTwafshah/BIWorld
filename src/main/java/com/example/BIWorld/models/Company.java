@@ -42,6 +42,7 @@ public class Company implements Serializable {
             nullable = false,
             columnDefinition = "TEXT"
     )
+    @JsonIgnore
     private String companyUserName;
 
     @Column(
@@ -49,6 +50,7 @@ public class Company implements Serializable {
             nullable = false,
             columnDefinition = "TEXT"
     )
+    @JsonIgnore
     private String companyPassword;
 
     private String type = "company";

@@ -27,18 +27,20 @@ public class LoginController {
     @PostMapping("/login")
     public Object login(@RequestBody LoginRequest loginRequest) {
         System.out.println(loginRequest.toString());
+        Person person = personService.authenticatePerson(loginRequest.getUserName(), loginRequest.getMyPassword());
+        if (person != null) {
+            type = "person";
+            return person;
+        }
         Company company = companyService.authenticateCompany(loginRequest.getUserName(), loginRequest.getMyPassword());
         if (company != null) {
             type = "company";
             return company;
         }
-        Person person = personService.authenticatePerson(loginRequest.getUserName(), loginRequest.getMyPassword());
-        if (person != null) {
-            type = "person";
-            return person;
-        } else {
+        if (person == null && company == null) {
             return null;
         }
+        return null;
 
     }
 
