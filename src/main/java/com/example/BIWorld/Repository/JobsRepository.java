@@ -14,17 +14,11 @@ public interface JobsRepository extends JpaRepository<Jobs, Integer> {
 
     Jobs findByJobId(int job_id);
 
-    List<Jobs> findByCompanyID(Company companyID);
+////    String FILTER_CUSTOMERS_ON_FIRST_NAME_AND_LAST_NAME_QUERY = "select j from Customer b where UPPER(b.firstName) like CONCAT('%',UPPER(?1),'%') and UPPER(b.lastName) like CONCAT('%',UPPER(?2),'%')";
+//
+//    @Query("")
 
-    List<Jobs> findByJobField(String jobfield);
-
-    List<Jobs> findByGenderToJob(String GenderToJob);
-
-    List<Jobs> findByDegreeRequierd(String DegreeRequierd);
-
-    List<Jobs> findByJobTime(String JobTime);
-
-    @Query("SELECT j FROM jobs j where j.jobField = ?1 and j.degreeRequierd = ?2 and  j.genderToJob = ?3 and j.companyID.cities.cityName = ?4")
+    @Query("SELECT j FROM jobs j where j.jobField LIKE ?1 and j.degreeRequierd LIKE ?2 and  j.genderToJob LIKE ?3 and j.companyID.cities.cityName LIKE ?4")
     List<Jobs> findByAllData(String filed,
                              String degree,
                              String gender,

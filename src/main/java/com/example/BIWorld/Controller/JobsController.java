@@ -21,9 +21,11 @@ public class JobsController {
 
 
     @GetMapping("/Show")
-    public List<Jobs> Showjobs(@RequestBody FilterJobs filterJobs) {
+    public List<Jobs> Showjobs(@ModelAttribute FilterJobs filterJobs) {
+        System.out.println("HELLLLLLLLLLLO MAHMOUD");
         System.out.println(LoginController.type);
-        if (LoginController.type == "person") {
+        if (LoginController.type != null) {
+            System.out.println(filterJobs.toString());
             return jobsService.Showjobs(filterJobs);
         }
         return null;
@@ -43,7 +45,7 @@ public class JobsController {
     }
 
     @PutMapping("/update")
-    public void UpdateJob(JobsDTO jobsDTO) {
+    public void UpdateJob(@RequestBody JobsDTO jobsDTO) {
         jobsService.UpdateJob(jobsDTO);
     }
 
@@ -53,7 +55,7 @@ public class JobsController {
     }
 
     @GetMapping("/search")
-    public List<Jobs> SearchJob(@RequestBody SearchRequest searchRequest) {
+    public List<Jobs> SearchJob(@ModelAttribute SearchRequest searchRequest) {
         return jobsService.SearchJob(searchRequest);
     }
 

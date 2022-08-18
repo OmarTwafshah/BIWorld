@@ -48,7 +48,7 @@ public class JobsServiceImp implements JobsService {
 
     @Override
     public List<Jobs> Showjobs(FilterJobs filterJobs) {
-        return jobsRepository.findByAllData(filterJobs.getFiled(), filterJobs.getDegree(), filterJobs.getGender(), filterJobs.getCity());
+        return jobsRepository.findByAllData(filterJobs.getPersonField(), filterJobs.getStudyDegree(), filterJobs.getGender(), filterJobs.getCity());
     }
 
     @Override

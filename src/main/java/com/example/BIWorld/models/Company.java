@@ -27,6 +27,7 @@ public class Company implements Serializable {
     @Column(
             name = "company_id"
     )
+    @JsonIgnore
     private Integer companyID;
 
     @Column(

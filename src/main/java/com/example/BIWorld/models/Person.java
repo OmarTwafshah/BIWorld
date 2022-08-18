@@ -40,6 +40,7 @@ public class Person implements Serializable {
             name = "person_id",
             updatable = false
     )
+    @JsonIgnore
     private Integer person_id;
 
     @Column(
@@ -58,6 +59,7 @@ public class Person implements Serializable {
     )
     private String userName;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "city_id")
     private City cities;
