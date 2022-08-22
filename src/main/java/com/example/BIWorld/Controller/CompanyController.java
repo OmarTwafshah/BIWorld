@@ -4,9 +4,11 @@ import com.example.BIWorld.DTO.CompanyDTO;
 import com.example.BIWorld.Service.CompanyService;
 import com.example.BIWorld.Service.CompanyServiceImp;
 import com.example.BIWorld.models.Company;
+import com.example.BIWorld.models.Jobs;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/Company")
@@ -44,6 +46,11 @@ public class CompanyController {
     @DeleteMapping(path = "/delete")
     public Boolean deleteStudent(@RequestParam(required = true) int id) {
         return companyService.deleteJob(id);
+    }
+
+    @GetMapping("/{id}/showJobs")
+    public Set<Jobs> findJobsByCompany(@PathVariable int id) {
+        return companyService.getJobs(id);
     }
 
 }

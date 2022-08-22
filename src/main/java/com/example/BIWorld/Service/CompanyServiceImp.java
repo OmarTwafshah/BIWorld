@@ -6,6 +6,7 @@ import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.PersonRepository;
 import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Company;
+import com.example.BIWorld.models.Jobs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -144,5 +145,10 @@ public class CompanyServiceImp implements CompanyService {
             companyRepository.deleteById(id);
             return true;
         }
+    }
+
+    @Override
+    public Set<Jobs> getJobs(Integer id){
+        return companyRepository.findByCompany_id(id).getJobs();
     }
 }

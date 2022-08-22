@@ -3,6 +3,7 @@ package com.example.BIWorld.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,7 +12,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "companies")
-@Data
 public class Company implements Serializable {
 
     @Id
@@ -97,6 +97,10 @@ public class Company implements Serializable {
             columnDefinition = "TEXT"
     )
     private String address;
+
+    public Set<Jobs> getJobs() {
+        return jobs;
+    }
 
     @JsonIgnore
     @OneToMany(mappedBy = "companyID")
@@ -218,37 +222,9 @@ public class Company implements Serializable {
         this.address = address;
     }
 
-    public Set<Jobs> getJobs() {
-        return jobs;
-    }
 
     public void setJobs(Set<Jobs> jobs) {
         this.jobs = jobs;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Company company = (Company) o;
-        return Objects.equals(companyID, company.companyID) &&
-                Objects.equals(companyName, company.companyName) &&
-                Objects.equals(companyUserName, company.companyUserName) &&
-                Objects.equals(companyPassword, company.companyPassword) &&
-                Objects.equals(cities, company.cities) &&
-                Objects.equals(companyDescription, company.companyDescription) &&
-                Objects.equals(companyPhone, company.companyPhone) &&
-                Objects.equals(companyFax, company.companyFax) &&
-                Objects.equals(companyEmail, company.companyEmail) &&
-                Objects.equals(companyTax, company.companyTax) &&
-                Objects.equals(address, company.address) &&
-                Objects.equals(jobs, company.jobs) &&
-                Objects.equals(applyToJobs, company.applyToJobs);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(companyID, companyName, companyUserName, companyPassword, cities, companyDescription, companyPhone, companyFax, companyEmail, companyTax, address, jobs, applyToJobs);
     }
 
     @Override

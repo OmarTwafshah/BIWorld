@@ -12,10 +12,10 @@ public class JobsDTO {
     private String jobDescription;
     private String jobField;
     private String jobStartDate;
-    private String jobEndDate;
+    private String endDate;
     private Boolean jobIsFinished;
-    private String degreeRequierd;
-    private String genderToJob;
+    private String studyDegree;
+    private String gender;
     private String jobTime;
 
 }

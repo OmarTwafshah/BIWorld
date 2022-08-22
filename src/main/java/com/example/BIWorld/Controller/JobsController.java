@@ -5,7 +5,9 @@ import com.example.BIWorld.Service.JobsService;
 import com.example.BIWorld.Service.JobsServiceImp;
 import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.requests.FilterJobs;
+import com.example.BIWorld.requests.JobDetails;
 import com.example.BIWorld.requests.SearchRequest;
+import com.example.BIWorld.requests.jobs_show;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,6 +57,11 @@ public class JobsController {
     @GetMapping("/search")
     public List<Jobs> SearchJob(@ModelAttribute SearchRequest searchRequest) {
         return jobsService.SearchJob(searchRequest);
+    }
+
+    @GetMapping("/ShowDetails")
+    public Object jobDetails(@ModelAttribute JobDetails jobDetails ){
+        return jobsService.getInfo(jobDetails) ;
     }
 
 }

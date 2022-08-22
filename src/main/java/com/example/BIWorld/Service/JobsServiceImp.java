@@ -4,21 +4,17 @@ import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.Repository.CityRepository;
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.JobsRepository;
-import com.example.BIWorld.models.City;
-import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.requests.FilterJobs;
+import com.example.BIWorld.requests.JobDetails;
 import com.example.BIWorld.requests.SearchRequest;
+import com.example.BIWorld.requests.jobs_show;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -54,9 +50,9 @@ public class JobsServiceImp implements JobsService {
     public Jobs add(JobsDTO jobsDTO) {
 
         if (jobsDTO.getJobTitle() == null ||
-                jobsDTO.getJobDescription() == null || jobsDTO.getJobField() == null || jobsDTO.getJobStartDate() == null
-                || jobsDTO.getJobEndDate() == null || jobsDTO.getJobIsFinished() == null
-                || jobsDTO.getDegreeRequierd() == null || jobsDTO.getGenderToJob() == null || jobsDTO.getJobTime() == null) {
+                jobsDTO.getJobDescription() == null || jobsDTO.getJobField() == null
+                || jobsDTO.getEndDate() == null
+                || jobsDTO.getStudyDegree() == null || jobsDTO.getGender() == null || jobsDTO.getJobTime() == null) {
             return null;
 
         } else {
@@ -66,14 +62,14 @@ public class JobsServiceImp implements JobsService {
             jobs.setJobTitle(jobsDTO.getJobTitle());
             jobs.setJobDescription(jobsDTO.getJobDescription());
             jobs.setJobField(jobsDTO.getJobField());
+            LocalDate currentDateTime = LocalDate.from(LocalDate.now());
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate localDate = LocalDate.parse(jobsDTO.getJobStartDate(), format);
-            jobs.setJobStartDate(localDate);
-            LocalDate localDate2 = LocalDate.parse(jobsDTO.getJobEndDate(), format);
+            jobs.setJobStartDate(currentDateTime);
+            LocalDate localDate2 = LocalDate.parse(jobsDTO.getEndDate(), format);
             jobs.setJobEndDate(localDate2);
-            jobs.setJobIsFinished(jobsDTO.getJobIsFinished());
-            jobs.setDegreeRequierd(jobsDTO.getDegreeRequierd());
-            jobs.setGenderToJob(jobsDTO.getGenderToJob());
+            jobs.setJobIsFinished(false);
+            jobs.setDegreeRequierd(jobsDTO.getStudyDegree());
+            jobs.setGenderToJob(jobsDTO.getGender());
             jobs.setJobTime(jobsDTO.getJobTime());
             return jobsRepository.save(jobs);
 
@@ -101,17 +97,15 @@ public class JobsServiceImp implements JobsService {
         if (jobsDTO.getJobStartDate() != null) {
             jobs.setJobStartDate(LocalDate.parse(jobsDTO.getJobStartDate()));
         }
-        if (jobsDTO.getJobEndDate() != null) {
-            jobs.setJobEndDate(LocalDate.parse(jobsDTO.getJobEndDate()));
-        }
+
         if (jobsDTO.getJobIsFinished() != null) {
             jobs.setJobIsFinished(jobsDTO.getJobIsFinished());
         }
-        if (jobsDTO.getDegreeRequierd() != null) {
-            jobs.setDegreeRequierd(jobsDTO.getDegreeRequierd());
+        if (jobsDTO.getStudyDegree() != null) {
+            jobs.setDegreeRequierd(jobsDTO.getStudyDegree());
         }
-        if (jobsDTO.getGenderToJob() != null) {
-            jobs.setGenderToJob(jobsDTO.getGenderToJob());
+        if (jobsDTO.getGender() != null) {
+            jobs.setGenderToJob(jobsDTO.getGender());
         }
         if (jobsDTO.getJobTime() != null) {
             jobs.setJobTime(jobsDTO.getJobTime());
@@ -155,5 +149,12 @@ public class JobsServiceImp implements JobsService {
         }
         return query.getResultList();
 
+    }
+
+    @Override
+    public Object getInfo(JobDetails jobDetails){
+        ArrayList<Object> arr = new ArrayList<>();
+
+        return arr ;
     }
 }
