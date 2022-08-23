@@ -4,11 +4,11 @@ import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.Repository.CityRepository;
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.JobsRepository;
+import com.example.BIWorld.Repository.applyToJobRepository;
 import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.requests.FilterJobs;
 import com.example.BIWorld.requests.JobDetails;
 import com.example.BIWorld.requests.SearchRequest;
-import com.example.BIWorld.requests.jobs_show;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +28,8 @@ public class JobsServiceImp implements JobsService {
 
     private final CompanyRepository companyRepository;
 
+    private final applyToJobRepository repository;
+
     private final CityRepository cityRepository;
 
 
@@ -35,9 +37,10 @@ public class JobsServiceImp implements JobsService {
     private EntityManager entityManager;
 
 
-    public JobsServiceImp(JobsRepository jobsRepository, CompanyRepository companyRepository, CityRepository cityRepository) {
+    public JobsServiceImp(JobsRepository jobsRepository, CompanyRepository companyRepository, applyToJobRepository repository, CityRepository cityRepository) {
         this.jobsRepository = jobsRepository;
         this.companyRepository = companyRepository;
+        this.repository = repository;
         this.cityRepository = cityRepository;
     }
 
@@ -152,9 +155,18 @@ public class JobsServiceImp implements JobsService {
     }
 
     @Override
-    public Object getInfo(JobDetails jobDetails){
+    public Object getInfo(JobDetails jobDetails) {
         ArrayList<Object> arr = new ArrayList<>();
+        if (jobDetails == null) {
+            return "Empty";
+        }
+        Jobs job = jobsRepository.findByJobId(Integer.parseInt(jobDetails.getJobID()));
+        arr.add(job);
+        if (repository.findApplyToJobByApplication_idAndPersons(Integer.parseInt(jobDetails.getJobID()), Integer.parseInt(jobDetails.getPersonID())).isEmpty()) {
+            arr.add(false);
+        }else
+            arr.add(true);
 
-        return arr ;
+        return arr;
     }
 }
