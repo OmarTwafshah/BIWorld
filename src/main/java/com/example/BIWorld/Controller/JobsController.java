@@ -61,6 +61,8 @@ public class JobsController {
 
     @GetMapping("/ShowDetails")
     public Object jobDetails(@ModelAttribute JobDetails jobDetails ){
+
+        System.out.println(jobDetails.toString());
         return jobsService.getInfo(jobDetails) ;
     }
 

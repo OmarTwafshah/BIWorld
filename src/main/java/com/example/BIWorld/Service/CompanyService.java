@@ -10,7 +10,7 @@ import java.util.Set;
 
 public interface CompanyService {
 
-    Company registerCompany(CompanyDTO companyDTO);
+    Object registerCompany(CompanyDTO companyDTO);
 
     Company authenticateCompany(String userName, String password);
 

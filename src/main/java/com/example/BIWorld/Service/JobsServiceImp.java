@@ -9,6 +9,7 @@ import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.requests.FilterJobs;
 import com.example.BIWorld.requests.JobDetails;
 import com.example.BIWorld.requests.SearchRequest;
+import com.example.BIWorld.requests.jobs_show;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,17 +51,16 @@ public class JobsServiceImp implements JobsService {
     }
 
     @Override
-    public Jobs add(JobsDTO jobsDTO) {
+    public Object add(JobsDTO jobsDTO) {
 
         if (jobsDTO.getJobTitle() == null ||
                 jobsDTO.getJobDescription() == null || jobsDTO.getJobField() == null
                 || jobsDTO.getEndDate() == null
                 || jobsDTO.getStudyDegree() == null || jobsDTO.getGender() == null || jobsDTO.getJobTime() == null) {
-            return null;
+            return "One filed is empty";
 
         } else {
             Jobs jobs = new Jobs();
-
             jobs.setCompanyID(companyRepository.findByCompany_id(Integer.parseInt(jobsDTO.getCompanyID())));
             jobs.setJobTitle(jobsDTO.getJobTitle());
             jobs.setJobDescription(jobsDTO.getJobDescription());
@@ -131,17 +131,24 @@ public class JobsServiceImp implements JobsService {
         Map<String, Object> params = new HashMap<>();
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM jobs j left join companies c on j.companyid=c.company_id left join cities i on c.city_id=i.city_id where 1=1 ");
-        if (searchRequest.getGender() != null && searchRequest.getGender() != "") {
-            sql.append("AND j.gender_to_job ILIKE :gender ");
+        if (searchRequest.getGender() != null && searchRequest.getGender() != "" && searchRequest.getGender() != "null") {
+            sql.append("AND ( j.gender_to_job ILIKE :gender OR j.gender_to_job ILIKE :any )");
             params.put("gender", "%" + searchRequest.getGender() + "%");
+            params.put("any", "any");
+
         }
 
-        if (searchRequest.getJobTime() != null && searchRequest.getJobTime() != "") {
-            sql.append("AND j.job_time ILIKE :field ");
-            params.put("field", searchRequest.getJobTime());
+        if (searchRequest.getPersonField() != null && searchRequest.getPersonField() != "" && searchRequest.getPersonField() != "null") {
+            sql.append("AND j.job_field ILIKE :field ");
+            params.put("field", searchRequest.getPersonField());
         }
 
-        if (searchRequest.getCity() != null && searchRequest.getCity() != "") {
+        if (searchRequest.getStudyDegree() != null && searchRequest.getStudyDegree() != "" && searchRequest.getStudyDegree() != "null") {
+            sql.append("AND j.degree_requierd ILIKE :degree ");
+            params.put("degree", searchRequest.getStudyDegree());
+        }
+
+        if (searchRequest.getCity() != null && searchRequest.getCity() != "" && searchRequest.getCity() != "null") {
             sql.append("AND i.city_name ILIKE :city ");
             params.put("city", searchRequest.getCity());
         }
@@ -164,8 +171,10 @@ public class JobsServiceImp implements JobsService {
         arr.add(job);
         if (repository.findApplyToJobByApplication_idAndPersons(Integer.parseInt(jobDetails.getJobID()), Integer.parseInt(jobDetails.getPersonID())).isEmpty()) {
             arr.add(false);
-        }else
+        }else {
             arr.add(true);
+            arr.add(repository.findApplyToJobByApplication_idAndPersons(Integer.parseInt(jobDetails.getJobID()), Integer.parseInt(jobDetails.getPersonID())));
+        }
 
         return arr;
     }

@@ -30,8 +30,8 @@ public class CompanyController {
     @PostMapping("/register")
     public Object register(@RequestBody CompanyDTO companyDTO) {
         System.out.println(companyDTO.toString());
-        Company reCompany = companyService.registerCompany(companyDTO);
-        if (reCompany != null) {
+        Company reCompany = (Company) companyService.registerCompany(companyDTO);
+        if (reCompany.getCompanyName() != null) {
             return true;
         }
         return false;
@@ -52,5 +52,8 @@ public class CompanyController {
     public Set<Jobs> findJobsByCompany(@PathVariable int id) {
         return companyService.getJobs(id);
     }
+
+//    @GetMapping("/jobInfo")
+//    public Object getAlljobs()
 
 }

@@ -7,7 +7,7 @@ import com.example.BIWorld.models.Person;
 import java.util.List;
 
 public interface PersonService {
-    Person registerPerson (
+    Object registerPerson (
             PersonDTO personDTO) ;
 
     Person authenticatePerson(String userName , String password );

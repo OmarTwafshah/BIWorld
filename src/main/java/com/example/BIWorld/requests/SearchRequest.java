@@ -10,6 +10,6 @@ import lombok.Setter;
 public class SearchRequest {
     private String gender ;
     private String city ;
-    private String jobTime ;
-
+    private String personField ;
+    private String studyDegree;
 }

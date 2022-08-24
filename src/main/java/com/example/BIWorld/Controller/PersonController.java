@@ -27,7 +27,7 @@ public class PersonController {
     @PostMapping("/register")
     public Object register(@RequestBody PersonDTO personDTO) {
         System.out.println(personDTO.toString());
-        Person rePerson = personService.registerPerson(personDTO);
+        Person rePerson = (Person) personService.registerPerson(personDTO);
         if (rePerson != null) {
             return true;
         }
@@ -44,4 +44,9 @@ public class PersonController {
     public Boolean deleteStudent(@RequestParam(required = true) int id) {
         return personService.deletePerson(id);
     }
+
+//    @DeleteMapping(path = "/delete/{id}")
+//    public Boolean deleteStudent(@PathVariable int id) {
+//        return personService.deletePerson(id);
+//    }
 }

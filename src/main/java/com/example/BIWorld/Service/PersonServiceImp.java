@@ -34,41 +34,61 @@ public class PersonServiceImp implements PersonService {
     }
 
     @Override
-    public Person registerPerson(PersonDTO personDTO) {
+    public Object registerPerson(PersonDTO personDTO) {
+        if (personDTO.getFullName() == null && personDTO.getFullName() == " "
+                || personDTO.getUsername() == null
+                || personDTO.getPassword() == null
+                || personDTO.getCity() == null
+                || personDTO.getCanddescription() == null
+                || personDTO.getPhone() == null
+                || personDTO.getField() == null
+                || personDTO.getEmail() == null
+                || personDTO.getDateOfBirth() == null
+                || personDTO.getGender() == null
+                || personDTO.getStudyDegree() == null
+                || personDTO.getIntrest() == null
+                || personDTO.getPicPath() == null) {
+            return "One filed is empty";
+        }
 
-        if (personRepository.findByUserName(personDTO.getUsername()).isEmpty() &&
-                personRepository.findByPersonPhone(personDTO.getPhone()).isEmpty() &&
-                personRepository.findByPersonEmail(personDTO.getEmail()).isEmpty() &&
-                companyRepository.findByCompanyUserName(personDTO.getUsername()).isEmpty() &&
-                companyRepository.findByCompanyEmail(personDTO.getEmail()).isEmpty()) {
-            Person person = new Person();
-            person.setFullName(personDTO.getFullName());
-            person.setUserName(personDTO.getUsername());
-            //person.setCity(cityRepository.findBycity_id(city));
-            City city = cityRepository.findByCityName(personDTO.getCity());
-            if (city != null ) {
-                person.setCity(city);
-            } else {
-                System.out.println(personDTO.getCity() + " is not found ");
-                return null;
-            }
-            person.setPersonEmail(personDTO.getEmail());
-            person.setPassword(personDTO.getPassword());
-            person.setPersonPhone(personDTO.getPhone());
-            person.setPersonField(personDTO.getField());
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate localDate =  LocalDate.parse(personDTO.getDateOfBirth(), format);
-            person.setDateOfBirth(localDate);
-            person.setGender(personDTO.getGender());
-            person.setStudyDegree(personDTO.getStudyDegree());
-            person.setDescription(personDTO.getCanddescription());
-            person.setPicPath(personDTO.getPicPath());
-            person.setInterests(personDTO.getIntrest());
-            return personRepository.save(person);
+        if (!personRepository.findByUserName(personDTO.getUsername()).isEmpty()
+                && !companyRepository.findByCompanyUserName(personDTO.getUsername()).isEmpty()) {
+            return "User Name is Used";
+        }
+
+        if (!personRepository.findByPersonEmail(personDTO.getEmail()).isEmpty()
+                && !companyRepository.findByCompanyEmail(personDTO.getEmail()).isEmpty()) {
+            return "Email is Used";
+        }
+
+        if (!personRepository.findByPersonPhone(personDTO.getPhone()).isEmpty()) {
+            return "Phone Number is Used";
+        }
+
+        Person person = new Person();
+        person.setFullName(personDTO.getFullName());
+        person.setUserName(personDTO.getUsername());
+        //person.setCity(cityRepository.findBycity_id(city));
+        City city = cityRepository.findByCityName(personDTO.getCity());
+        if (city != null) {
+            person.setCity(city);
         } else {
-            System.out.println("IsUSed");
+            System.out.println(personDTO.getCity() + " is not found ");
             return null;
         }
+        person.setPersonEmail(personDTO.getEmail());
+        person.setPassword(personDTO.getPassword());
+        person.setPersonPhone(personDTO.getPhone());
+        person.setPersonField(personDTO.getField());
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate localDate = LocalDate.parse(personDTO.getDateOfBirth(), format);
+        person.setDateOfBirth(localDate);
+        person.setGender(personDTO.getGender());
+        person.setStudyDegree(personDTO.getStudyDegree());
+        person.setDescription(personDTO.getCanddescription());
+        person.setPicPath(personDTO.getPicPath());
+        person.setInterests(personDTO.getIntrest());
+        return personRepository.save(person);
 
 
     }
@@ -99,7 +119,7 @@ public class PersonServiceImp implements PersonService {
         }
         if (personDTO.getCity() != null) {
             City city = cityRepository.findByCityName(personDTO.getCity());
-            if (city != null ) {
+            if (city != null) {
                 per.setCity(city);
             }
         }

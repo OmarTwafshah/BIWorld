@@ -11,7 +11,7 @@ import com.example.BIWorld.requests.jobs_show;
 import java.util.List;
 
 public interface JobsService {
-    Jobs add(JobsDTO jobsDTO);
+    Object add(JobsDTO jobsDTO);
 
     void UpdateJob(JobsDTO jobsDTO);
 

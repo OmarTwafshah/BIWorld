@@ -20,9 +20,8 @@ public interface JobsRepository extends JpaRepository<Jobs, Integer> {
 //
 //    @Query("")
 
-//    @Query(value = "select j.jobId,j.jobTitle , j.jobField,c.companyName,i.cityName FROM jobs j left join  Company c on c.companyID=j.companyID.companyID left join cities i on i.city_id=c.cities.city_id where j.jobField LIKE ?1 and j.degreeRequierd LIKE ?2 and  j.genderToJob  LIKE ?3 and j.companyID.cities.cityName LIKE ?4")
 @Query(value = "select j FROM jobs j where j.jobField LIKE ?1 and j.degreeRequierd LIKE ?2 and  j.genderToJob  LIKE ?3 and j.companyID.cities.cityName LIKE ?4")
-
+//@Query(value = "select new com.example.BIWorld.DTO.JobsDTO(j.jobId,j.jobTitle) , j.jobField,c.companyName,i.cityName FROM jobs j left join  Company c on c.companyID=j.companyID.companyID left join cities i on i.city_id=c.cities.city_id where j.jobField LIKE ?1 and j.degreeRequierd LIKE ?2 and  j.genderToJob  LIKE ?3 and j.companyID.cities.cityName LIKE ?4")
 List<Jobs> findByAllData(String filed,
                                   String degree,
                                   String gender,

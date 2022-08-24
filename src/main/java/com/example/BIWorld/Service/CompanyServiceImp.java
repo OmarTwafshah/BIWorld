@@ -33,7 +33,7 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
-    public Company registerCompany(CompanyDTO companyDTO) {
+    public Object registerCompany(CompanyDTO companyDTO) {
         if (companyDTO.getCompanyName() == null && companyDTO.getCompanyName() == " "
                 || companyDTO.getUsername() == null
                 || companyDTO.getPassword() == null
@@ -44,38 +44,48 @@ public class CompanyServiceImp implements CompanyService {
                 || companyDTO.getEmail() == null
                 || companyDTO.getTax() == null
                 || companyDTO.getAddress() == null) {
-            return null;
+            return "One filed is empty";
         } else {
-            if (personRepository.findByUserName(companyDTO.getUsername()).isEmpty() &&
-                    personRepository.findByPersonEmail(companyDTO.getEmail()).isEmpty() &&
-                    companyRepository.findByCompanyUserName(companyDTO.getUsername()).isEmpty() &&
-                    companyRepository.findByCompanyEmail(companyDTO.getEmail()).isEmpty() &&
-                    companyRepository.findByCompanyFax(companyDTO.getFax()).isEmpty() &&
-                    companyRepository.findByCompanyTax(companyDTO.getTax()).isEmpty() &&
-                    companyRepository.findByCompanyPhone(companyDTO.getPhone()).isEmpty()) {
-                Company company = new Company();
-                company.setCompanyName(companyDTO.getCompanyName());
-                company.setCompanyUserName(companyDTO.getUsername());
-                company.setCompanyPassword(companyDTO.getPassword());
-                City city = cityRepository.findByCityName(companyDTO.getCity());
-                if (city != null ) {
-                    company.setCities(city);
-                } else {
-                    System.out.println(companyDTO.getCity() + " is not found ");
-                    return null;
-                }
-                company.setCompanyDescription(companyDTO.getCompdescription());
-                company.setCompanyPhone(companyDTO.getPhone());
-                company.setCompanyFax(companyDTO.getFax());
-                company.setCompanyEmail(companyDTO.getEmail());
-                company.setCompanyTax(companyDTO.getTax());
-                company.setAddress(companyDTO.getAddress());
-                return companyRepository.save(company);
-
-            } else {
-                System.out.println("IsUSed");
-                return null;
+            if (!personRepository.findByUserName(companyDTO.getUsername()).isEmpty()
+                    && !companyRepository.findByCompanyUserName(companyDTO.getUsername()).isEmpty()) {
+                return "User Name is Used";
             }
+
+            if (!personRepository.findByPersonEmail(companyDTO.getEmail()).isEmpty()
+                    && !companyRepository.findByCompanyEmail(companyDTO.getEmail()).isEmpty()) {
+                return "Email is Used";
+            }
+
+            if (!companyRepository.findByCompanyFax(companyDTO.getFax()).isEmpty()) {
+                return "Fax number is Used";
+            }
+
+            if (!companyRepository.findByCompanyTax(companyDTO.getTax()).isEmpty()) {
+                return "Tax number is Used";
+            }
+
+            if (!companyRepository.findByCompanyPhone(companyDTO.getPhone()).isEmpty()) {
+                return "Phone Number is Used";
+            }
+
+            Company company = new Company();
+            company.setCompanyName(companyDTO.getCompanyName());
+            company.setCompanyUserName(companyDTO.getUsername());
+            company.setCompanyPassword(companyDTO.getPassword());
+            City city = cityRepository.findByCityName(companyDTO.getCity());
+            if (city != null) {
+                company.setCities(city);
+            } else {
+                System.out.println(companyDTO.getCity() + " is not found ");
+                return "not found";
+            }
+            company.setCompanyDescription(companyDTO.getCompdescription());
+            company.setCompanyPhone(companyDTO.getPhone());
+            company.setCompanyFax(companyDTO.getFax());
+            company.setCompanyEmail(companyDTO.getEmail());
+            company.setCompanyTax(companyDTO.getTax());
+            company.setAddress(companyDTO.getAddress());
+            return companyRepository.save(company);
 
         }
     }
@@ -117,7 +127,7 @@ public class CompanyServiceImp implements CompanyService {
         }
         if (companyDTO.getCity() != null) {
             City city = cityRepository.findByCityName(companyDTO.getCity());
-            if (city != null ) {
+            if (city != null) {
                 comp.setCities(city);
             }
         }
@@ -148,7 +158,7 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
-    public Set<Jobs> getJobs(Integer id){
+    public Set<Jobs> getJobs(Integer id) {
         return companyRepository.findByCompany_id(id).getJobs();
     }
 }
