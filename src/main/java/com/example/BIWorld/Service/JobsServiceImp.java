@@ -131,10 +131,9 @@ public class JobsServiceImp implements JobsService {
         Map<String, Object> params = new HashMap<>();
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM jobs j left join companies c on j.companyid=c.company_id left join cities i on c.city_id=i.city_id where 1=1 ");
-        if (searchRequest.getGender() != null && searchRequest.getGender() != "" && searchRequest.getGender() != "null") {
-            sql.append("AND ( j.gender_to_job ILIKE :gender OR j.gender_to_job ILIKE :any )");
+        if (searchRequest.getGender() != null && !searchRequest.getGender().isEmpty() && !searchRequest.getGender().equalsIgnoreCase("null")) {
+            sql.append("AND j.gender_to_job = :gender OR j.gender_to_job = 'any' ");
             params.put("gender", "%" + searchRequest.getGender() + "%");
-            params.put("any", "any");
 
         }
 
@@ -152,7 +151,7 @@ public class JobsServiceImp implements JobsService {
             sql.append("AND i.city_name ILIKE :city ");
             params.put("city", searchRequest.getCity());
         }
-
+        System.out.println(searchRequest);
         Query query = entityManager.createNativeQuery(sql.toString(), Jobs.class);
         for (Map.Entry<String, Object> param : params.entrySet()) {
             query.setParameter(param.getKey(), param.getValue());
