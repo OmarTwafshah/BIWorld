@@ -5,11 +5,12 @@ import com.example.BIWorld.Repository.CityRepository;
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.JobsRepository;
 import com.example.BIWorld.Repository.applyToJobRepository;
+import com.example.BIWorld.models.ApplyToJob;
 import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.requests.FilterJobs;
 import com.example.BIWorld.requests.JobDetails;
+import com.example.BIWorld.requests.Jobs_show;
 import com.example.BIWorld.requests.SearchRequest;
-import com.example.BIWorld.requests.jobs_show;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @Service
 public class JobsServiceImp implements JobsService {
@@ -46,7 +49,7 @@ public class JobsServiceImp implements JobsService {
     }
 
     @Override
-    public List<Jobs> Showjobs(FilterJobs filterJobs) {
+    public List<Jobs_show> Showjobs(FilterJobs filterJobs) {
         return jobsRepository.findByAllData(filterJobs.getPersonField(), filterJobs.getStudyDegree(), filterJobs.getGender(), filterJobs.getCity());
     }
 
@@ -61,15 +64,15 @@ public class JobsServiceImp implements JobsService {
 
         } else {
             Jobs jobs = new Jobs();
-            jobs.setCompanyID(companyRepository.findByCompany_id(Integer.parseInt(jobsDTO.getCompanyID())));
+            jobs.setCompanyID(companyRepository.findByCompany_id(jobsDTO.getCompanyID()));
             jobs.setJobTitle(jobsDTO.getJobTitle());
             jobs.setJobDescription(jobsDTO.getJobDescription());
             jobs.setJobField(jobsDTO.getJobField());
             LocalDate currentDateTime = LocalDate.from(LocalDate.now());
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             jobs.setJobStartDate(currentDateTime);
-            LocalDate localDate2 = LocalDate.parse(jobsDTO.getEndDate(), format);
-            jobs.setJobEndDate(localDate2);
+            LocalDate localDate = LocalDate.parse(jobsDTO.getEndDate(), format);
+            jobs.setJobEndDate(localDate);
             jobs.setJobIsFinished(false);
             jobs.setDegreeRequierd(jobsDTO.getStudyDegree());
             jobs.setGenderToJob(jobsDTO.getGender());
@@ -132,14 +135,19 @@ public class JobsServiceImp implements JobsService {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM jobs j left join companies c on j.companyid=c.company_id left join cities i on c.city_id=i.city_id where 1=1 ");
         if (searchRequest.getGender() != null && !searchRequest.getGender().isEmpty() && !searchRequest.getGender().equalsIgnoreCase("null")) {
-            sql.append("AND j.gender_to_job = :gender OR j.gender_to_job = 'any' ");
-            params.put("gender", "%" + searchRequest.getGender() + "%");
+            if(searchRequest.getGender().equals("Male")){
+                sql.append("AND j.gender_to_job != 'Female' ");
+            }else {
+                sql.append("AND j.gender_to_job != 'Male' ");
+            }
+//            sql.append("AND j.gender_to_job = :gender OR j.gender_to_job = 'any' ");
+//            params.put("gender", "%" + searchRequest.getGender() + "%");
 
         }
 
         if (searchRequest.getPersonField() != null && searchRequest.getPersonField() != "" && searchRequest.getPersonField() != "null") {
             sql.append("AND j.job_field ILIKE :field ");
-            params.put("field", searchRequest.getPersonField());
+            params.put("field", searchRequest.getPersonField() );
         }
 
         if (searchRequest.getStudyDegree() != null && searchRequest.getStudyDegree() != "" && searchRequest.getStudyDegree() != "null") {
@@ -166,15 +174,74 @@ public class JobsServiceImp implements JobsService {
         if (jobDetails == null) {
             return "Empty";
         }
-        Jobs job = jobsRepository.findByJobId(Integer.parseInt(jobDetails.getJobID()));
+        Jobs job = jobsRepository.findByJobId(jobDetails.getJobID());
+        ApplyToJob applyToJob = repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getPersonID()) ;
         arr.add(job);
-        if (repository.findApplyToJobByApplication_idAndPersons(Integer.parseInt(jobDetails.getJobID()), Integer.parseInt(jobDetails.getPersonID())).isEmpty()) {
+        if (applyToJob == null) {
             arr.add(false);
         }else {
             arr.add(true);
-            arr.add(repository.findApplyToJobByApplication_idAndPersons(Integer.parseInt(jobDetails.getJobID()), Integer.parseInt(jobDetails.getPersonID())));
+            arr.add(repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(),jobDetails.getPersonID()).getStatus());
         }
 
         return arr;
     }
+    //package nn;
+
+//import java.util.HashMap;
+//import java.util.StringJoiner;
+//
+//import nn.SearchJobBy.Search;
+//
+//    public class Driver {
+//
+//        public enum Search {
+//            CITY {
+//                @Override
+//                public String toString() {
+//                    return "i.city_name=%s";
+//                }
+//            },
+//            GENDER {
+//                @Override
+//                public String toString() {
+//                    return "j.gender_to_job=%s";
+//                }
+//            },
+//            FILED {
+//                @Override
+//                public String toString() {
+//                    return "j.job_filed=%s";
+//                }
+//            },
+//            STUDYDEGREE {
+//                @Override
+//                public String toString() {
+//                    return "j.degree_requierd=%s";
+//                }
+//            };
+//        }
+//
+//        public static void main(String[] args) {
+//
+//            try {
+//                HashMap<Search, Object> map = new HashMap<>();
+//                String query = "SELECT * FROM jobs j left join companies c on j.companyid=c.company_id left join cities i on c.city_id=i.city_id where %s";
+//                StringJoiner joiner = new StringJoiner(" AND ");
+//                for (Search search : map.keySet()) {
+//                    if (!(search instanceof Search))
+//                        throw new Exception();
+//                    joiner.add(String.format(search.toString(),map.get(search)));
+//                }
+//                System.out.println(String.format(query, joiner));
+//            } catch (Exception exception) {
+//                System.out.println("please check the inputs");
+//            }
+//        }
+//    }
+
+
+
+
+
 }

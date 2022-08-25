@@ -5,8 +5,8 @@ import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.requests.FilterJobs;
 import com.example.BIWorld.requests.JobDetails;
+import com.example.BIWorld.requests.Jobs_show;
 import com.example.BIWorld.requests.SearchRequest;
-import com.example.BIWorld.requests.jobs_show;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public interface JobsService {
 
     List<Jobs> SearchJob(SearchRequest searchRequest);
 
-    List<Jobs> Showjobs(FilterJobs filterJobs);
+    List<Jobs_show> Showjobs(FilterJobs filterJobs);
 
     Object getInfo(JobDetails jobDetails);
 }

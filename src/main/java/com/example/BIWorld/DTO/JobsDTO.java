@@ -8,7 +8,7 @@ import lombok.Data;
 public class JobsDTO {
     private Integer jobId;
     private String jobTitle;
-    private String companyID;
+    private Integer companyID;
     private String jobDescription;
     private String jobField;
     private String jobStartDate;

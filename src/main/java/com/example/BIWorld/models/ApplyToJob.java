@@ -63,6 +63,7 @@ public class ApplyToJob implements Serializable {
 
     @OneToOne(mappedBy = "applyToJob")
     @JsonIgnoreProperties(value = "applyToJob")
+    @JsonIgnore
     private Interview interview;
 
     public ApplyToJob() {

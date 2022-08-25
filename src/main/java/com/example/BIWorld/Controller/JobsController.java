@@ -6,8 +6,8 @@ import com.example.BIWorld.Service.JobsServiceImp;
 import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.requests.FilterJobs;
 import com.example.BIWorld.requests.JobDetails;
+import com.example.BIWorld.requests.Jobs_show;
 import com.example.BIWorld.requests.SearchRequest;
-import com.example.BIWorld.requests.jobs_show;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class JobsController {
 
 
     @GetMapping("/Show")
-    public List<Jobs> Showjobs(@ModelAttribute FilterJobs filterJobs) {
+    public List<Jobs_show> Showjobs(@ModelAttribute FilterJobs filterJobs) {
         if (LoginController.type != null) {
             System.out.println(filterJobs.toString());
             return jobsService.Showjobs(filterJobs);
@@ -33,13 +33,14 @@ public class JobsController {
     }
 
     @PostMapping("/add")
-    public void jobs(@RequestBody JobsDTO jobsDTO) {
+    public Boolean jobs(@RequestBody JobsDTO jobsDTO) {
         if (LoginController.type == "company") {
             System.out.println(jobsDTO.toString());
             jobsService.add(jobsDTO);
+            return true ;
         } else {
             System.out.println("Can Not Do It ");
-            return;
+            return false;
         }
 
     }
@@ -61,7 +62,6 @@ public class JobsController {
 
     @GetMapping("/ShowDetails")
     public Object jobDetails(@ModelAttribute JobDetails jobDetails ){
-
         System.out.println(jobDetails.toString());
         return jobsService.getInfo(jobDetails) ;
     }

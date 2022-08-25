@@ -15,11 +15,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
-@Builder
-@Setter
-@Getter
 public class ApplyToJobDTO {
-    private String persons;
-    private String job;
+    private Integer personID;
+    private Integer jobID;
 
 }

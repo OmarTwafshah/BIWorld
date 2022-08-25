@@ -38,7 +38,7 @@ public class LoginController {
             return company;
         }
         if (person == null && company == null) {
-            return null;
+            return 1;
         }
         return null;
 
