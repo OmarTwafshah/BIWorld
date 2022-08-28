@@ -5,6 +5,7 @@ import com.example.BIWorld.Repository.JobsRepository;
 import com.example.BIWorld.Repository.PersonRepository;
 import com.example.BIWorld.Repository.applyToJobRepository;
 import com.example.BIWorld.models.*;
+import com.example.BIWorld.requests.UpdateStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -62,5 +63,17 @@ public class ApplyToJobServiceImp implements ApplyToJobService {
     @Override
     public List<ApplyToJob> getApplyJobs() {
         return applyToJobRepository.findAll();
+    }
+
+    @Override
+    public boolean UpdateStatus(UpdateStatus updateStatus) {
+        ApplyToJob applyToJob = applyToJobRepository.findApplyToJobByApplication_idAndPersons(updateStatus.getJobID(), updateStatus.getPersonID());
+        if(applyToJob == null){
+            return false ;
+        }
+        applyToJob.setStatus(updateStatus.getStatus());
+        applyToJobRepository.save(applyToJob);
+        return true;
+
     }
 }

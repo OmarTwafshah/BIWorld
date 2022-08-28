@@ -4,6 +4,7 @@ import com.example.BIWorld.DTO.ApplyToJobDTO;
 import com.example.BIWorld.Service.ApplyToJobService;
 import com.example.BIWorld.Service.ApplyToJobServiceImp;
 import com.example.BIWorld.models.ApplyToJob;
+import com.example.BIWorld.requests.UpdateStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,11 @@ public class ApplyToJobController {
     @GetMapping("/getApply")
     public List<ApplyToJob> getApplyJobs() {
         return applyToJobService.getApplyJobs();
+    }
+
+    @PutMapping("/update")
+    public boolean UpdateStatus(@RequestBody UpdateStatus updateStatus){
+        return applyToJobService.UpdateStatus(updateStatus);
     }
 
 
