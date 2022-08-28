@@ -12,4 +12,5 @@ public class SearchRequest {
     private String city ;
     private String personField ;
     private String studyDegree;
+
 }

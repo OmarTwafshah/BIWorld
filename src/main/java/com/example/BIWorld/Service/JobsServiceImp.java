@@ -19,10 +19,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
@@ -135,9 +132,9 @@ public class JobsServiceImp implements JobsService {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM jobs j left join companies c on j.companyid=c.company_id left join cities i on c.city_id=i.city_id where 1=1 ");
         if (searchRequest.getGender() != null && !searchRequest.getGender().isEmpty() && !searchRequest.getGender().equalsIgnoreCase("null")) {
-            if(searchRequest.getGender().equals("Male")){
+            if (searchRequest.getGender().equals("Male")) {
                 sql.append("AND j.gender_to_job != 'Female' ");
-            }else {
+            } else {
                 sql.append("AND j.gender_to_job != 'Male' ");
             }
 //            sql.append("AND j.gender_to_job = :gender OR j.gender_to_job = 'any' ");
@@ -147,7 +144,7 @@ public class JobsServiceImp implements JobsService {
 
         if (searchRequest.getPersonField() != null && searchRequest.getPersonField() != "" && searchRequest.getPersonField() != "null") {
             sql.append("AND j.job_field ILIKE :field ");
-            params.put("field", searchRequest.getPersonField() );
+            params.put("field", searchRequest.getPersonField());
         }
 
         if (searchRequest.getStudyDegree() != null && searchRequest.getStudyDegree() != "" && searchRequest.getStudyDegree() != "null") {
@@ -167,6 +164,22 @@ public class JobsServiceImp implements JobsService {
         return query.getResultList();
 
     }
+//    @Override
+//    public List<Jobs> SearchJob(Map<JobsServiceImp.Search, Object> feilds) {
+//        try {
+//            String query = "SELECT * FROM jobs j left join companies c on j.companyid=c.company_id left join cities i on c.city_id=i.city_id where %s";
+//            StringJoiner joiner = new StringJoiner(" AND ");
+//            for (Search search : feilds.keySet()) {
+//                joiner.add(String.format(search.toString(), feilds.get(search)));
+//            }
+//            System.out.println(String.format(query, joiner));
+//            Query res = entityManager.createNativeQuery(String.format(query, joiner), Jobs.class);
+//            return res.getResultList();
+//        } catch (Exception exception) {
+//            System.out.println("please check the inputs");
+//        }
+//        return null;
+//    }
 
     @Override
     public Object getInfo(JobDetails jobDetails) {
@@ -175,73 +188,44 @@ public class JobsServiceImp implements JobsService {
             return "Empty";
         }
         Jobs job = jobsRepository.findByJobId(jobDetails.getJobID());
-        ApplyToJob applyToJob = repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getPersonID()) ;
+        ApplyToJob applyToJob = repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getPersonID());
         arr.add(job);
         if (applyToJob == null) {
             arr.add(false);
-        }else {
+        } else {
             arr.add(true);
-            arr.add(repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(),jobDetails.getPersonID()).getStatus());
+            arr.add(repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getPersonID()).getStatus());
         }
 
         return arr;
     }
-    //package nn;
 
-//import java.util.HashMap;
-//import java.util.StringJoiner;
-//
-//import nn.SearchJobBy.Search;
-//
-//    public class Driver {
-//
-//        public enum Search {
-//            CITY {
-//                @Override
-//                public String toString() {
-//                    return "i.city_name=%s";
-//                }
-//            },
-//            GENDER {
-//                @Override
-//                public String toString() {
-//                    return "j.gender_to_job=%s";
-//                }
-//            },
-//            FILED {
-//                @Override
-//                public String toString() {
-//                    return "j.job_filed=%s";
-//                }
-//            },
-//            STUDYDEGREE {
-//                @Override
-//                public String toString() {
-//                    return "j.degree_requierd=%s";
-//                }
-//            };
-//        }
-//
-//        public static void main(String[] args) {
-//
-//            try {
-//                HashMap<Search, Object> map = new HashMap<>();
-//                String query = "SELECT * FROM jobs j left join companies c on j.companyid=c.company_id left join cities i on c.city_id=i.city_id where %s";
-//                StringJoiner joiner = new StringJoiner(" AND ");
-//                for (Search search : map.keySet()) {
-//                    if (!(search instanceof Search))
-//                        throw new Exception();
-//                    joiner.add(String.format(search.toString(),map.get(search)));
-//                }
-//                System.out.println(String.format(query, joiner));
-//            } catch (Exception exception) {
-//                System.out.println("please check the inputs");
-//            }
-//        }
-//    }
-
-
-
+    public enum Search {
+        CITY {
+            @Override
+            public String toString() {
+                return "i.city_name=%s";
+            }
+        },
+        GENDER {
+            @Override
+            public String toString() {
+                return "j.gender_to_job!=%s";
+            }
+        },
+        FILED {
+            @Override
+            public String toString() {
+                return "j.job_filed=%s";
+            }
+        },
+        STUDYDEGREE {
+            @Override
+            public String toString() {
+                return "j.degree_requierd=%s";
+            }
+        };
+    }
 
 
 }

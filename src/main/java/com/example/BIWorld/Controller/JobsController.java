@@ -10,7 +10,9 @@ import com.example.BIWorld.requests.Jobs_show;
 import com.example.BIWorld.requests.SearchRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/Job")
@@ -37,7 +39,7 @@ public class JobsController {
         if (LoginController.type == "company") {
             System.out.println(jobsDTO.toString());
             jobsService.add(jobsDTO);
-            return true ;
+            return true;
         } else {
             System.out.println("Can Not Do It ");
             return false;
@@ -57,13 +59,27 @@ public class JobsController {
 
     @GetMapping("/search")
     public List<Jobs> SearchJob(@ModelAttribute SearchRequest searchRequest) {
+        Map<JobsServiceImp.Search, Object> fields = new HashMap<>();
+        if (searchRequest.getGender() != null) {
+            fields.put(JobsServiceImp.Search.GENDER, searchRequest.getGender());
+        }
+        if (searchRequest.getCity() != null) {
+            fields.put(JobsServiceImp.Search.CITY, searchRequest.getCity());
+        }
+        if (searchRequest.getPersonField() != null) {
+            fields.put(JobsServiceImp.Search.FILED, searchRequest.getPersonField());
+        }
+        if (searchRequest.getStudyDegree() != null) {
+            fields.put(JobsServiceImp.Search.STUDYDEGREE, searchRequest.getStudyDegree());
+        }
+
         return jobsService.SearchJob(searchRequest);
     }
 
     @GetMapping("/ShowDetails")
-    public Object jobDetails(@ModelAttribute JobDetails jobDetails ){
-        System.out.println(jobDetails.toString());
-        return jobsService.getInfo(jobDetails) ;
+    public Object jobDetails(@ModelAttribute JobDetails jobDetails) {
+
+        return jobsService.getInfo(jobDetails);
     }
 
 }

@@ -9,6 +9,7 @@ import com.example.BIWorld.requests.Jobs_show;
 import com.example.BIWorld.requests.SearchRequest;
 
 import java.util.List;
+import java.util.Map;
 
 public interface JobsService {
     Object add(JobsDTO jobsDTO);
