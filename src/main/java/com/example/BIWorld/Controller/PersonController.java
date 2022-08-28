@@ -36,6 +36,7 @@ public class PersonController {
 
     @PutMapping("/update")
     public void updatePerson(@RequestBody PersonDTO personDTO) {
+        System.out.println(personDTO.toString());
         personService.updatePerson(personDTO);
 
     }

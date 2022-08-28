@@ -110,7 +110,9 @@ public class PersonServiceImp implements PersonService {
     @Override
     @Transactional
     public void updatePerson(PersonDTO personDTO) {
-        Person per = personRepository.findById(personDTO.getPerson_id()).orElse(null);
+        System.out.println(personDTO.toString());
+        Person per = personRepository.findById(personDTO.getPersonID()).orElse(null);
+        System.out.println("SDFSDFSDFSDF");
         if (personDTO.getFullName() != null) {
             per.setFullName(personDTO.getFullName());
         }
@@ -132,7 +134,8 @@ public class PersonServiceImp implements PersonService {
         if (personDTO.getPhone() != null) {
             per.setPersonPhone(personDTO.getPhone());
         }
-        if (personDTO.getField() != null) {
+        if (personDTO.getField() != null && !personDTO.getField().isEmpty()) {
+            System.out.println(personDTO.getField());
             per.setPersonField(personDTO.getField());
         }
         if (personDTO.getDateOfBirth() != null) {
@@ -154,6 +157,7 @@ public class PersonServiceImp implements PersonService {
             per.setInterests(personDTO.getIntrest());
         }
 
+        personRepository.save(per);
     }
 
     @Override

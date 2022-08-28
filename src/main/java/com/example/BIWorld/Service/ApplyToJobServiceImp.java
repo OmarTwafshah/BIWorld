@@ -27,12 +27,12 @@ public class ApplyToJobServiceImp implements ApplyToJobService {
 
     @Override
     public ApplyToJob addJobs(ApplyToJobDTO applyToJobDTO) {
-        if (applyToJobDTO.getPersonID()== null
+        if (applyToJobDTO.getId()== null
                 || applyToJobDTO.getJobID() == null) {
             return null;
         } else {
             ApplyToJob applyToJob = new ApplyToJob();
-            Person person = personRepository.findByPerson_id(applyToJobDTO.getPersonID());
+            Person person = personRepository.findByPerson_id(applyToJobDTO.getId());
             System.out.println(person.getFullName());
             applyToJob.setPersons(person);
             Jobs jobs = jobsRepository.findByJobId(applyToJobDTO.getJobID());

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class PersonDTO {
-    private Integer person_id;
+    private Integer personID;
     private String fullName;
     private String username;
     private String city;

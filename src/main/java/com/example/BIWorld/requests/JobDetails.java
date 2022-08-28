@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class JobDetails {
-    private Integer personID ;
+    private Integer id ;
     private Integer jobID ;
 
 }

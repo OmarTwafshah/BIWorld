@@ -1,5 +1,6 @@
 package com.example.BIWorld.Service;
 
+import com.example.BIWorld.Controller.LoginController;
 import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.Repository.CityRepository;
 import com.example.BIWorld.Repository.CompanyRepository;
@@ -7,10 +8,7 @@ import com.example.BIWorld.Repository.JobsRepository;
 import com.example.BIWorld.Repository.applyToJobRepository;
 import com.example.BIWorld.models.ApplyToJob;
 import com.example.BIWorld.models.Jobs;
-import com.example.BIWorld.requests.FilterJobs;
-import com.example.BIWorld.requests.JobDetails;
-import com.example.BIWorld.requests.Jobs_show;
-import com.example.BIWorld.requests.SearchRequest;
+import com.example.BIWorld.requests.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -187,15 +185,27 @@ public class JobsServiceImp implements JobsService {
         if (jobDetails == null) {
             return "Empty";
         }
+
         Jobs job = jobsRepository.findByJobId(jobDetails.getJobID());
-        ApplyToJob applyToJob = repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getPersonID());
         arr.add(job);
-        if (applyToJob == null) {
-            arr.add(false);
-        } else {
-            arr.add(true);
-            arr.add(repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getPersonID()).getStatus());
+        if(LoginController.type.equalsIgnoreCase("person")){
+            ApplyToJob applyToJob = repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getId());
+            if (applyToJob == null) {
+                arr.add(false);
+            } else {
+                arr.add(true);
+                arr.add(repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getId()).getStatus());
+            }
+        }else if(LoginController.type.equalsIgnoreCase("company")){
+            List<ApplyToJobInfo> applyToJob = repository.findByApplication_idAndCompany(jobDetails.getJobID(), jobDetails.getId());
+            if (applyToJob == null) {
+                arr.add(false);
+            } else {
+                arr.add(true);
+                arr.add(applyToJob);
+            }
         }
+
 
         return arr;
     }

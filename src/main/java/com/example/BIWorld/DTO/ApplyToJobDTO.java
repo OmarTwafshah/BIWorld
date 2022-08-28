@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Data
 public class ApplyToJobDTO {
-    private Integer personID;
+    private Integer id;
     private Integer jobID;
 
 }
