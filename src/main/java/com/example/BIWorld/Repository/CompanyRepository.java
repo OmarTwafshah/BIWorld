@@ -13,9 +13,9 @@ public interface CompanyRepository extends JpaRepository<Company,Integer> {
     @Query("SELECT c FROM Company c where c.companyID = ?1")
     Company findByCompany_id(Integer company_id);
 
-    Optional<Company> findByCompanyUserNameAndCompanyPassword(String userName , String Password);
+    Optional<Company> findByUserNameAndCompanyPassword(String userName , String Password);
 
-    Optional<Company> findByCompanyUserName(String userName);
+    Optional<Company> findByUserName(String userName);
 
     Optional<Company> findByCompanyPhone(Double companyPhone);
 

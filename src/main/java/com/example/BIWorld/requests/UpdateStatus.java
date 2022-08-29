@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class UpdateStatus {
-    private Integer jobID ;
-    private Integer personID ;
+    private Integer applicationID;
     private String status ;
 
 }

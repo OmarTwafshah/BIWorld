@@ -9,8 +9,6 @@ import com.example.BIWorld.requests.UpdateStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -66,14 +64,17 @@ public class ApplyToJobServiceImp implements ApplyToJobService {
     }
 
     @Override
-    public boolean UpdateStatus(UpdateStatus updateStatus) {
-        ApplyToJob applyToJob = applyToJobRepository.findApplyToJobByApplication_idAndPersons(updateStatus.getJobID(), updateStatus.getPersonID());
+    public Object UpdateStatus(UpdateStatus updateStatus) {
+        ApplyToJob applyToJob = applyToJobRepository.findByApplication_id(updateStatus.getApplicationID());
+        List<Object> list = new ArrayList<>();
         if(applyToJob == null){
-            return false ;
+            list.add("Not Found User");
+            return list ;
         }
         applyToJob.setStatus(updateStatus.getStatus());
         applyToJobRepository.save(applyToJob);
-        return true;
+        list.add("Successfully "+updateStatus.getStatus());
+        return list;
 
     }
 }

@@ -47,7 +47,7 @@ public class CompanyServiceImp implements CompanyService {
             return "One filed is empty";
         } else {
             if (!personRepository.findByUserName(companyDTO.getUsername()).isEmpty()
-                    && !companyRepository.findByCompanyUserName(companyDTO.getUsername()).isEmpty()) {
+                    && !companyRepository.findByUserName(companyDTO.getUsername()).isEmpty()) {
                 return "User Name is Used";
             }
 
@@ -92,9 +92,9 @@ public class CompanyServiceImp implements CompanyService {
 
     @Override
     public Company authenticateCompany(String userName, String password) {
-        if (!companyRepository.findByCompanyUserName(userName).isEmpty()) {
+        if (!companyRepository.findByUserName(userName).isEmpty()) {
             System.out.println("The UserName Company true");
-            return companyRepository.findByCompanyUserNameAndCompanyPassword(userName, password).orElse(null);
+            return companyRepository.findByUserNameAndCompanyPassword(userName, password).orElse(null);
         } else {
             System.out.println("The UserName Company wrong");
             return null;

@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/applyToJob")
+@CrossOrigin
 public class ApplyToJobController {
     public final ApplyToJobService applyToJobService;
 
@@ -39,7 +40,7 @@ public class ApplyToJobController {
     }
 
     @PutMapping("/update")
-    public boolean UpdateStatus(@RequestBody UpdateStatus updateStatus){
+    public Object UpdateStatus(@RequestBody UpdateStatus updateStatus){
         return applyToJobService.UpdateStatus(updateStatus);
     }
 

@@ -13,7 +13,6 @@ import java.util.Set;
 @RestController
 @RequestMapping("/Company")
 @CrossOrigin
-
 public class CompanyController {
 
     private final CompanyService companyService;

@@ -1,23 +1,27 @@
 package com.example.BIWorld.Service;
 
 import com.example.BIWorld.DTO.PersonDTO;
-import com.example.BIWorld.DTO.UserDTO;
 import com.example.BIWorld.Repository.CityRepository;
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.PersonRepository;
 import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class PersonServiceImp implements PersonService {
+public class PersonServiceImp implements PersonService , UserDetailsService {
 
     private final PersonRepository personRepository;
 
@@ -52,7 +56,7 @@ public class PersonServiceImp implements PersonService {
         }
 
         if (!personRepository.findByUserName(personDTO.getUsername()).isEmpty()
-                && !companyRepository.findByCompanyUserName(personDTO.getUsername()).isEmpty()) {
+                && !companyRepository.findByUserName(personDTO.getUsername()).isEmpty()) {
             return "User Name is Used";
         }
 
@@ -113,47 +117,49 @@ public class PersonServiceImp implements PersonService {
         System.out.println(personDTO.toString());
         Person per = personRepository.findById(personDTO.getPersonID()).orElse(null);
         System.out.println("SDFSDFSDFSDF");
-        if (personDTO.getFullName() != null) {
+        if (personDTO.getFullName() != null && !personDTO.getFullName().equals("")) {
             per.setFullName(personDTO.getFullName());
         }
-        if (personDTO.getUsername() != null) {
+        if (personDTO.getUsername() != null && !personDTO.getUsername().equals("")) {
             per.setUserName(personDTO.getUsername());
         }
-        if (personDTO.getCity() != null) {
+        if (personDTO.getCity() != null && !personDTO.getCity().equals("")) {
             City city = cityRepository.findByCityName(personDTO.getCity());
             if (city != null) {
                 per.setCity(city);
             }
         }
-        if (personDTO.getEmail() != null) {
+        if (personDTO.getEmail() != null && !personDTO.getEmail().equals("")) {
             per.setPersonEmail(personDTO.getEmail());
         }
-        if (personDTO.getPassword() != null) {
+        if (personDTO.getPassword() != null && !personDTO.getPassword().equals("")) {
             per.setPassword(personDTO.getPassword());
         }
-        if (personDTO.getPhone() != null) {
+        if (personDTO.getPhone() != null && !personDTO.getPhone().equals("")) {
             per.setPersonPhone(personDTO.getPhone());
         }
-        if (personDTO.getField() != null && !personDTO.getField().isEmpty()) {
+        if (personDTO.getField() != null && !personDTO.getField().equals("")) {
             System.out.println(personDTO.getField());
             per.setPersonField(personDTO.getField());
         }
-        if (personDTO.getDateOfBirth() != null) {
-            per.setDateOfBirth(LocalDate.parse(personDTO.getDateOfBirth()));
+        if (personDTO.getDateOfBirth() != null && !personDTO.getDateOfBirth().equals("")) {
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate localDate = LocalDate.parse(personDTO.getDateOfBirth(), format);
+            per.setDateOfBirth(localDate);
         }
-        if (personDTO.getGender() != null) {
+        if (personDTO.getGender() != null && !personDTO.getGender().equals("")) {
             per.setGender(personDTO.getGender());
         }
-        if (personDTO.getStudyDegree() != null) {
+        if (personDTO.getStudyDegree() != null && !personDTO.getStudyDegree().equals("")) {
             per.setStudyDegree(personDTO.getStudyDegree());
         }
-        if (personDTO.getCanddescription() != null) {
+        if (personDTO.getCanddescription() != null && !personDTO.getCanddescription().equals("")) {
             per.setDescription(personDTO.getCanddescription());
         }
-        if (personDTO.getPicPath() != null) {
+        if (personDTO.getPicPath() != null && !personDTO.getPicPath().equals("")) {
             per.setPicPath(personDTO.getPicPath());
         }
-        if (personDTO.getIntrest() != null) {
+        if (personDTO.getIntrest() != null && !personDTO.getIntrest().equals("")) {
             per.setInterests(personDTO.getIntrest());
         }
 
@@ -178,5 +184,14 @@ public class PersonServiceImp implements PersonService {
             personRepository.deleteById(id);
             return true;
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Person person = personRepository.findByUserNameForConfig(username);
+        if(person == null){
+            return null ;
+        }
+        return new User(person.getUserName(),person.getPassword(),new ArrayList<>());
     }
 }

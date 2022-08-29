@@ -57,7 +57,6 @@ public class Person implements Serializable {
             nullable = false,
             columnDefinition = "TEXT"
     )
-    @JsonIgnore
     private String userName;
 
     @JsonIgnore

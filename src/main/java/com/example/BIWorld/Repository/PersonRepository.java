@@ -22,5 +22,7 @@ public interface PersonRepository extends JpaRepository<Person,Integer> {
     Optional<Person> findByPersonEmail(String personEmail);
 
     Optional<Person> findByPersonPhone(Double personPhone);
+    @Query("SELECT p FROM persons p where p.userName = ?1")
+    Person findByUserNameForConfig(String UserName);
 
 }

@@ -42,8 +42,7 @@ public class Company implements Serializable {
             nullable = false,
             columnDefinition = "TEXT"
     )
-    @JsonIgnore
-    private String companyUserName;
+    private String userName;
 
     @Column(
             name = "company_password",
@@ -126,7 +125,7 @@ public class Company implements Serializable {
                    Integer companyTax,
                    String address) {
         this.companyName = companyName;
-        this.companyUserName = companyUserName;
+        this.userName = companyUserName;
         this.companyPassword = companyPassword;
         this.cities = cities;
         this.companyDescription = companyDescription;
@@ -151,11 +150,11 @@ public class Company implements Serializable {
     }
 
     public String getCompanyUserName() {
-        return companyUserName;
+        return userName;
     }
 
     public void setCompanyUserName(String companyUserName) {
-        this.companyUserName = companyUserName;
+        this.userName = companyUserName;
     }
 
     public String getCompanyPassword() {
@@ -233,7 +232,7 @@ public class Company implements Serializable {
                 "company_id=" + companyID +
                 ", CompanyName='" + companyName + '\'' +
                 ", City ='" + cities + '\'' +
-                ", companyUserName='" + companyUserName + '\'' +
+                ", userName='" + userName + '\'' +
                 ", companyDescription='" + companyDescription + '\'' +
                 ", CompanyPhone=" + companyPhone +
                 ", CompanyFax=" + companyFax +
