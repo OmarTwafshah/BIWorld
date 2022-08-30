@@ -3,12 +3,8 @@ package com.example.BIWorld.Controller;
 import com.example.BIWorld.DTO.PersonDTO;
 import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.Service.PersonServiceImp;
-import com.example.BIWorld.models.ApplyToJob;
-import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.ApplicationPerson;
-import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
