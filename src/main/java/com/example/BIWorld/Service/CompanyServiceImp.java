@@ -35,7 +35,7 @@ public class CompanyServiceImp implements CompanyService {
     @Override
     public Object registerCompany(CompanyDTO companyDTO) {
         if (companyDTO.getCompanyName() == null && companyDTO.getCompanyName() == " "
-                || companyDTO.getUsername() == null
+                || companyDTO.getUserName() == null
                 || companyDTO.getPassword() == null
                 || companyDTO.getCity() == null
                 || companyDTO.getCompdescription() == null
@@ -46,8 +46,8 @@ public class CompanyServiceImp implements CompanyService {
                 || companyDTO.getAddress() == null) {
             return "One filed is empty";
         } else {
-            if (!personRepository.findByUserName(companyDTO.getUsername()).isEmpty()
-                    && !companyRepository.findByUserName(companyDTO.getUsername()).isEmpty()) {
+            if (!personRepository.findByUserName(companyDTO.getUserName()).isEmpty()
+                    && !companyRepository.findByUserName(companyDTO.getUserName()).isEmpty()) {
                 return "User Name is Used";
             }
 
@@ -70,7 +70,7 @@ public class CompanyServiceImp implements CompanyService {
 
             Company company = new Company();
             company.setCompanyName(companyDTO.getCompanyName());
-            company.setCompanyUserName(companyDTO.getUsername());
+            company.setCompanyUserName(companyDTO.getUserName());
             company.setCompanyPassword(companyDTO.getPassword());
             City city = cityRepository.findByCityName(companyDTO.getCity());
             if (city != null) {
@@ -109,15 +109,15 @@ public class CompanyServiceImp implements CompanyService {
     @Override
     @Transactional
     public void updatecompany(CompanyDTO companyDTO) {
-        Company comp = companyRepository.findById(companyDTO.getCompanyID()).orElse(null);
+        Company comp = companyRepository.findById(companyDTO.getCompany_id()).orElse(null);
         if (companyDTO.getCompdescription() != null) {
             comp.setCompanyDescription(companyDTO.getCompdescription());
         }
         if (companyDTO.getCompanyName() != null) {
             comp.setCompanyName(companyDTO.getCompanyName());
         }
-        if (companyDTO.getUsername() != null) {
-            comp.setCompanyUserName(companyDTO.getUsername());
+        if (companyDTO.getUserName() != null) {
+            comp.setCompanyUserName(companyDTO.getUserName());
         }
         if (companyDTO.getPassword() != null) {
             comp.setCompanyPassword(companyDTO.getPassword());

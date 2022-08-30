@@ -2,6 +2,7 @@ package com.example.BIWorld.Repository;
 
 import com.example.BIWorld.models.ApplyToJob;
 import com.example.BIWorld.models.Interview;
+import com.example.BIWorld.requests.ApplicationPerson;
 import com.example.BIWorld.requests.ApplyToJobInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,7 @@ public interface applyToJobRepository extends JpaRepository<ApplyToJob,Integer> 
 
     @Query(value = "SELECT new com.example.BIWorld.requests.ApplyToJobInfo(i.myPersons.person_id,i.myPersons.fullName,i.myPersons.personEmail,i.myPersons.studyDegree,i.application_id,i.dateOfApplication,i.status) FROM apply_to_job i left join Company c on i.company.companyID=c.companyID left join persons p on i.myPersons.person_id=p.person_id left join jobs j on i.jobsToApplication.jobId=j.jobId where j.jobId = ?1 and c.companyID = ?2")
     List<ApplyToJobInfo> findByApplication_idAndCompany(Integer jobId , Integer companyID);
+
+    @Query("SELECT new com.example.BIWorld.requests.ApplicationPerson(p.person_id,j.jobId,c.companyName,j.jobField,j.jobTitle,i.dateOfApplication,i.status) FROM apply_to_job i left join Company c on i.company.companyID=c.companyID left join persons p on i.myPersons.person_id=p.person_id left join jobs j on i.jobsToApplication.jobId=j.jobId where i.myPersons.person_id = ?1")
+    List<ApplicationPerson> findByPersonsid(int id);
 }

@@ -1,8 +1,7 @@
 package com.example.BIWorld.config;
 
-import com.example.BIWorld.Service.PersonServiceImp;
+import com.example.BIWorld.Service.LoginService;
 import com.example.BIWorld.filter.JwtFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,22 +19,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PersonServiceImp personServiceImp ;
 
     private final JwtFilter jwtFilter;
 
+    private final LoginService loginService;
 
-    public SecurityConfig(PersonServiceImp personServiceImp, JwtFilter jwtFilter) {
-        this.personServiceImp = personServiceImp;
+    public SecurityConfig(JwtFilter jwtFilter, LoginService loginService) {
         this.jwtFilter = jwtFilter;
+        this.loginService = loginService;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(personServiceImp);
+        auth.userDetailsService(loginService);
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
 
@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and().exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        ;
     }
 }

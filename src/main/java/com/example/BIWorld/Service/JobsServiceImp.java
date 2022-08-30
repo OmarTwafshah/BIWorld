@@ -19,7 +19,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @Service
 public class JobsServiceImp implements JobsService {
@@ -203,6 +202,7 @@ public class JobsServiceImp implements JobsService {
             } else {
                 arr.add(true);
                 arr.add(applyToJob);
+                arr.add(applyToJob.size());
             }
         }
 

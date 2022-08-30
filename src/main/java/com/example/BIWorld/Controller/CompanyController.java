@@ -38,6 +38,7 @@ public class CompanyController {
 
     @PutMapping(path = "/update")
     public void updatecompany(@RequestBody CompanyDTO companyDTO) {
+        System.out.println(companyDTO.toString());
         companyService.updatecompany(companyDTO);
 
     }

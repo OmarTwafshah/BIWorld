@@ -1,5 +1,6 @@
 package com.example.BIWorld.filter;
 
+import com.example.BIWorld.Service.LoginService;
 import com.example.BIWorld.Service.PersonServiceImp;
 import com.example.BIWorld.util.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,10 +21,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    private final PersonServiceImp personServiceImp ;
+    private final LoginService loginService ;
 
-    public JwtFilter(PersonServiceImp personServiceImp, JwtUtil jwtUtil) {
-        this.personServiceImp = personServiceImp;
+    public JwtFilter(JwtUtil jwtUtil, LoginService loginService) {
+        this.loginService = loginService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -43,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = personServiceImp.loadUserByUsername(userName);
+            UserDetails userDetails = loginService.loadUserByUsername(userName);
 
             if (jwtUtil.validateToken(token, userDetails)) {
 

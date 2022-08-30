@@ -4,24 +4,32 @@ import com.example.BIWorld.DTO.PersonDTO;
 import com.example.BIWorld.Repository.CityRepository;
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.PersonRepository;
+import com.example.BIWorld.Repository.applyToJobRepository;
+import com.example.BIWorld.models.ApplyToJob;
 import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Person;
+import com.example.BIWorld.requests.ApplicationPerson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class PersonServiceImp implements PersonService , UserDetailsService {
+public class PersonServiceImp implements PersonService {
+
+    private final applyToJobRepository repository;
 
     private final PersonRepository personRepository;
 
@@ -31,14 +39,15 @@ public class PersonServiceImp implements PersonService , UserDetailsService {
 
 
     @Autowired
-    public PersonServiceImp(PersonRepository personRepository, CompanyRepository companyRepository, CityRepository cityRepository) {
+    public PersonServiceImp(applyToJobRepository repository, PersonRepository personRepository, CompanyRepository companyRepository, CityRepository cityRepository) {
+        this.repository = repository;
         this.personRepository = personRepository;
         this.companyRepository = companyRepository;
         this.cityRepository = cityRepository;
     }
 
     @Override
-    public Object registerPerson(PersonDTO personDTO) {
+    public Object registerPerson(PersonDTO personDTO, MultipartFile multipartFile) throws IOException {
         if (personDTO.getFullName() == null && personDTO.getFullName() == " "
                 || personDTO.getUsername() == null
                 || personDTO.getPassword() == null
@@ -51,7 +60,7 @@ public class PersonServiceImp implements PersonService , UserDetailsService {
                 || personDTO.getGender() == null
                 || personDTO.getStudyDegree() == null
                 || personDTO.getIntrest() == null
-                || personDTO.getPicPath() == null) {
+                || multipartFile.isEmpty()) {
             return "One filed is empty";
         }
 
@@ -90,11 +99,22 @@ public class PersonServiceImp implements PersonService , UserDetailsService {
         person.setGender(personDTO.getGender());
         person.setStudyDegree(personDTO.getStudyDegree());
         person.setDescription(personDTO.getCanddescription());
-        person.setPicPath(personDTO.getPicPath());
         person.setInterests(personDTO.getIntrest());
-        return personRepository.save(person);
-
-
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        personDTO.setPicPath(fileName);
+        Person person1 =  personRepository.save(person);
+        String uploadDir = "user-photos/" + person1.getPerson_id();
+        Path uPath = Paths.get(uploadDir);
+        if(!Files.exists(uPath)){
+            Files.createDirectories(uPath);
+        }
+        try(InputStream inputStream = multipartFile.getInputStream()){
+            Path path = uPath.resolve(fileName);
+            Files.copy(inputStream,path, StandardCopyOption.REPLACE_EXISTING);
+        }catch (Exception e){
+            e.toString();
+        }
+        return person1 ;
     }
 
     @Override
@@ -187,11 +207,8 @@ public class PersonServiceImp implements PersonService , UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Person person = personRepository.findByUserNameForConfig(username);
-        if(person == null){
-            return null ;
-        }
-        return new User(person.getUserName(),person.getPassword(),new ArrayList<>());
+    public List<ApplicationPerson> ShowApplication(int id) {
+        return repository.findByPersonsid(id);
     }
+
 }

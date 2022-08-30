@@ -12,9 +12,9 @@ import java.util.Set;
 @Setter
 @Getter
 public class CompanyDTO {
-    private Integer companyID;
+    private Integer company_id;
     private String companyName;
-    private String username;
+    private String userName;
     private String password;
     private String city;
     private String compdescription;

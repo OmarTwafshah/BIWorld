@@ -3,10 +3,16 @@ package com.example.BIWorld.Controller;
 import com.example.BIWorld.DTO.PersonDTO;
 import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.Service.PersonServiceImp;
+import com.example.BIWorld.models.ApplyToJob;
+import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.models.Person;
+import com.example.BIWorld.requests.ApplicationPerson;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,9 +31,14 @@ public class PersonController {
     }
 
     @PostMapping("/register")
-    public Object register(@RequestBody PersonDTO personDTO) {
+    public Object register(@RequestBody PersonDTO personDTO, @RequestParam("image") MultipartFile multipartFile) {
         System.out.println(personDTO.toString());
-        Person rePerson = (Person) personService.registerPerson(personDTO);
+        Person rePerson = null;
+        try {
+            rePerson = (Person) personService.registerPerson(personDTO, multipartFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (rePerson != null) {
             return true;
         }
@@ -51,4 +62,9 @@ public class PersonController {
 //    public Boolean deleteStudent(@PathVariable int id) {
 //        return personService.deletePerson(id);
 //    }
+
+    @GetMapping("/{id}/myApplication")
+    public List<ApplicationPerson> showjob(@PathVariable int id) {
+        return personService.ShowApplication(id);
+    }
 }
