@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,8 +31,9 @@ public class PersonDTO {
     private String gender;
     private String studyDegree;
     private String canddescription;
-    private String picPath;
     private String intrest;
+    private MultipartFile picPath ;
+    private MultipartFile cvPath ;
 
     public PersonDTO(){}
 

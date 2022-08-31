@@ -47,8 +47,8 @@ public class PersonServiceImp implements PersonService {
     }
 
     @Override
-    public Object registerPerson(PersonDTO personDTO, MultipartFile multipartFile) throws IOException {
-        if (personDTO.getFullName() == null && personDTO.getFullName() == " "
+    public Object registerPerson(PersonDTO personDTO) throws IOException {
+        if (personDTO.getFullName() == null && personDTO.getFullName() == ""
                 || personDTO.getUsername() == null
                 || personDTO.getPassword() == null
                 || personDTO.getCity() == null
@@ -58,9 +58,8 @@ public class PersonServiceImp implements PersonService {
                 || personDTO.getEmail() == null
                 || personDTO.getDateOfBirth() == null
                 || personDTO.getGender() == null
-                || personDTO.getStudyDegree() == null
-                || personDTO.getIntrest() == null
-                || multipartFile.isEmpty()) {
+
+        ) {
             return "One filed is empty";
         }
 
@@ -100,21 +99,33 @@ public class PersonServiceImp implements PersonService {
         person.setStudyDegree(personDTO.getStudyDegree());
         person.setDescription(personDTO.getCanddescription());
         person.setInterests(personDTO.getIntrest());
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        personDTO.setPicPath(fileName);
-        Person person1 =  personRepository.save(person);
-        String uploadDir = "user-photos/" + person1.getPerson_id();
-        Path uPath = Paths.get(uploadDir);
-        if(!Files.exists(uPath)){
-            Files.createDirectories(uPath);
+
+        String cvPath = StringUtils.cleanPath(personDTO.getCvPath().getOriginalFilename());
+        person.setCvPath(cvPath);
+        String picPath = StringUtils.cleanPath(personDTO.getPicPath().getOriginalFilename());
+        person.setCvPath(picPath);
+
+        Person person1 = personRepository.save(person);
+        String uploadCV = "./person-cv/" + person1.getPerson_id();
+        String uploadPic = "./person-image/" + person1.getPerson_id();
+        Path uploadPath = Paths.get(uploadCV);
+        Path uploadPath2 = Paths.get(uploadPic);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
         }
-        try(InputStream inputStream = multipartFile.getInputStream()){
-            Path path = uPath.resolve(fileName);
-            Files.copy(inputStream,path, StandardCopyOption.REPLACE_EXISTING);
-        }catch (Exception e){
-            e.toString();
+        if (!Files.exists(uploadPath2)) {
+            Files.createDirectories(uploadPath2);
         }
-        return person1 ;
+
+        InputStream CVStream = personDTO.getCvPath().getInputStream();
+        InputStream PicStream = personDTO.getPicPath().getInputStream();
+
+        Path CVFilePath = uploadPath.resolve(cvPath);
+        Path PicFilePath = uploadPath2.resolve(picPath);
+        Files.copy(CVStream,CVFilePath,StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(PicStream,PicFilePath,StandardCopyOption.REPLACE_EXISTING);
+
+        return person1;
     }
 
     @Override
@@ -130,6 +141,8 @@ public class PersonServiceImp implements PersonService {
             return null;
         }
     }
+
+
 
     @Override
     @Transactional
@@ -175,9 +188,6 @@ public class PersonServiceImp implements PersonService {
         }
         if (personDTO.getCanddescription() != null && !personDTO.getCanddescription().equals("")) {
             per.setDescription(personDTO.getCanddescription());
-        }
-        if (personDTO.getPicPath() != null && !personDTO.getPicPath().equals("")) {
-            per.setPicPath(personDTO.getPicPath());
         }
         if (personDTO.getIntrest() != null && !personDTO.getIntrest().equals("")) {
             per.setInterests(personDTO.getIntrest());

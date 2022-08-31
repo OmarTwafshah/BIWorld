@@ -27,11 +27,11 @@ public class PersonController {
     }
 
     @PostMapping("/register")
-    public Object register(@RequestBody PersonDTO personDTO, @RequestParam("image") MultipartFile multipartFile) {
+    public Object register(@RequestBody PersonDTO personDTO) {
         System.out.println(personDTO.toString());
         Person rePerson = null;
         try {
-            rePerson = (Person) personService.registerPerson(personDTO, multipartFile);
+            rePerson = (Person) personService.registerPerson(personDTO);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

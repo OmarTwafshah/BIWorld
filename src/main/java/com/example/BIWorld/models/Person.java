@@ -122,14 +122,22 @@ public class Person implements Serializable {
 
     @Column(
             name = "pic_path",
-            nullable = false,
             columnDefinition = "TEXT"
     )
+    @JsonIgnore
     private String picPath;
 
+
     @Column(
-            name = "interests",
-            nullable = false
+            name = "cv_path",
+            columnDefinition = "TEXT"
+    )
+    @JsonIgnore
+    private String cvPath;
+
+
+    @Column(
+            name = "interests"
     )
     private String interests;
 

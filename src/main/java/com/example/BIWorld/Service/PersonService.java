@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface PersonService {
     Object registerPerson (
-            PersonDTO personDTO, MultipartFile multipartFile) throws IOException;
+            PersonDTO personDTO) throws IOException;
 
     Person authenticatePerson(String userName , String password );
 
