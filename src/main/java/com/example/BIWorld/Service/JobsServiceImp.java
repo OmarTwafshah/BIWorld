@@ -11,7 +11,6 @@ import com.example.BIWorld.models.Jobs;
 import com.example.BIWorld.requests.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -131,8 +130,10 @@ public class JobsServiceImp implements JobsService {
         if (searchRequest.getGender() != null && !searchRequest.getGender().isEmpty() && !searchRequest.getGender().equalsIgnoreCase("null")) {
             if (searchRequest.getGender().equals("Male")) {
                 sql.append("AND j.gender_to_job != 'Female' ");
-            } else {
+            } else if(searchRequest.getGender().equals("Female")) {
                 sql.append("AND j.gender_to_job != 'Male' ");
+            }else {
+
             }
 //            sql.append("AND j.gender_to_job = :gender OR j.gender_to_job = 'any' ");
 //            params.put("gender", "%" + searchRequest.getGender() + "%");
