@@ -10,14 +10,21 @@ import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.ApplicationPerson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +32,9 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static java.nio.file.Paths.get;
+import static org.apache.tomcat.util.http.fileupload.FileUploadBase.CONTENT_DISPOSITION;
 
 @Service
 public class PersonServiceImp implements PersonService {
@@ -102,14 +112,17 @@ public class PersonServiceImp implements PersonService {
 
         String cvPath = StringUtils.cleanPath(personDTO.getCvPath().getOriginalFilename());
         person.setCvPath(cvPath);
+        System.out.println(cvPath);
         String picPath = StringUtils.cleanPath(personDTO.getPicPath().getOriginalFilename());
         person.setCvPath(picPath);
+        System.out.println(picPath);
+
 
         Person person1 = personRepository.save(person);
         String uploadCV = "./person-cv/" + person1.getPerson_id();
         String uploadPic = "./person-image/" + person1.getPerson_id();
-        Path uploadPath = Paths.get(uploadCV);
-        Path uploadPath2 = Paths.get(uploadPic);
+        Path uploadPath = get(uploadCV);
+        Path uploadPath2 = get(uploadPic);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
@@ -201,6 +214,11 @@ public class PersonServiceImp implements PersonService {
         return personRepository.findAll();
     }
 
+    @Override
+    public Person getJustPerson(int id){
+        return personRepository.findByPerson_id(id);
+    }
+
 
     @Override
     @Transactional
@@ -219,6 +237,21 @@ public class PersonServiceImp implements PersonService {
     @Override
     public List<ApplicationPerson> ShowApplication(int id) {
         return repository.findByPersonsid(id);
+    }
+
+    @Override
+    public ResponseEntity<Resource> getimage(int id) throws Exception {
+        int thisID = personRepository.findByPerson_id(id).getPerson_id();
+        Path filePath = get("./person-image/").toAbsolutePath().normalize().resolve(String.valueOf(thisID));
+        if(!Files.exists(filePath)) {
+            throw new FileNotFoundException(thisID + " was not found on the server");
+        }
+        Resource resource = (Resource) new UrlResource(filePath.toUri());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("File-id", String.valueOf(thisID));
+        httpHeaders.add(CONTENT_DISPOSITION, "attachment;File-Name=" + resource.name());
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
+                .headers(httpHeaders).body(resource);
     }
 
 }

@@ -29,8 +29,8 @@ public class CompanyController {
     @PostMapping("/register")
     public Object register(@RequestBody CompanyDTO companyDTO) {
         System.out.println(companyDTO.toString());
-        Company reCompany = (Company) companyService.registerCompany(companyDTO);
-        if (reCompany.getCompanyName() != null) {
+        Object reCompany =  companyService.registerCompany(companyDTO);
+        if (reCompany != null) {
             return true;
         }
         return false;

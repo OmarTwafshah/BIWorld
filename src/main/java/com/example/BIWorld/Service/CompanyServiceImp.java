@@ -10,6 +10,8 @@ import com.example.BIWorld.models.Jobs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,7 +35,7 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
-    public Object registerCompany(CompanyDTO companyDTO) {
+    public Object registerCompany(@ModelAttribute CompanyDTO companyDTO) {
         if (companyDTO.getCompanyName() == null && companyDTO.getCompanyName() == " "
                 || companyDTO.getUserName() == null
                 || companyDTO.getPassword() == null
