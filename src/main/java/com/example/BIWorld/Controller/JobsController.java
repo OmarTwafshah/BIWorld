@@ -1,9 +1,13 @@
 package com.example.BIWorld.Controller;
 
 import com.example.BIWorld.DTO.JobsDTO;
+import com.example.BIWorld.Repository.CompanyRepository;
+import com.example.BIWorld.Repository.PersonRepository;
 import com.example.BIWorld.Service.JobsService;
 import com.example.BIWorld.Service.JobsServiceImp;
+import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
+import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.FilterJobs;
 import com.example.BIWorld.requests.JobDetails;
 import com.example.BIWorld.requests.Jobs_show;
@@ -19,15 +23,22 @@ import java.util.Map;
 public class JobsController {
     private final JobsService jobsService;
 
-    public JobsController(JobsServiceImp jobsService) {
+    private final CompanyRepository companyRepository;
+
+    private final PersonRepository personRepository;
+
+    public JobsController(JobsServiceImp jobsService, CompanyRepository companyRepository, PersonRepository personRepository) {
         this.jobsService = jobsService;
+        this.companyRepository = companyRepository;
+        this.personRepository = personRepository;
     }
 
 
     @GetMapping("/Show")
     public List<Jobs_show> Showjobs(@ModelAttribute FilterJobs filterJobs) {
-        if (LoginController.type != null) {
-            System.out.println(filterJobs.toString());
+        System.out.println(filterJobs.toString());
+        Person person = personRepository.findByPerson_id(filterJobs.getPersonID());
+        if (person != null) {
             return jobsService.Showjobs(filterJobs);
         }
         return null;
@@ -36,12 +47,11 @@ public class JobsController {
 
     @PostMapping("/add")
     public Boolean jobs(@RequestBody JobsDTO jobsDTO) {
-        if (LoginController.type == "company") {
-            System.out.println(jobsDTO.toString());
+        Company company = companyRepository.findByCompany_id(jobsDTO.getCompanyID());
+        if (company != null) {
             jobsService.add(jobsDTO);
             return true;
         } else {
-            System.out.println("Can Not Do It ");
             return false;
         }
 
@@ -78,7 +88,6 @@ public class JobsController {
 
     @GetMapping("/ShowDetails")
     public Object jobDetails(@ModelAttribute JobDetails jobDetails) {
-        System.out.println(jobDetails.toString());
         return jobsService.getInfo(jobDetails);
     }
 

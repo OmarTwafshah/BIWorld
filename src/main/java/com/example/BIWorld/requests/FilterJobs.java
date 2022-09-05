@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class FilterJobs {
+    private Integer personID;
     private String personField ;
     private String studyDegree;
     private String gender ;

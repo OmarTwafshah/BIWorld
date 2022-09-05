@@ -6,5 +6,6 @@ import lombok.Data;
 public class JobDetails {
     private Integer id ;
     private Integer jobID ;
+    private String type ;
 
 }

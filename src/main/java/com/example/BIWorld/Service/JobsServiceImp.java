@@ -2,12 +2,11 @@ package com.example.BIWorld.Service;
 
 import com.example.BIWorld.Controller.LoginController;
 import com.example.BIWorld.DTO.JobsDTO;
-import com.example.BIWorld.Repository.CityRepository;
-import com.example.BIWorld.Repository.CompanyRepository;
-import com.example.BIWorld.Repository.JobsRepository;
-import com.example.BIWorld.Repository.applyToJobRepository;
+import com.example.BIWorld.Repository.*;
 import com.example.BIWorld.models.ApplyToJob;
+import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
+import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,18 +26,18 @@ public class JobsServiceImp implements JobsService {
 
     private final applyToJobRepository repository;
 
-    private final CityRepository cityRepository;
+    private final PersonRepository personRepository;
 
 
     @PersistenceContext
     private EntityManager entityManager;
 
 
-    public JobsServiceImp(JobsRepository jobsRepository, CompanyRepository companyRepository, applyToJobRepository repository, CityRepository cityRepository) {
+    public JobsServiceImp(JobsRepository jobsRepository, CompanyRepository companyRepository, applyToJobRepository repository, PersonRepository personRepository) {
         this.jobsRepository = jobsRepository;
         this.companyRepository = companyRepository;
         this.repository = repository;
-        this.cityRepository = cityRepository;
+        this.personRepository = personRepository;
     }
 
     @Override
@@ -185,10 +184,9 @@ public class JobsServiceImp implements JobsService {
         if (jobDetails == null) {
             return "Empty";
         }
-
         Jobs job = jobsRepository.findByJobId(jobDetails.getJobID());
         arr.add(job);
-        if(LoginController.type.equalsIgnoreCase("person")){
+        if(jobDetails.getType() != null){
             ApplyToJob applyToJob = repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getId());
             if (applyToJob == null) {
                 arr.add(false);
@@ -196,8 +194,9 @@ public class JobsServiceImp implements JobsService {
                 arr.add(true);
                 arr.add(repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getId()).getStatus());
             }
-        }else if(LoginController.type.equalsIgnoreCase("company")){
+        }else {
             List<ApplyToJobInfo> applyToJob = repository.findByApplication_idAndCompany(jobDetails.getJobID(), jobDetails.getId());
+            System.out.println(applyToJob.toString());
             if (applyToJob == null) {
                 arr.add(false);
             } else {
@@ -206,8 +205,6 @@ public class JobsServiceImp implements JobsService {
                 arr.add(applyToJob.size());
             }
         }
-
-
         return arr;
     }
 

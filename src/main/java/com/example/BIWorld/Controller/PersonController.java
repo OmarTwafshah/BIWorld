@@ -5,11 +5,10 @@ import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.Service.PersonServiceImp;
 import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.ApplicationPerson;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,25 +29,27 @@ public class PersonController {
 
     @PostMapping(value = "/register", consumes = {"multipart/form-data"})
     public Object register(@ModelAttribute PersonDTO personDTO) {
-        System.out.println(personDTO.toString());
-        System.out.println(StringUtils.cleanPath(personDTO.getCvPath().getOriginalFilename()));
-        System.out.println(StringUtils.cleanPath(personDTO.getPicPath().getOriginalFilename()));
         Object rePerson = null;
         try {
             rePerson = personService.registerPerson(personDTO);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if (rePerson != null) {
-            return rePerson;
+        if(rePerson == "One filed is empty"){
+            return "One filed is empty";
+        }else if(rePerson == "User Name is Used"){
+            return "User Name is Used" ;
+        }else if(rePerson == "Email is Used"){
+            return "Email is Used" ;
+        }else if(rePerson == "Phone Number is Used"){
+            return "Phone Number is Used" ;
+        }else {
+            return true;
         }
-        return null;
     }
 
     @PutMapping("/update")
     public void updatePerson(@RequestBody PersonDTO personDTO) {
-        System.out.println(personDTO.getDateOfBirth().toString());
-        System.out.println(personDTO.toString());
         personService.updatePerson(personDTO);
 
     }
@@ -76,5 +77,10 @@ public class PersonController {
     @GetMapping("/{id}/getImage")
     public ResponseEntity<Resource> getimage(@PathVariable int id) throws Exception {
         return personService.getimage(id);
+    }
+
+    @GetMapping("/{id}/getCV")
+    public ResponseEntity<Resource> getCV(@PathVariable int id) throws Exception {
+        return personService.getCV(id);
     }
 }

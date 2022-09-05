@@ -3,9 +3,9 @@ package com.example.BIWorld.Service;
 import com.example.BIWorld.DTO.PersonDTO;
 import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.ApplicationPerson;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 
-import javax.annotation.Resource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -28,4 +28,8 @@ public interface PersonService {
     Person getJustPerson(int id);
 
     ResponseEntity<Resource> getimage(int id) throws FileNotFoundException, MalformedURLException, Exception;
+
+
+    ResponseEntity<Resource> getCV(int id) throws FileNotFoundException, MalformedURLException, Exception;
+
 }

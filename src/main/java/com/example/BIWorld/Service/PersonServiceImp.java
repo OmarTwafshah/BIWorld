@@ -1,33 +1,30 @@
 package com.example.BIWorld.Service;
 
+
+
 import com.example.BIWorld.DTO.PersonDTO;
 import com.example.BIWorld.Repository.CityRepository;
 import com.example.BIWorld.Repository.CompanyRepository;
 import com.example.BIWorld.Repository.PersonRepository;
 import com.example.BIWorld.Repository.applyToJobRepository;
-import com.example.BIWorld.models.ApplyToJob;
 import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.ApplicationPerson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -47,6 +44,7 @@ public class PersonServiceImp implements PersonService {
 
     private final CityRepository cityRepository;
 
+    public static final String DIRECTORY = System.getProperty("user.home") + "/Downloads/uploads/";
 
     @Autowired
     public PersonServiceImp(applyToJobRepository repository, PersonRepository personRepository, CompanyRepository companyRepository, CityRepository cityRepository) {
@@ -114,7 +112,7 @@ public class PersonServiceImp implements PersonService {
         person.setCvPath(cvPath);
         System.out.println(cvPath);
         String picPath = StringUtils.cleanPath(personDTO.getPicPath().getOriginalFilename());
-        person.setCvPath(picPath);
+        person.setPicPath(picPath);
         System.out.println(picPath);
 
 
@@ -241,15 +239,32 @@ public class PersonServiceImp implements PersonService {
 
     @Override
     public ResponseEntity<Resource> getimage(int id) throws Exception {
-        int thisID = personRepository.findByPerson_id(id).getPerson_id();
-        Path filePath = get("./person-image/").toAbsolutePath().normalize().resolve(String.valueOf(thisID));
+        Person person = personRepository.findByPerson_id(id);
+        Path filePath = get("./person-image/"+person.getPersonID()+"/").toAbsolutePath().normalize().resolve(String.valueOf(person.getPicPath()));
+
         if(!Files.exists(filePath)) {
-            throw new FileNotFoundException(thisID + " was not found on the server");
+            throw new FileNotFoundException(person.getPerson_id() + " was not found on the server");
         }
-        Resource resource = (Resource) new UrlResource(filePath.toUri());
+        Resource resource = new UrlResource(filePath.toUri());
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("File-id", String.valueOf(thisID));
-        httpHeaders.add(CONTENT_DISPOSITION, "attachment;File-Name=" + resource.name());
+        httpHeaders.add("File-Name",person.getPicPath() );
+        httpHeaders.add(CONTENT_DISPOSITION, "attachment;File-Name=" + resource.getFilename());
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
+                .headers(httpHeaders).body(resource);
+    }
+
+    @Override
+    public ResponseEntity<Resource> getCV(int id) throws Exception {
+        Person person = personRepository.findByPerson_id(id);
+        Path filePath = get("./person-cv/"+person.getPersonID()+"/").toAbsolutePath().normalize().resolve(String.valueOf(person.getCvPath()));
+
+        if(!Files.exists(filePath)) {
+            throw new FileNotFoundException(person.getPerson_id() + " was not found on the server");
+        }
+        Resource resource = new UrlResource(filePath.toUri());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("File-Name",person.getPicPath() );
+        httpHeaders.add(CONTENT_DISPOSITION, "attachment;File-Name=" + resource.getFilename());
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
                 .headers(httpHeaders).body(resource);
     }

@@ -23,7 +23,6 @@ public class LoginController {
 
     private final AuthenticationManager authenticationManager;
 
-    public static String type = null;
 
 
     public LoginController(CompanyServiceImp companyService, PersonServiceImp personService, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
@@ -38,12 +37,10 @@ public class LoginController {
         System.out.println(loginRequest.toString());
         Person person = personService.authenticatePerson(loginRequest.getUserName(), loginRequest.getMyPassword());
         if (person != null) {
-            type = "person";
             return person;
         }
         Company company = companyService.authenticateCompany(loginRequest.getUserName(), loginRequest.getMyPassword());
         if (company != null) {
-            type = "company";
             return company;
         }
         if (person == null && company == null) {
@@ -64,13 +61,4 @@ public class LoginController {
 //        }
 //        return jwtUtil.generateToken(loginRequest.getUserName());
 //    }
-
-    @GetMapping("/test")
-    public void testappp() {
-        if (type != null) {
-            System.out.println(type);
-        } else {
-            System.out.println("NOT LOGIN");
-        }
-    }
 }

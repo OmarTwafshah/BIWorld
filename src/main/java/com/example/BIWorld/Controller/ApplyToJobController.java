@@ -21,12 +21,11 @@ public class ApplyToJobController {
 
     @PostMapping("/add")
     public Object ApplyToJob(@RequestBody ApplyToJobDTO applyToJobDTO) {
-        System.out.println(applyToJobDTO.toString());
         ApplyToJob reapply = applyToJobService.addJobs(applyToJobDTO);
         if (reapply != null) {
             return true;
         }
-        return false;
+        return "One Filed Is Empty";
     }
 
     @DeleteMapping("/deleteApp")

@@ -151,7 +151,6 @@ public class CompanyServiceImp implements CompanyService {
     public Boolean deleteJob(int id) {
         Boolean exist = companyRepository.existsById(id);
         if (!exist) {
-            System.out.println("company does not exist");
             return false;
         } else {
             companyRepository.deleteById(id);

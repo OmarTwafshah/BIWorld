@@ -28,12 +28,22 @@ public class CompanyController {
 
     @PostMapping("/register")
     public Object register(@RequestBody CompanyDTO companyDTO) {
-        System.out.println(companyDTO.toString());
         Object reCompany =  companyService.registerCompany(companyDTO);
-        if (reCompany != null) {
+        if(reCompany == "One filed is empty"){
+            return "One filed is empty";
+        }else if(reCompany == "User Name is Used"){
+            return "User Name is Used" ;
+        }else if(reCompany == "Email is Used"){
+            return "Email is Used" ;
+        }else if(reCompany == "Fax number is Used"){
+            return "Fax number is Used" ;
+        }else if(reCompany == "Tax number is Used"){
+            return "Tax number is Used" ;
+        }else if(reCompany == "Phone Number is Used"){
+            return "Phone Number is Used" ;
+        }else {
             return true;
         }
-        return false;
     }
 
     @PutMapping(path = "/update")
