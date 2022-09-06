@@ -10,10 +10,12 @@ import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -64,6 +66,10 @@ public class JobsServiceImp implements JobsService {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             jobs.setJobStartDate(currentDateTime);
             LocalDate localDate = LocalDate.parse(jobsDTO.getEndDate(), format);
+            int date = Period.between(localDate, LocalDate.now()).getMonths();
+            if (date <= 0) {
+                return "Your Date Is Wrong";
+            }
             jobs.setJobEndDate(localDate);
             jobs.setJobIsFinished(false);
             jobs.setDegreeRequierd(jobsDTO.getStudyDegree());
@@ -129,9 +135,9 @@ public class JobsServiceImp implements JobsService {
         if (searchRequest.getGender() != null && !searchRequest.getGender().isEmpty() && !searchRequest.getGender().equalsIgnoreCase("null")) {
             if (searchRequest.getGender().equals("Male")) {
                 sql.append("AND j.gender_to_job != 'Female' ");
-            } else if(searchRequest.getGender().equals("Female")) {
+            } else if (searchRequest.getGender().equals("Female")) {
                 sql.append("AND j.gender_to_job != 'Male' ");
-            }else {
+            } else {
 
             }
 //            sql.append("AND j.gender_to_job = :gender OR j.gender_to_job = 'any' ");
@@ -186,7 +192,7 @@ public class JobsServiceImp implements JobsService {
         }
         Jobs job = jobsRepository.findByJobId(jobDetails.getJobID());
         arr.add(job);
-        if(jobDetails.getType() != null){
+        if (jobDetails.getType() != null) {
             ApplyToJob applyToJob = repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getId());
             if (applyToJob == null) {
                 arr.add(false);
@@ -194,7 +200,7 @@ public class JobsServiceImp implements JobsService {
                 arr.add(true);
                 arr.add(repository.findApplyToJobByApplication_idAndPersons(jobDetails.getJobID(), jobDetails.getId()).getStatus());
             }
-        }else {
+        } else {
             List<ApplyToJobInfo> applyToJob = repository.findByApplication_idAndCompany(jobDetails.getJobID(), jobDetails.getId());
             System.out.println(applyToJob.toString());
             if (applyToJob == null) {

@@ -3,6 +3,7 @@ package com.example.BIWorld.Service;
 import com.example.BIWorld.DTO.PersonDTO;
 import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.ApplicationPerson;
+import com.example.BIWorld.requests.PersonProfile;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 
@@ -25,7 +26,7 @@ public interface PersonService {
 
     List<ApplicationPerson> ShowApplication(int id);
 
-    Person getJustPerson(int id);
+    PersonProfile getJustPerson(int id);
 
     ResponseEntity<Resource> getimage(int id) throws FileNotFoundException, MalformedURLException, Exception;
 

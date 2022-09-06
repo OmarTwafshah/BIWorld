@@ -8,6 +8,7 @@ import com.example.BIWorld.models.Interview;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -29,7 +30,7 @@ public class InterviewServiceImp implements InterviewService {
 
 
     @Override
-    public Interview add(InterviewDTO interviewDTO) {
+    public Object add(InterviewDTO interviewDTO) {
 
         if (interviewDTO.getApplyToJob() == null ||
                 interviewDTO.getDate() == null || interviewDTO.getLocation() == null
@@ -42,6 +43,10 @@ public class InterviewServiceImp implements InterviewService {
             interview.setApplyToJob(applyToJob);
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate localDate =  LocalDate.parse(interviewDTO.getDate(), format);
+            int date = Period.between(localDate, LocalDate.now()).getMonths();
+            if (date <= 0) {
+                return "Your Date Is Wrong";
+            }
             interview.setDate(localDate);
             interview.setLocation(interviewDTO.getLocation());
             interview.setEmployee_name(interviewDTO.getEmployeeName());

@@ -8,7 +8,7 @@ public interface InterviewService {
 
     Interview getInterView(Integer id);
 
-    Interview add(InterviewDTO interviewDTO);
+    Object add(InterviewDTO interviewDTO);
 
 
 }

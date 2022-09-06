@@ -46,13 +46,19 @@ public class JobsController {
     }
 
     @PostMapping("/add")
-    public Boolean jobs(@RequestBody JobsDTO jobsDTO) {
+    public Object jobs(@RequestBody JobsDTO jobsDTO) {
         Company company = companyRepository.findByCompany_id(jobsDTO.getCompanyID());
         if (company != null) {
-            jobsService.add(jobsDTO);
-            return true;
+            Object job = jobsService.add(jobsDTO);
+            if (job == "One filed is empty") {
+                return "One filed is empty";
+            } else if (job == "Your Date Is Wrong") {
+                return "Your Date Is Wrong";
+            } else {
+                return true;
+            }
         } else {
-            return false;
+            return "You Are Not Company";
         }
 
     }

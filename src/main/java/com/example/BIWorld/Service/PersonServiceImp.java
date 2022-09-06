@@ -1,7 +1,6 @@
 package com.example.BIWorld.Service;
 
 
-
 import com.example.BIWorld.DTO.PersonDTO;
 import com.example.BIWorld.Repository.CityRepository;
 import com.example.BIWorld.Repository.CompanyRepository;
@@ -10,6 +9,7 @@ import com.example.BIWorld.Repository.applyToJobRepository;
 import com.example.BIWorld.models.City;
 import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.ApplicationPerson;
+import com.example.BIWorld.requests.PersonProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.Resource;
@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -93,8 +94,7 @@ public class PersonServiceImp implements PersonService {
         if (city != null) {
             person.setCity(city);
         } else {
-            System.out.println(personDTO.getCity() + " is not found ");
-            return null;
+            return "City Not Found";
         }
         person.setPersonEmail(personDTO.getEmail());
         person.setPassword(personDTO.getPassword());
@@ -102,6 +102,10 @@ public class PersonServiceImp implements PersonService {
         person.setPersonField(personDTO.getField());
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate localDate = LocalDate.parse(personDTO.getDateOfBirth(), format);
+        int age = Period.between(localDate, LocalDate.now()).getYears();
+        if (age < 18) {
+            return "Your Age Less That You Can Work";
+        }
         person.setDateOfBirth(localDate);
         person.setGender(personDTO.getGender());
         person.setStudyDegree(personDTO.getStudyDegree());
@@ -133,8 +137,8 @@ public class PersonServiceImp implements PersonService {
 
         Path CVFilePath = uploadPath.resolve(cvPath);
         Path PicFilePath = uploadPath2.resolve(picPath);
-        Files.copy(CVStream,CVFilePath,StandardCopyOption.REPLACE_EXISTING);
-        Files.copy(PicStream,PicFilePath,StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(CVStream, CVFilePath, StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(PicStream, PicFilePath, StandardCopyOption.REPLACE_EXISTING);
 
         return person1;
     }
@@ -154,13 +158,10 @@ public class PersonServiceImp implements PersonService {
     }
 
 
-
     @Override
     @Transactional
     public void updatePerson(PersonDTO personDTO) {
-        System.out.println(personDTO.toString());
         Person per = personRepository.findById(personDTO.getPersonID()).orElse(null);
-        System.out.println("SDFSDFSDFSDF");
         if (personDTO.getFullName() != null && !personDTO.getFullName().equals("")) {
             per.setFullName(personDTO.getFullName());
         }
@@ -213,8 +214,22 @@ public class PersonServiceImp implements PersonService {
     }
 
     @Override
-    public Person getJustPerson(int id){
-        return personRepository.findByPerson_id(id);
+    public PersonProfile getJustPerson(int id) {
+        PersonProfile personProfile = new PersonProfile();
+        Person person = personRepository.findByPerson_id(id);
+        if (person == null) {
+            return null;
+        }
+        personProfile.setPersonEmail(person.getPersonEmail());
+        personProfile.setPersonField(person.getPersonField());
+        personProfile.setPersonPhone(person.getPersonPhone());
+        personProfile.setAge(Period.between(person.getDateOfBirth(), LocalDate.now()).getYears());
+        personProfile.setDescription(person.getDescription());
+        personProfile.setGender(person.getGender());
+        personProfile.setFullName(person.getFullName());
+        personProfile.setInterests(person.getInterests());
+        personProfile.setStudyDegree(person.getStudyDegree());
+        return personProfile;
     }
 
 
@@ -240,14 +255,14 @@ public class PersonServiceImp implements PersonService {
     @Override
     public ResponseEntity<Resource> getimage(int id) throws Exception {
         Person person = personRepository.findByPerson_id(id);
-        Path filePath = get("./person-image/"+person.getPersonID()+"/").toAbsolutePath().normalize().resolve(String.valueOf(person.getPicPath()));
+        Path filePath = get("./person-image/" + person.getPersonID() + "/").toAbsolutePath().normalize().resolve(String.valueOf(person.getPicPath()));
 
-        if(!Files.exists(filePath)) {
+        if (!Files.exists(filePath)) {
             throw new FileNotFoundException(person.getPerson_id() + " was not found on the server");
         }
         Resource resource = new UrlResource(filePath.toUri());
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("File-Name",person.getPicPath() );
+        httpHeaders.add("File-Name", person.getPicPath());
         httpHeaders.add(CONTENT_DISPOSITION, "attachment;File-Name=" + resource.getFilename());
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
                 .headers(httpHeaders).body(resource);
@@ -256,14 +271,14 @@ public class PersonServiceImp implements PersonService {
     @Override
     public ResponseEntity<Resource> getCV(int id) throws Exception {
         Person person = personRepository.findByPerson_id(id);
-        Path filePath = get("./person-cv/"+person.getPersonID()+"/").toAbsolutePath().normalize().resolve(String.valueOf(person.getCvPath()));
+        Path filePath = get("./person-cv/" + person.getPersonID() + "/").toAbsolutePath().normalize().resolve(String.valueOf(person.getCvPath()));
 
-        if(!Files.exists(filePath)) {
+        if (!Files.exists(filePath)) {
             throw new FileNotFoundException(person.getPerson_id() + " was not found on the server");
         }
         Resource resource = new UrlResource(filePath.toUri());
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("File-Name",person.getPicPath() );
+        httpHeaders.add("File-Name", person.getPicPath());
         httpHeaders.add(CONTENT_DISPOSITION, "attachment;File-Name=" + resource.getFilename());
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
                 .headers(httpHeaders).body(resource);

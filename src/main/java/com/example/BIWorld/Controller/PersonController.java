@@ -5,6 +5,7 @@ import com.example.BIWorld.Service.PersonService;
 import com.example.BIWorld.Service.PersonServiceImp;
 import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.ApplicationPerson;
+import com.example.BIWorld.requests.PersonProfile;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,15 +36,19 @@ public class PersonController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if(rePerson == "One filed is empty"){
+        if (rePerson == "One filed is empty") {
             return "One filed is empty";
-        }else if(rePerson == "User Name is Used"){
-            return "User Name is Used" ;
-        }else if(rePerson == "Email is Used"){
-            return "Email is Used" ;
-        }else if(rePerson == "Phone Number is Used"){
-            return "Phone Number is Used" ;
-        }else {
+        } else if (rePerson == "User Name is Used") {
+            return "User Name is Used";
+        } else if (rePerson == "Email is Used") {
+            return "Email is Used";
+        } else if (rePerson == "Phone Number is Used") {
+            return "Phone Number is Used";
+        } else if (rePerson == "Your Age Less That You Can Work") {
+            return "Your Age Less That You Can Work";
+        } else if (rePerson == "City Not Found") {
+            return "City Not Found";
+        } else {
             return true;
         }
     }
@@ -70,7 +75,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}/getCand")
-    public Person getJustPerson(@PathVariable int id) {
+    public PersonProfile getJustPerson(@PathVariable int id) {
         return personService.getJustPerson(id);
     }
 

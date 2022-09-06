@@ -25,11 +25,12 @@ public class InterviewController {
     @PostMapping("/add")
     public Object register(@RequestBody InterviewDTO interviewDTO) {
         System.out.println("register Requiest " + interviewDTO.toString());
-        Interview reinterview = interviewServiceImp.add(interviewDTO);
-        if (reinterview != null) {
-            return true;
+        Object reinterview = interviewServiceImp.add(interviewDTO);
+        if (reinterview == "Your Date Is Wrong") {
+            return "Your Date Is Wrong";
+        }else {
+            return true ;
         }
-        return false;
     }
 
 
