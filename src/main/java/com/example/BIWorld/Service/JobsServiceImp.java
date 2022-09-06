@@ -1,12 +1,9 @@
 package com.example.BIWorld.Service;
 
-import com.example.BIWorld.Controller.LoginController;
 import com.example.BIWorld.DTO.JobsDTO;
 import com.example.BIWorld.Repository.*;
 import com.example.BIWorld.models.ApplyToJob;
-import com.example.BIWorld.models.Company;
 import com.example.BIWorld.models.Jobs;
-import com.example.BIWorld.models.Person;
 import com.example.BIWorld.requests.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -44,7 +41,17 @@ public class JobsServiceImp implements JobsService {
 
     @Override
     public List<Jobs_show> Showjobs(FilterJobs filterJobs) {
-        return jobsRepository.findByAllData(filterJobs.getPersonField(), filterJobs.getStudyDegree(), filterJobs.getGender(), filterJobs.getCity());
+        List<Jobs> myJob = jobsRepository.findByAllData(filterJobs.getPersonField(), filterJobs.getStudyDegree(), filterJobs.getGender(), filterJobs.getCity());
+        List<Jobs_show> jobToShow = new ArrayList<>();
+        int j = 0 ;
+        for (int i = 0; i < myJob.size(); i++) {
+            if(ChronoUnit.DAYS.between(LocalDate.now(),myJob.get(0).getJobEndDate()) > 0){
+                Jobs_show jobs_show = new Jobs_show(myJob.get(i).getJobId(),myJob.get(i).getJobTitle(),myJob.get(i).getJobField(),myJob.get(i).getCompanyID().getCompanyName(),myJob.get(i).getCompanyID().getCities().getCityName());
+                jobToShow.add(j,jobs_show);
+                j++;
+            }
+        }
+        return jobToShow;
     }
 
     @Override
@@ -66,8 +73,7 @@ public class JobsServiceImp implements JobsService {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             jobs.setJobStartDate(currentDateTime);
             LocalDate localDate = LocalDate.parse(jobsDTO.getEndDate(), format);
-            int date = Period.between(localDate, LocalDate.now()).getMonths();
-            if (date <= 0) {
+            if (ChronoUnit.MONTHS.between(localDate, LocalDate.now()) <= 0) {
                 return "Your Date Is Wrong";
             }
             jobs.setJobEndDate(localDate);
@@ -120,7 +126,6 @@ public class JobsServiceImp implements JobsService {
     public Boolean deleteJob(int id) {
         Boolean exist = jobsRepository.existsById(id);
         if (!exist) {
-            System.out.println("job does not exist");
             return false;
         }
         jobsRepository.deleteById(id);
@@ -128,7 +133,7 @@ public class JobsServiceImp implements JobsService {
     }
 
     @Override
-    public List<Jobs> SearchJob(SearchRequest searchRequest) {
+    public List<Jobs_show> SearchJob(SearchRequest searchRequest) {
         Map<String, Object> params = new HashMap<>();
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM jobs j left join companies c on j.companyid=c.company_id left join cities i on c.city_id=i.city_id where 1=1 ");
@@ -159,12 +164,21 @@ public class JobsServiceImp implements JobsService {
             sql.append("AND i.city_name ILIKE :city ");
             params.put("city", searchRequest.getCity());
         }
-        System.out.println(searchRequest);
         Query query = entityManager.createNativeQuery(sql.toString(), Jobs.class);
         for (Map.Entry<String, Object> param : params.entrySet()) {
             query.setParameter(param.getKey(), param.getValue());
         }
-        return query.getResultList();
+        List<Jobs> myJob =  query.getResultList();
+        List<Jobs_show> jobToShow = new ArrayList<>();
+        int j = 0 ;
+        for (int i = 0; i < myJob.size(); i++) {
+            if(ChronoUnit.DAYS.between(LocalDate.now(),myJob.get(0).getJobEndDate()) > 0){
+                Jobs_show jobs_show = new Jobs_show(myJob.get(i).getJobId(),myJob.get(i).getJobTitle(),myJob.get(i).getJobField(),myJob.get(i).getCompanyID().getCompanyName(),myJob.get(i).getCompanyID().getCities().getCityName());
+                jobToShow.add(j,jobs_show);
+                j++;
+            }
+        }
+        return jobToShow;
 
     }
 //    @Override
@@ -202,7 +216,6 @@ public class JobsServiceImp implements JobsService {
             }
         } else {
             List<ApplyToJobInfo> applyToJob = repository.findByApplication_idAndCompany(jobDetails.getJobID(), jobDetails.getId());
-            System.out.println(applyToJob.toString());
             if (applyToJob == null) {
                 arr.add(false);
             } else {

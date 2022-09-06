@@ -36,7 +36,6 @@ public class JobsController {
 
     @GetMapping("/Show")
     public List<Jobs_show> Showjobs(@ModelAttribute FilterJobs filterJobs) {
-        System.out.println(filterJobs.toString());
         Person person = personRepository.findByPerson_id(filterJobs.getPersonID());
         if (person != null) {
             return jobsService.Showjobs(filterJobs);
@@ -69,12 +68,12 @@ public class JobsController {
     }
 
     @DeleteMapping(path = "/delete")
-    public Boolean deleteStudent(@RequestParam(required = true) int id) {
+    public Boolean deleteJob(@RequestParam(required = true) int id) {
         return jobsService.deleteJob(id);
     }
 
     @GetMapping("/search")
-    public List<Jobs> SearchJob(@ModelAttribute SearchRequest searchRequest) {
+    public List<Jobs_show> SearchJob(@ModelAttribute SearchRequest searchRequest) {
         Map<JobsServiceImp.Search, Object> fields = new HashMap<>();
         if (searchRequest.getGender() != null) {
             fields.put(JobsServiceImp.Search.GENDER, searchRequest.getGender());

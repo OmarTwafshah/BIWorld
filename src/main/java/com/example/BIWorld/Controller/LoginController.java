@@ -33,6 +33,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
+
     public Object login(@RequestBody LoginRequest loginRequest) {
         System.out.println(loginRequest.toString());
         Person person = personService.authenticatePerson(loginRequest.getUserName(), loginRequest.getMyPassword());

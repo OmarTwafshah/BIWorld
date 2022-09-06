@@ -16,11 +16,11 @@ public interface JobsRepository extends JpaRepository<Jobs, Integer> {
 
     Jobs findByJobId(int job_id);
 
-@Query(value = "SELECT new com.example.BIWorld.requests.Jobs_show(j.jobId,j.jobTitle,j.jobField,j.companyID.companyName,j.companyID.cities.cityName)  FROM jobs j left join Company c on j.companyID.companyID=c.companyID left join cities i on c.cities.city_id=i.city_id where j.jobField LIKE ?1 and j.degreeRequierd LIKE ?2 and  (j.genderToJob like ?3 or j.genderToJob like 'any') and i.cityName LIKE ?4")
-List<Jobs_show> findByAllData(String filed,
-                              String degree,
-                              String gender,
-                              String city);
+    @Query(value = "SELECT j  FROM jobs j left join Company c on j.companyID.companyID=c.companyID left join cities i on c.cities.city_id=i.city_id where j.jobField LIKE ?1 and j.degreeRequierd LIKE ?2 and  (j.genderToJob like ?3 or j.genderToJob like 'any') and i.cityName LIKE ?4")
+    List<Jobs> findByAllData(String filed,
+                             String degree,
+                             String gender,
+                             String city);
 
 //@Query(value = "SELECT * FROM jobs j left join Company c on j.companyID.companyID=c.companyID left join cities i on c.cities.city_id=i.city_id where ")
 //List<Jobs_show> SearchJob(String filed,

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class InterviewServiceImp implements InterviewService {
@@ -43,8 +44,7 @@ public class InterviewServiceImp implements InterviewService {
             interview.setApplyToJob(applyToJob);
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate localDate =  LocalDate.parse(interviewDTO.getDate(), format);
-            int date = Period.between(localDate, LocalDate.now()).getMonths();
-            if (date <= 0) {
+            if (ChronoUnit.MONTHS.between(localDate, LocalDate.now()) <= 0) {
                 return "Your Date Is Wrong";
             }
             interview.setDate(localDate);
