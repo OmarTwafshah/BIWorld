@@ -104,6 +104,7 @@ public class PersonServiceImp implements PersonService {
         LocalDate localDate = LocalDate.parse(personDTO.getDateOfBirth(), format);
         int age = Period.between(localDate, LocalDate.now()).getYears();
         if (age < 18) {
+            System.out.println("HIIIIIIIIIIII");
             return "Your Age Less That You Can Work";
         }
         person.setDateOfBirth(localDate);
@@ -268,8 +269,24 @@ public class PersonServiceImp implements PersonService {
                 .headers(httpHeaders).body(resource);
     }
 
+//    @Override
+//    public ResponseEntity<Resource> getCV(int id) throws Exception {
+//        Person person = personRepository.findByPerson_id(id);
+//        Path filePath = get("./person-cv/" + person.getPersonID() + "/").toAbsolutePath().normalize().resolve(String.valueOf(person.getCvPath()));
+//
+//        if (!Files.exists(filePath)) {
+//            throw new FileNotFoundException(person.getPerson_id() + " was not found on the server");
+//        }
+//        Resource resource = new UrlResource(filePath.toUri());
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.add("File-Name", person.getPicPath());
+//        httpHeaders.add(CONTENT_DISPOSITION, "attachment;File-Name=" + resource.getFilename());
+//        return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
+//                .headers(httpHeaders).body(resource);
+//    }
+
     @Override
-    public ResponseEntity<Resource> getCV(int id) throws Exception {
+    public Resource getCV(int id) throws Exception {
         Person person = personRepository.findByPerson_id(id);
         Path filePath = get("./person-cv/" + person.getPersonID() + "/").toAbsolutePath().normalize().resolve(String.valueOf(person.getCvPath()));
 
@@ -277,11 +294,7 @@ public class PersonServiceImp implements PersonService {
             throw new FileNotFoundException(person.getPerson_id() + " was not found on the server");
         }
         Resource resource = new UrlResource(filePath.toUri());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("File-Name", person.getPicPath());
-        httpHeaders.add(CONTENT_DISPOSITION, "attachment;File-Name=" + resource.getFilename());
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
-                .headers(httpHeaders).body(resource);
+        return resource;
     }
 
 }

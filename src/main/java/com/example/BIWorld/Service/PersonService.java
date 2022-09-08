@@ -31,6 +31,6 @@ public interface PersonService {
     ResponseEntity<Resource> getimage(int id) throws FileNotFoundException, MalformedURLException, Exception;
 
 
-    ResponseEntity<Resource> getCV(int id) throws FileNotFoundException, MalformedURLException, Exception;
+    Resource getCV(int id) throws FileNotFoundException, MalformedURLException, Exception;
 
 }

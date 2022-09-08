@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
 import java.util.List;
 
 @RestController
@@ -85,7 +87,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}/getCV")
-    public ResponseEntity<Resource> getCV(@PathVariable int id) throws Exception {
+    public Resource getCV(@PathVariable int id) throws Exception {
         return personService.getCV(id);
     }
 }
