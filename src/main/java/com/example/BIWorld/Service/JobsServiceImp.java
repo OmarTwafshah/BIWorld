@@ -73,7 +73,7 @@ public class JobsServiceImp implements JobsService {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             jobs.setJobStartDate(currentDateTime);
             LocalDate localDate = LocalDate.parse(jobsDTO.getEndDate(), format);
-            if (ChronoUnit.MONTHS.between(localDate, LocalDate.now()) <= 0) {
+            if (ChronoUnit.MONTHS.between(LocalDate.now(),localDate) < 0) {
                 return "Your Date Is Wrong";
             }
             jobs.setJobEndDate(localDate);
